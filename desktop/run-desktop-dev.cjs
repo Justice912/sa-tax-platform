@@ -65,7 +65,7 @@ async function runDesktop() {
 
   const electronProcess = run(resolveElectronBinary(), ["."], {
     APP_URL: appUrl,
-    TAXOPS_DEVTOOLS: "true",
+    TAXOPS_DEVTOOLS: "false",
   });
 
   electronProcess.on("exit", (code) => {
