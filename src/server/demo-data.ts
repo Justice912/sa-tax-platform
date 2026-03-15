@@ -348,7 +348,7 @@ export const demoEstateYearPacks: EstateYearPackRecord[] = [
         { upTo: null, rate: 0.25 },
       ],
       postDeathFlatRate: 0.45,
-      businessValuationMethods: ["NET_ASSET_VALUE", "MAINTAINABLE_EARNINGS"],
+      businessValuationMethods: ["DISCOUNTED_CASH_FLOW", "NET_ASSET_VALUE", "MAINTAINABLE_EARNINGS"],
     },
     formTemplates: [
       {
@@ -434,7 +434,7 @@ export const demoEstateYearPacks: EstateYearPackRecord[] = [
         { upTo: null, rate: 0.25 },
       ],
       postDeathFlatRate: 0.45,
-      businessValuationMethods: ["NET_ASSET_VALUE", "MAINTAINABLE_EARNINGS"],
+      businessValuationMethods: ["DISCOUNTED_CASH_FLOW", "NET_ASSET_VALUE", "MAINTAINABLE_EARNINGS"],
     },
     formTemplates: [
       {

@@ -1,5 +1,5 @@
 import { revalidatePath } from "next/cache";
-import { notFound, redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth-options";
 import { EstateValuationWorkspace } from "@/components/estates/phase2/estate-valuation-workspace";
@@ -324,20 +324,19 @@ export default async function EstateValuationPage({
         reportNotes: readOptionalString(formData, "reportNotes"),
       });
 
-      revalidatePath(`/estates/${estateId}`);
-      revalidatePath(`/estates/${estateId}/valuation`);
-      revalidatePath(`/estates/${estateId}/tax/cgt`);
-      revalidatePath(`/estates/${estateId}/tax/estate-duty`);
-      revalidatePath(`/estates/${estateId}/filing-pack`);
     } catch (error) {
       submissionError = error instanceof Error ? error.message : "Valuation submission failed.";
     }
 
-    if (submissionError) {
-      redirect(`/estates/${estateId}/valuation?error=${encodeURIComponent(submissionError)}`);
-    }
+    revalidatePath(`/estates/${estateId}`);
+    revalidatePath(`/estates/${estateId}/valuation`);
+    revalidatePath(`/estates/${estateId}/tax/cgt`);
+    revalidatePath(`/estates/${estateId}/tax/estate-duty`);
+    revalidatePath(`/estates/${estateId}/filing-pack`);
 
-    redirect(`/estates/${estateId}/valuation`);
+    if (submissionError) {
+      throw new Error(submissionError);
+    }
   }
 
   return (

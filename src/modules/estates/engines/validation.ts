@@ -32,8 +32,8 @@ export const createEstateEngineRunSchema = z.object({
   estateId: z.string().trim().min(1),
   yearPackId: z.string().trim().min(1),
   engineType: z.enum(ESTATE_ENGINE_TYPE_VALUES),
-  inputSnapshot: jsonObjectSchema,
-  outputSnapshot: jsonObjectSchema,
+  inputSnapshot: z.record(z.string(), z.unknown()),
+  outputSnapshot: z.record(z.string(), z.unknown()),
   warnings: z.array(z.string().trim().min(1)),
   dependencyStates: z.array(estateEngineDependencyStateSchema),
 });

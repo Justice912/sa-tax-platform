@@ -6,7 +6,7 @@
   "private": true,
   "main": "desktop/main.cjs",
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --webpack",
     "build": "next build",
     "start": "next start",
     "desktop:dev": "node desktop/run-desktop-dev.cjs",

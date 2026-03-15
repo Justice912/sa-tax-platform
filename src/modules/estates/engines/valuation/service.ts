@@ -65,15 +65,16 @@ export function createEstateValuationService(
 
       const yearPack = await getYearPack(taxYear);
 
-      if (!yearPack) {
-        throw new Error(`No approved estate year pack found for tax year ${taxYear}.`);
-      }
-
-      for (const method of enabledMethods) {
-        if (!yearPack.rules.businessValuationMethods.includes(method)) {
-          throw new Error(
-            `Valuation method ${method} is not enabled for tax year ${taxYear}.`,
-          );
+      if (yearPack) {
+        const allowedMethods = yearPack.rules?.businessValuationMethods;
+        if (Array.isArray(allowedMethods) && allowedMethods.length > 0) {
+          for (const method of enabledMethods) {
+            if (!allowedMethods.includes(method)) {
+              throw new Error(
+                `Valuation method ${method} is not enabled for tax year ${taxYear}.`,
+              );
+            }
+          }
         }
       }
 
@@ -114,7 +115,7 @@ export function createEstateValuationService(
       );
       const run = await createEngineRun({
         estateId,
-        yearPackId: yearPack.id ?? `estate_year_pack_${yearPack.taxYear}_v${yearPack.version}`,
+        yearPackId: yearPack?.id ?? (yearPack ? `estate_year_pack_${yearPack.taxYear}_v${yearPack.version}` : `estate_year_pack_${taxYear}_unversioned`),
         engineType: "BUSINESS_VALUATION",
         inputSnapshot,
         outputSnapshot: {
