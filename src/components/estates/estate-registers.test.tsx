@@ -1,15 +1,19 @@
 import { render, screen } from "@testing-library/react";
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vi } from "vitest";
 import { EstateAssetRegister } from "@/components/estates/estate-asset-register";
 import { EstateBeneficiaryRegister } from "@/components/estates/estate-beneficiary-register";
 import { EstateLiabilityRegister } from "@/components/estates/estate-liability-register";
+
+const noop = vi.fn();
 
 describe("estate registers", () => {
   it("renders the asset register add form, rows, and total", () => {
     render(
       <EstateAssetRegister
         estateId="estate_001"
-        action="/estates/estate_001/assets"
+        action={noop}
+        editAction={noop}
+        deleteAction={noop}
         assets={[
           {
             id: "asset_001",
@@ -46,7 +50,9 @@ describe("estate registers", () => {
     render(
       <EstateLiabilityRegister
         estateId="estate_001"
-        action="/estates/estate_001/liabilities"
+        action={noop}
+        editAction={noop}
+        deleteAction={noop}
         liabilities={[]}
       />,
     );
@@ -61,7 +67,9 @@ describe("estate registers", () => {
     const { rerender } = render(
       <EstateBeneficiaryRegister
         estateId="estate_001"
-        action="/estates/estate_001/beneficiaries"
+        action={noop}
+        editAction={noop}
+        deleteAction={noop}
         beneficiaries={[
           {
             id: "beneficiary_001",
@@ -84,7 +92,9 @@ describe("estate registers", () => {
     rerender(
       <EstateBeneficiaryRegister
         estateId="estate_001"
-        action="/estates/estate_001/beneficiaries"
+        action={noop}
+        editAction={noop}
+        deleteAction={noop}
         beneficiaries={[]}
       />,
     );

@@ -131,6 +131,34 @@ function buildYearPack(): EstateYearPackRecord {
         storageKey: "estates/forms/master-ld-account/2026.3.json",
         metadata: { title: "Master liquidation and distribution account", jurisdiction: "MASTER" },
       },
+      {
+        code: "SARS_J190",
+        templateVersion: "2026.3",
+        outputFormat: "pdf",
+        storageKey: "estates/forms/sars-j190/2026.3.json",
+        metadata: { title: "J190 - First and Final L&D Account", jurisdiction: "MASTER" },
+      },
+      {
+        code: "SARS_J192",
+        templateVersion: "2026.3",
+        outputFormat: "pdf",
+        storageKey: "estates/forms/sars-j192/2026.3.json",
+        metadata: { title: "J192 - Abridged L&D Account", jurisdiction: "MASTER" },
+      },
+      {
+        code: "SARS_J243",
+        templateVersion: "2026.3",
+        outputFormat: "pdf",
+        storageKey: "estates/forms/sars-j243/2026.3.json",
+        metadata: { title: "J243 - Inventory of Deceased Estate", jurisdiction: "MASTER" },
+      },
+      {
+        code: "SARS_REV246",
+        templateVersion: "2026.3",
+        outputFormat: "pdf",
+        storageKey: "estates/forms/sars-rev246/2026.3.json",
+        metadata: { title: "REV246 - Estate Duty Return", jurisdiction: "SARS" },
+      },
     ],
   };
 }
@@ -320,6 +348,10 @@ describe("estate filing-pack service", () => {
       "SARS_REV267",
       "SARS_IT_AE",
       "MASTER_LD_ACCOUNT",
+      "SARS_J190",
+      "SARS_J192",
+      "SARS_J243",
+      "SARS_REV246",
     ]);
     expect(manifest.artifacts.every((artifact) => artifact.status === "READY")).toBe(true);
   });

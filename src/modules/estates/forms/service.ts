@@ -76,6 +76,10 @@ const REQUIRED_ENGINES_BY_FORM_CODE: Record<
   SARS_REV267: ["ESTATE_DUTY"],
   SARS_IT_AE: ["POST_DEATH_IT_AE"],
   MASTER_LD_ACCOUNT: ["ESTATE_DUTY"],
+  SARS_J190: ["ESTATE_DUTY"],
+  SARS_J192: ["ESTATE_DUTY"],
+  SARS_J243: [],
+  SARS_REV246: ["ESTATE_DUTY"],
 };
 
 function sourceRunIdForCode(
@@ -91,9 +95,14 @@ function sourceRunIdForCode(
       return approvedRuns.CGT_ON_DEATH?.id;
     case "SARS_REV267":
     case "MASTER_LD_ACCOUNT":
+    case "SARS_J190":
+    case "SARS_J192":
+    case "SARS_REV246":
       return approvedRuns.ESTATE_DUTY?.id;
     case "SARS_IT_AE":
       return approvedRuns.POST_DEATH_IT_AE?.id;
+    case "SARS_J243":
+      return undefined;
   }
 }
 

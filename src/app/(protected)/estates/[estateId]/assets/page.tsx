@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { EstateAssetRegister } from "@/components/estates/estate-asset-register";
-import { addEstateAsset, getEstateById } from "@/modules/estates/service";
+import { addEstateAsset, updateEstateAsset, deleteEstateAsset, getEstateById } from "@/modules/estates/service";
 
 function parseOptionalNumber(formData: FormData, fieldName: string) {
   const raw = String(formData.get(fieldName) ?? "").trim();
@@ -46,7 +46,50 @@ export default async function EstateAssetsPage({
     revalidatePath(`/estates/${estateId}`);
     revalidatePath(`/estates/${estateId}/assets`);
     revalidatePath(`/estates/${estateId}/liquidation`);
-    redirect(`/estates/${estateId}/assets`);
+  }
+
+  async function editAssetAction(formData: FormData) {
+    "use server";
+
+    const assetId = formData.get("assetId") as string;
+
+    try {
+      await updateEstateAsset(estateId, assetId, {
+        category: String(formData.get("category") ?? "OTHER") as never,
+        description: String(formData.get("description") ?? ""),
+        dateOfDeathValue: Number(formData.get("dateOfDeathValue") ?? 0),
+        baseCost: parseOptionalNumber(formData, "baseCost"),
+        acquisitionDate: String(formData.get("acquisitionDate") ?? "").trim() || undefined,
+        valuationDateValue: parseOptionalNumber(formData, "valuationDateValue"),
+        isPrimaryResidence: formData.get("isPrimaryResidence") === "on",
+        isPersonalUse: formData.get("isPersonalUse") === "on",
+        beneficiaryId: String(formData.get("beneficiaryId") ?? "").trim() || undefined,
+        spouseRollover: formData.get("spouseRollover") === "on",
+        notes: String(formData.get("notes") ?? "").trim() || undefined,
+      });
+    } catch (error) {
+      console.error("Edit asset failed.", error);
+    }
+
+    revalidatePath(`/estates/${estateId}`);
+    revalidatePath(`/estates/${estateId}/assets`);
+    revalidatePath(`/estates/${estateId}/liquidation`);
+  }
+
+  async function deleteAssetAction(formData: FormData) {
+    "use server";
+
+    const assetId = formData.get("assetId") as string;
+
+    try {
+      await deleteEstateAsset(estateId, assetId);
+    } catch (error) {
+      console.error("Delete asset failed.", error);
+    }
+
+    revalidatePath(`/estates/${estateId}`);
+    revalidatePath(`/estates/${estateId}/assets`);
+    revalidatePath(`/estates/${estateId}/liquidation`);
   }
 
   return (
@@ -77,6 +120,8 @@ export default async function EstateAssetsPage({
       <EstateAssetRegister
         estateId={estateId}
         action={addAssetAction}
+        editAction={editAssetAction}
+        deleteAction={deleteAssetAction}
         assets={estate.assets}
         beneficiaries={estate.beneficiaries}
       />

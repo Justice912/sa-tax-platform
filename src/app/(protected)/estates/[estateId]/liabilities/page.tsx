@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { EstateLiabilityRegister } from "@/components/estates/estate-liability-register";
-import { addEstateLiability, getEstateById } from "@/modules/estates/service";
+import { addEstateLiability, updateEstateLiability, deleteEstateLiability, getEstateById } from "@/modules/estates/service";
 
 function parseOptionalNumber(formData: FormData, fieldName: string) {
   const raw = String(formData.get(fieldName) ?? "").trim();
@@ -42,7 +42,46 @@ export default async function EstateLiabilitiesPage({
     revalidatePath(`/estates/${estateId}`);
     revalidatePath(`/estates/${estateId}/liabilities`);
     revalidatePath(`/estates/${estateId}/liquidation`);
-    redirect(`/estates/${estateId}/liabilities`);
+  }
+
+  async function editLiabilityAction(formData: FormData) {
+    "use server";
+
+    const liabilityId = formData.get("liabilityId") as string;
+
+    try {
+      await updateEstateLiability(estateId, liabilityId, {
+        description: String(formData.get("description") ?? ""),
+        creditorName: String(formData.get("creditorName") ?? ""),
+        amount: parseOptionalNumber(formData, "amount") ?? 0,
+        securedByAssetDescription:
+          String(formData.get("securedByAssetDescription") ?? "").trim() || undefined,
+        dueDate: String(formData.get("dueDate") ?? "").trim() || undefined,
+        notes: String(formData.get("notes") ?? "").trim() || undefined,
+      });
+    } catch (error) {
+      console.error("Edit liability failed.", error);
+    }
+
+    revalidatePath(`/estates/${estateId}`);
+    revalidatePath(`/estates/${estateId}/liabilities`);
+    revalidatePath(`/estates/${estateId}/liquidation`);
+  }
+
+  async function deleteLiabilityAction(formData: FormData) {
+    "use server";
+
+    const liabilityId = formData.get("liabilityId") as string;
+
+    try {
+      await deleteEstateLiability(estateId, liabilityId);
+    } catch (error) {
+      console.error("Delete liability failed.", error);
+    }
+
+    revalidatePath(`/estates/${estateId}`);
+    revalidatePath(`/estates/${estateId}/liabilities`);
+    revalidatePath(`/estates/${estateId}/liquidation`);
   }
 
   return (
@@ -73,6 +112,8 @@ export default async function EstateLiabilitiesPage({
       <EstateLiabilityRegister
         estateId={estateId}
         action={addLiabilityAction}
+        editAction={editLiabilityAction}
+        deleteAction={deleteLiabilityAction}
         liabilities={estate.liabilities}
       />
     </div>

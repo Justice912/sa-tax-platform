@@ -154,6 +154,12 @@ export interface EstateRepository {
     status: EstateExecutorAccessStatus,
   ): Promise<EstateExecutorAccessRecord | null>;
   touchExecutorAccess(accessToken: string, lastAccessedAt?: string): Promise<void>;
+  deleteAsset(estateId: string, assetId: string): Promise<boolean>;
+  deleteLiability(estateId: string, liabilityId: string): Promise<boolean>;
+  deleteBeneficiary(estateId: string, beneficiaryId: string): Promise<boolean>;
+  updateAsset(estateId: string, assetId: string, input: CreateEstateAssetRecordInput): Promise<EstateAssetRecord>;
+  updateLiability(estateId: string, liabilityId: string, input: CreateEstateLiabilityRecordInput): Promise<EstateLiabilityRecord>;
+  updateBeneficiary(estateId: string, beneficiaryId: string, input: CreateEstateBeneficiaryRecordInput): Promise<EstateBeneficiaryRecord>;
 }
 
 function cloneStore(store: DemoEstateStore): DemoEstateStore {
@@ -1308,6 +1314,196 @@ class DemoEstateRepository implements EstateRepository {
         lastAccessedAt: new Date(accessMoment),
       },
     });
+  }
+
+  async deleteAsset(estateId: string, assetId: string) {
+    if (isDemoMode) {
+      const store = readDemoStore();
+      const before = store.assets.length;
+      store.assets = store.assets.filter((entry) => !(entry.id === assetId && entry.estateId === estateId));
+      if (store.assets.length === before) {
+        return false;
+      }
+      touchDemoEstate(store, estateId);
+      writeDemoStore(store);
+      return true;
+    }
+
+    try {
+      await prisma.estateAsset.delete({ where: { id: assetId } });
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  async deleteLiability(estateId: string, liabilityId: string) {
+    if (isDemoMode) {
+      const store = readDemoStore();
+      const before = store.liabilities.length;
+      store.liabilities = store.liabilities.filter(
+        (entry) => !(entry.id === liabilityId && entry.estateId === estateId),
+      );
+      if (store.liabilities.length === before) {
+        return false;
+      }
+      touchDemoEstate(store, estateId);
+      writeDemoStore(store);
+      return true;
+    }
+
+    try {
+      await prisma.estateLiability.delete({ where: { id: liabilityId } });
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  async deleteBeneficiary(estateId: string, beneficiaryId: string) {
+    if (isDemoMode) {
+      const store = readDemoStore();
+      const before = store.beneficiaries.length;
+      store.beneficiaries = store.beneficiaries.filter(
+        (entry) => !(entry.id === beneficiaryId && entry.estateId === estateId),
+      );
+      if (store.beneficiaries.length === before) {
+        return false;
+      }
+      touchDemoEstate(store, estateId);
+      writeDemoStore(store);
+      return true;
+    }
+
+    try {
+      await prisma.estateBeneficiary.delete({ where: { id: beneficiaryId } });
+      return true;
+    } catch {
+      return false;
+    }
+  }
+
+  async updateAsset(estateId: string, assetId: string, input: CreateEstateAssetRecordInput) {
+    if (isDemoMode) {
+      const store = readDemoStore();
+      const asset = store.assets.find((entry) => entry.id === assetId && entry.estateId === estateId);
+      if (!asset) {
+        throw new Error("Estate asset not found.");
+      }
+
+      asset.category = input.category;
+      asset.description = input.description;
+      asset.dateOfDeathValue = input.dateOfDeathValue;
+      asset.baseCost = input.baseCost;
+      asset.acquisitionDate = input.acquisitionDate;
+      asset.valuationDateValue = input.valuationDateValue;
+      asset.isPrimaryResidence = input.isPrimaryResidence;
+      asset.isPersonalUse = input.isPersonalUse;
+      asset.beneficiaryId = input.beneficiaryId;
+      asset.spouseRollover = input.spouseRollover;
+      asset.notes = input.notes;
+
+      touchDemoEstate(store, estateId);
+      writeDemoStore(store);
+      return asset;
+    }
+
+    const updated = await prisma.estateAsset.update({
+      where: { id: assetId },
+      data: {
+        category: input.category,
+        description: input.description,
+        dateOfDeathValue: input.dateOfDeathValue,
+        baseCost: input.baseCost ?? null,
+        acquisitionDate: input.acquisitionDate
+          ? new Date(`${input.acquisitionDate}T00:00:00.000Z`)
+          : null,
+        valuationDateValue: input.valuationDateValue ?? null,
+        isPrimaryResidence: input.isPrimaryResidence,
+        isPersonalUse: input.isPersonalUse,
+        beneficiaryId: input.beneficiaryId ?? null,
+        spouseRollover: input.spouseRollover,
+        notes: input.notes ?? null,
+      },
+    });
+
+    return mapAssetRow({ ...updated, category: updated.category });
+  }
+
+  async updateLiability(estateId: string, liabilityId: string, input: CreateEstateLiabilityRecordInput) {
+    if (isDemoMode) {
+      const store = readDemoStore();
+      const liability = store.liabilities.find(
+        (entry) => entry.id === liabilityId && entry.estateId === estateId,
+      );
+      if (!liability) {
+        throw new Error("Estate liability not found.");
+      }
+
+      liability.description = input.description;
+      liability.creditorName = input.creditorName;
+      liability.amount = input.amount;
+      liability.securedByAssetDescription = input.securedByAssetDescription;
+      liability.dueDate = input.dueDate;
+      liability.notes = input.notes;
+
+      touchDemoEstate(store, estateId);
+      writeDemoStore(store);
+      return liability;
+    }
+
+    const updated = await prisma.estateLiability.update({
+      where: { id: liabilityId },
+      data: {
+        description: input.description,
+        creditorName: input.creditorName,
+        amount: input.amount,
+        securedByAssetDescription: input.securedByAssetDescription ?? null,
+        dueDate: input.dueDate ? new Date(`${input.dueDate}T00:00:00.000Z`) : null,
+        notes: input.notes ?? null,
+      },
+    });
+
+    return mapLiabilityRow(updated);
+  }
+
+  async updateBeneficiary(estateId: string, beneficiaryId: string, input: CreateEstateBeneficiaryRecordInput) {
+    if (isDemoMode) {
+      const store = readDemoStore();
+      const beneficiary = store.beneficiaries.find(
+        (entry) => entry.id === beneficiaryId && entry.estateId === estateId,
+      );
+      if (!beneficiary) {
+        throw new Error("Estate beneficiary not found.");
+      }
+
+      beneficiary.fullName = input.fullName;
+      beneficiary.idNumberOrPassport = input.idNumberOrPassport;
+      beneficiary.relationship = input.relationship;
+      beneficiary.isMinor = input.isMinor;
+      beneficiary.sharePercentage = input.sharePercentage;
+      beneficiary.allocationType = input.allocationType;
+      beneficiary.notes = input.notes;
+
+      touchDemoEstate(store, estateId);
+      writeDemoStore(store);
+      return beneficiary;
+    }
+
+    const updated = await prisma.estateBeneficiary.update({
+      where: { id: beneficiaryId },
+      data: {
+        fullName: input.fullName,
+        idNumberOrPassport: input.idNumberOrPassport ?? null,
+        relationship: input.relationship,
+        isMinor: input.isMinor,
+        sharePercentage: input.sharePercentage,
+        allocationType: input.allocationType,
+        notes: input.notes ?? null,
+      },
+    });
+
+    return mapBeneficiaryRow({ ...updated, allocationType: updated.allocationType });
   }
 }
 

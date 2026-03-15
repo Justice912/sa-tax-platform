@@ -7,7 +7,11 @@ import type {
   EstatePostDeathSummaryReport,
   EstatePreDeathSummaryReport,
   EstateValuationReportDocument,
+  J190LdAccountFields,
+  J192AbridgedLdFields,
+  J243InventoryFields,
   MasterLdAccountFields,
+  Rev246EstateDutyReturnFields,
 } from "@/modules/estates/forms/types";
 
 function asRecord(value: unknown, label: string): Record<string, unknown> {
@@ -343,6 +347,212 @@ function mapMasterLdAccount(context: EstateFormMappingContext): MasterLdAccountF
   };
 }
 
+function mapJ190(context: EstateFormMappingContext): J190LdAccountFields {
+  const estate = context.estate;
+  const liabilities = estate.liabilities ?? [];
+  const beneficiaries = estate.beneficiaries ?? [];
+  const liquidationEntries = estate.liquidationEntries ?? [];
+  const distributions = estate.liquidationDistributions ?? [];
+
+  const estateDutyRun = context.runs["ESTATE_DUTY"];
+  const calculation = estateDutyRun
+    ? asRecord(estateDutyRun.calculation as unknown, "estate duty calculation")
+    : null;
+  const summary = calculation
+    ? asRecord(calculation.summary as unknown, "estate duty summary")
+    : null;
+
+  const totalAssets = summary ? readNumber(summary, "grossEstateValue") : 0;
+  const totalLiabs = summary ? readNumber(summary, "liabilities") : 0;
+
+  const assetItems = summary
+    ? [
+        {
+          itemNumber: 1,
+          description: "Gross estate (per estate duty calculation)",
+          estimatedValue: totalAssets,
+          realisedValue: totalAssets,
+        },
+      ]
+    : [];
+
+  const adminCategoryValues = [
+    "ADMINISTRATION_COST",
+    "EXECUTOR_REMUNERATION",
+    "MASTER_FEE",
+    "FUNERAL_EXPENSE",
+    "TRANSFER_COST",
+  ];
+  const adminCosts = liquidationEntries
+    .filter((entry) => adminCategoryValues.includes(entry.category))
+    .map((entry) => ({ description: entry.description, amount: entry.amount }));
+
+  const beneficiaryNameById = new Map(beneficiaries.map((ben) => [ben.id, ben]));
+  const distItems = distributions.map((dist) => {
+    const ben = beneficiaryNameById.get(dist.beneficiaryId);
+    return {
+      beneficiaryName: ben?.fullName ?? "Unknown",
+      relationship: ben?.relationship ?? "",
+      description: dist.description,
+      amount: dist.amount,
+    };
+  });
+
+  const totalAdminCosts = adminCosts.reduce((sum, cost) => sum + cost.amount, 0);
+  const totalDists = distItems.reduce((sum, dist) => sum + dist.amount, 0);
+
+  return {
+    estateReference: estate.estateReference,
+    deceasedName: estate.deceasedName,
+    deceasedIdNumber: "",
+    dateOfDeath: estate.dateOfDeath,
+    executorName: estate.executorName ?? "",
+    executorAddress: "",
+    assets: assetItems,
+    totalAssetEstimated: totalAssets,
+    totalAssetRealised: totalAssets,
+    liabilities: liabilities.map((liability) => ({
+      description: liability.description,
+      creditor: liability.creditorName,
+      amount: liability.amount,
+    })),
+    totalLiabilities: totalLiabs,
+    administrationCosts: adminCosts,
+    totalAdministrationCosts: totalAdminCosts,
+    distributions: distItems,
+    totalDistributions: totalDists,
+    grossEstateValue: totalAssets,
+    netEstateValue: totalAssets - totalLiabs,
+    balancingDifference: totalAssets - totalLiabs - totalAdminCosts - totalDists,
+  };
+}
+
+function mapJ192(context: EstateFormMappingContext): J192AbridgedLdFields {
+  const estate = context.estate;
+  const beneficiaries = estate.beneficiaries ?? [];
+  const distributions = estate.liquidationDistributions ?? [];
+
+  const estateDutyRun = context.runs["ESTATE_DUTY"];
+  const calculation = estateDutyRun
+    ? asRecord(estateDutyRun.calculation as unknown, "estate duty calculation")
+    : null;
+  const summary = calculation
+    ? asRecord(calculation.summary as unknown, "estate duty summary")
+    : null;
+
+  const totalAssets = summary ? readNumber(summary, "grossEstateValue") : 0;
+  const totalLiabs = summary ? readNumber(summary, "liabilities") : 0;
+
+  const beneficiaryNameById = new Map(beneficiaries.map((ben) => [ben.id, ben.fullName]));
+  const distItems = distributions.map((dist) => ({
+    beneficiaryName: beneficiaryNameById.get(dist.beneficiaryId) ?? "Unknown",
+    amount: dist.amount,
+  }));
+
+  return {
+    estateReference: estate.estateReference,
+    deceasedName: estate.deceasedName,
+    deceasedIdNumber: "",
+    dateOfDeath: estate.dateOfDeath,
+    executorName: estate.executorName ?? "",
+    totalAssets,
+    totalLiabilities: totalLiabs,
+    netEstateValue: totalAssets - totalLiabs,
+    isSmallEstate: totalAssets - totalLiabs < 250000,
+    distributions: distItems,
+  };
+}
+
+function mapJ243(context: EstateFormMappingContext): J243InventoryFields {
+  const estate = context.estate;
+  const liabilities = estate.liabilities ?? [];
+
+  const immovableProperty: J243InventoryFields["immovableProperty"] = [];
+  const movableProperty: J243InventoryFields["movableProperty"] = [];
+  const investments: J243InventoryFields["investments"] = [];
+  const insurancePolicies: J243InventoryFields["insurancePolicies"] = [];
+
+  const estateDutyRun = context.runs["ESTATE_DUTY"];
+  const calculation = estateDutyRun
+    ? asRecord(estateDutyRun.calculation as unknown, "estate duty calculation")
+    : null;
+  const summary = calculation
+    ? asRecord(calculation.summary as unknown, "estate duty summary")
+    : null;
+  const totalAssets = summary ? readNumber(summary, "grossEstateValue") : 0;
+  const totalLiabs = liabilities.reduce((sum, liability) => sum + liability.amount, 0);
+
+  if (totalAssets > 0) {
+    movableProperty.push({
+      description: "Estate assets (per estate duty calculation)",
+      estimatedValue: totalAssets,
+    });
+  }
+
+  return {
+    estateReference: estate.estateReference,
+    deceasedName: estate.deceasedName,
+    deceasedIdNumber: "",
+    dateOfDeath: estate.dateOfDeath,
+    maritalStatus: "",
+    immovableProperty,
+    movableProperty,
+    investments,
+    insurancePolicies,
+    liabilities: liabilities.map((liability) => ({
+      creditor: liability.creditorName,
+      description: liability.description,
+      amount: liability.amount,
+      secured: Boolean(liability.securedByAssetDescription),
+    })),
+    totalEstimatedAssets: totalAssets,
+    totalLiabilities: totalLiabs,
+  };
+}
+
+function mapRev246(context: EstateFormMappingContext): Rev246EstateDutyReturnFields {
+  const estate = context.estate;
+  const estateDutyRun = getRun(context, "ESTATE_DUTY");
+  const calculation = asRecord(estateDutyRun.calculation, "estate duty calculation");
+  const summary = asRecord(calculation.summary, "estate duty summary");
+
+  const grossEstate = readNumber(summary, "grossEstateValue");
+  const liabilities = readNumber(summary, "liabilities");
+  const section4Deductions = readNumber(summary, "section4Deductions");
+  const spouseDeduction = readNumber(summary, "spouseDeduction");
+  const totalDeductions = readNumber(summary, "totalDeductions");
+  const netEstate = readNumber(summary, "netEstateBeforeAbatement");
+  const abatement = readNumber(summary, "abatementApplied");
+  const dutiableEstate = readNumber(summary, "dutiableEstate");
+  const estateDuty = readNumber(summary, "estateDutyPayable");
+
+  return {
+    estateReference: estate.estateReference,
+    deceasedName: estate.deceasedName,
+    deceasedIdNumber: "",
+    dateOfDeath: estate.dateOfDeath,
+    taxYear: context.taxYear,
+    propertyInSA: grossEstate,
+    propertyOutsideSA: 0,
+    deemedPropertyInsurance: 0,
+    deemedPropertyPensions: 0,
+    deemedPropertyDonations: 0,
+    deemedPropertyTrusts: 0,
+    totalDeemedProperty: 0,
+    grossEstate,
+    deductionDebts: liabilities,
+    deductionFuneralCosts: 0,
+    deductionAdminCosts: section4Deductions,
+    deductionCharityBequests: 0,
+    deductionSpouseBequest: spouseDeduction,
+    totalDeductions,
+    netEstate,
+    abatement,
+    dutiableEstate,
+    estateDuty,
+  };
+}
+
 export function mapEstateFormFields(
   code: EstateYearPackFormCode,
   context: EstateFormMappingContext,
@@ -360,5 +570,13 @@ export function mapEstateFormFields(
       return mapPostDeath(context);
     case "MASTER_LD_ACCOUNT":
       return mapMasterLdAccount(context);
+    case "SARS_J190":
+      return mapJ190(context);
+    case "SARS_J192":
+      return mapJ192(context);
+    case "SARS_J243":
+      return mapJ243(context);
+    case "SARS_REV246":
+      return mapRev246(context);
   }
 }

@@ -9,6 +9,34 @@ import {
   estateLiquidationEntryInputSchema,
 } from "@/modules/estates/validation";
 
+// ---------------------------------------------------------------------------
+// Helper: simulate the cross-beneficiary total check that service.ts enforces
+// ---------------------------------------------------------------------------
+function validateCrossBeneficiaryTotal(
+  existingPercentages: number[],
+  incoming: number,
+  excludeIndex?: number,
+): { ok: true } | { ok: false; message: string } {
+  const filtered =
+    excludeIndex !== undefined
+      ? existingPercentages.filter((_, i) => i !== excludeIndex)
+      : existingPercentages;
+
+  const currentTotal = filtered.reduce((sum, p) => sum + p, 0);
+  const newTotal = currentTotal + incoming;
+
+  if (newTotal > 100) {
+    return {
+      ok: false,
+      message:
+        `Adding ${incoming}% would bring total allocation to ${newTotal.toFixed(2)}%, which exceeds 100%. ` +
+        `Current total: ${currentTotal.toFixed(2)}%. Please adjust the share percentage.`,
+    };
+  }
+
+  return { ok: true };
+}
+
 describe("estate validation", () => {
   it("exposes the supported estate workflow stages", () => {
     expect(ESTATE_STAGE_VALUES).toEqual([
@@ -160,5 +188,77 @@ describe("estate validation", () => {
     expect(beneficiary.success).toBe(false);
     expect(liquidationEntry.success).toBe(false);
     expect(executorAccess.success).toBe(false);
+  });
+
+  describe("cross-beneficiary share percentage validation", () => {
+    it("allows the first beneficiary when their share is within 0–100", () => {
+      const result = validateCrossBeneficiaryTotal([], 60);
+      expect(result.ok).toBe(true);
+    });
+
+    it("allows adding a second beneficiary when the combined total is exactly 100", () => {
+      const result = validateCrossBeneficiaryTotal([60], 40);
+      expect(result.ok).toBe(true);
+    });
+
+    it("allows adding a beneficiary when the combined total is below 100", () => {
+      const result = validateCrossBeneficiaryTotal([30, 30], 25);
+      expect(result.ok).toBe(true);
+    });
+
+    it("rejects a new beneficiary whose share would push the total above 100", () => {
+      const result = validateCrossBeneficiaryTotal([60, 30], 20);
+      expect(result.ok).toBe(false);
+      if (!result.ok) {
+        expect(result.message).toContain("110.00%");
+        expect(result.message).toContain("Current total: 90.00%");
+      }
+    });
+
+    it("rejects when existing beneficiaries already total 100 and a new one is added", () => {
+      const result = validateCrossBeneficiaryTotal([50, 50], 1);
+      expect(result.ok).toBe(false);
+      if (!result.ok) {
+        expect(result.message).toContain("101.00%");
+        expect(result.message).toContain("Current total: 100.00%");
+      }
+    });
+
+    it("rejects a single beneficiary with a share of exactly 101 (individual schema also blocks this)", () => {
+      const individualParse = estateBeneficiaryInputSchema.safeParse({
+        fullName: "Overallocated Heir",
+        relationship: "Child",
+        isMinor: false,
+        sharePercentage: 101,
+        allocationType: "RESIDUARY",
+      });
+      expect(individualParse.success).toBe(false);
+
+      // Cross-beneficiary check would also reject it even if it somehow passed the schema
+      const result = validateCrossBeneficiaryTotal([], 101);
+      expect(result.ok).toBe(false);
+    });
+
+    it("allows updating a beneficiary when excluding their own share from the existing total", () => {
+      // Scenario: beneficiaries at indices 0=50%, 1=30%, 2=20%.
+      // Updating index 1 from 30% to 35%: exclude index 1, existing remainder = 70%, new total = 105% — rejected.
+      const tooLarge = validateCrossBeneficiaryTotal([50, 30, 20], 35, 1);
+      expect(tooLarge.ok).toBe(false);
+
+      // Updating index 1 from 30% to 20%: exclude index 1, remainder = 70%, new total = 90% — allowed.
+      const withinLimit = validateCrossBeneficiaryTotal([50, 30, 20], 20, 1);
+      expect(withinLimit.ok).toBe(true);
+    });
+
+    it("allows a zero-percent beneficiary (placeholder entry)", () => {
+      const result = validateCrossBeneficiaryTotal([100], 0);
+      expect(result.ok).toBe(true);
+    });
+
+    it("handles floating-point share percentages without false rejections", () => {
+      // 33.33 + 33.33 + 33.34 = 100.00 — should be allowed
+      const result = validateCrossBeneficiaryTotal([33.33, 33.33], 33.34);
+      expect(result.ok).toBe(true);
+    });
   });
 });

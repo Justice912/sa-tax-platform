@@ -126,13 +126,137 @@ export interface MasterLdAccountFields {
 
 export type EstateValuationReportDocument = EstateValuationEngineReport;
 
+// J190 - First and Final Liquidation and Distribution Account
+export interface J190LdAccountFields {
+  estateReference: string;
+  deceasedName: string;
+  deceasedIdNumber: string;
+  dateOfDeath: string;
+  executorName: string;
+  executorAddress: string;
+  assets: Array<{
+    itemNumber: number;
+    description: string;
+    estimatedValue: number;
+    realisedValue: number;
+  }>;
+  totalAssetEstimated: number;
+  totalAssetRealised: number;
+  liabilities: Array<{
+    description: string;
+    creditor: string;
+    amount: number;
+  }>;
+  totalLiabilities: number;
+  administrationCosts: Array<{
+    description: string;
+    amount: number;
+  }>;
+  totalAdministrationCosts: number;
+  distributions: Array<{
+    beneficiaryName: string;
+    relationship: string;
+    description: string;
+    amount: number;
+  }>;
+  totalDistributions: number;
+  grossEstateValue: number;
+  netEstateValue: number;
+  balancingDifference: number;
+}
+
+// J192 - Abridged Liquidation and Distribution Account (small estates < R250,000)
+export interface J192AbridgedLdFields {
+  estateReference: string;
+  deceasedName: string;
+  deceasedIdNumber: string;
+  dateOfDeath: string;
+  executorName: string;
+  totalAssets: number;
+  totalLiabilities: number;
+  netEstateValue: number;
+  isSmallEstate: boolean;
+  distributions: Array<{
+    beneficiaryName: string;
+    amount: number;
+  }>;
+}
+
+// J243 - Inventory of Deceased Estate Assets and Liabilities
+export interface J243InventoryFields {
+  estateReference: string;
+  deceasedName: string;
+  deceasedIdNumber: string;
+  dateOfDeath: string;
+  maritalStatus: string;
+  immovableProperty: Array<{
+    description: string;
+    erfNumber: string;
+    estimatedValue: number;
+  }>;
+  movableProperty: Array<{
+    description: string;
+    estimatedValue: number;
+  }>;
+  investments: Array<{
+    institution: string;
+    accountType: string;
+    balance: number;
+  }>;
+  insurancePolicies: Array<{
+    company: string;
+    policyNumber: string;
+    amount: number;
+    beneficiaryDesignated: boolean;
+  }>;
+  liabilities: Array<{
+    creditor: string;
+    description: string;
+    amount: number;
+    secured: boolean;
+  }>;
+  totalEstimatedAssets: number;
+  totalLiabilities: number;
+}
+
+// REV246 - Estate Duty Return
+export interface Rev246EstateDutyReturnFields {
+  estateReference: string;
+  deceasedName: string;
+  deceasedIdNumber: string;
+  dateOfDeath: string;
+  taxYear: number;
+  propertyInSA: number;
+  propertyOutsideSA: number;
+  deemedPropertyInsurance: number;
+  deemedPropertyPensions: number;
+  deemedPropertyDonations: number;
+  deemedPropertyTrusts: number;
+  totalDeemedProperty: number;
+  grossEstate: number;
+  deductionDebts: number;
+  deductionFuneralCosts: number;
+  deductionAdminCosts: number;
+  deductionCharityBequests: number;
+  deductionSpouseBequest: number;
+  totalDeductions: number;
+  netEstate: number;
+  abatement: number;
+  dutiableEstate: number;
+  estateDuty: number;
+}
+
 export type EstateFormMappedOutput =
   | EstateValuationReportDocument
   | EstatePreDeathSummaryReport
   | EstatePostDeathSummaryReport
   | EstateDutyRev267Report
   | EstateCgtDeathFields
-  | MasterLdAccountFields;
+  | MasterLdAccountFields
+  | J190LdAccountFields
+  | J192AbridgedLdFields
+  | J243InventoryFields
+  | Rev246EstateDutyReturnFields;
 
 export interface EstateFilingPackArtifact {
   code: EstateYearPackFormCode;

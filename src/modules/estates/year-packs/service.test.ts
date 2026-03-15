@@ -85,6 +85,34 @@ function buildApprovedPack(
           jurisdiction: "MASTER",
         },
       },
+      {
+        code: "SARS_J190",
+        templateVersion: "2026.1",
+        outputFormat: "pdf",
+        storageKey: "estates/forms/sars-j190/2026.1.json",
+        metadata: { title: "J190 - First and Final L&D Account", jurisdiction: "MASTER" },
+      },
+      {
+        code: "SARS_J192",
+        templateVersion: "2026.1",
+        outputFormat: "pdf",
+        storageKey: "estates/forms/sars-j192/2026.1.json",
+        metadata: { title: "J192 - Abridged L&D Account", jurisdiction: "MASTER" },
+      },
+      {
+        code: "SARS_J243",
+        templateVersion: "2026.1",
+        outputFormat: "pdf",
+        storageKey: "estates/forms/sars-j243/2026.1.json",
+        metadata: { title: "J243 - Inventory of Deceased Estate", jurisdiction: "MASTER" },
+      },
+      {
+        code: "SARS_REV246",
+        templateVersion: "2026.1",
+        outputFormat: "pdf",
+        storageKey: "estates/forms/sars-rev246/2026.1.json",
+        metadata: { title: "REV246 - Estate Duty Return", jurisdiction: "SARS" },
+      },
     ],
   };
 }

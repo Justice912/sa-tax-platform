@@ -413,6 +413,18 @@ export async function addEstateBeneficiary(estateId: string, input: EstateBenefi
   }
 
   const parsed = estateBeneficiaryInputSchema.parse(input);
+
+  const existingBeneficiaries = estate.beneficiaries || [];
+  const currentTotal = existingBeneficiaries.reduce((sum, b) => sum + b.sharePercentage, 0);
+  const newTotal = currentTotal + parsed.sharePercentage;
+
+  if (newTotal > 100) {
+    throw new Error(
+      `Adding ${parsed.sharePercentage}% would bring total allocation to ${newTotal.toFixed(2)}%, which exceeds 100%. ` +
+      `Current total: ${currentTotal.toFixed(2)}%. Please adjust the share percentage.`,
+    );
+  }
+
   const created = await estateRepository.addBeneficiary(estateId, parsed);
 
   await writeAuditLog({
@@ -428,6 +440,141 @@ export async function addEstateBeneficiary(estateId: string, input: EstateBenefi
   });
 
   return created;
+}
+
+export async function updateEstateAsset(estateId: string, assetId: string, input: EstateAssetInput) {
+  const estate = await estateRepository.getEstateById(estateId);
+  if (!estate) {
+    throw new Error("Estate not found.");
+  }
+
+  const parsed = estateAssetInputSchema.parse(input);
+  const updated = await estateRepository.updateAsset(estateId, assetId, parsed);
+
+  await writeAuditLog({
+    action: "ESTATE_ASSET_UPDATED",
+    entityType: "EstateMatter",
+    entityId: estateId,
+    summary: `Updated estate asset ${updated.description} on ${estate.estateReference}.`,
+    afterData: {
+      assetId: updated.id,
+      category: updated.category,
+      dateOfDeathValue: updated.dateOfDeathValue,
+    },
+  });
+
+  return updated;
+}
+
+export async function deleteEstateAsset(estateId: string, assetId: string) {
+  const estate = await estateRepository.getEstateById(estateId);
+  if (!estate) {
+    throw new Error("Estate not found.");
+  }
+
+  const deleted = await estateRepository.deleteAsset(estateId, assetId);
+
+  if (deleted) {
+    await writeAuditLog({
+      action: "ESTATE_ASSET_DELETED",
+      entityType: "EstateMatter",
+      entityId: estateId,
+      summary: `Deleted estate asset ${assetId} from ${estate.estateReference}.`,
+      afterData: { assetId },
+    });
+  }
+
+  return deleted;
+}
+
+export async function updateEstateLiability(estateId: string, liabilityId: string, input: EstateLiabilityInput) {
+  const estate = await estateRepository.getEstateById(estateId);
+  if (!estate) {
+    throw new Error("Estate not found.");
+  }
+
+  const parsed = estateLiabilityInputSchema.parse(input);
+  const updated = await estateRepository.updateLiability(estateId, liabilityId, parsed);
+
+  await writeAuditLog({
+    action: "ESTATE_LIABILITY_UPDATED",
+    entityType: "EstateMatter",
+    entityId: estateId,
+    summary: `Updated estate liability ${updated.description} on ${estate.estateReference}.`,
+    afterData: {
+      liabilityId: updated.id,
+      creditorName: updated.creditorName,
+      amount: updated.amount,
+    },
+  });
+
+  return updated;
+}
+
+export async function deleteEstateLiability(estateId: string, liabilityId: string) {
+  const estate = await estateRepository.getEstateById(estateId);
+  if (!estate) {
+    throw new Error("Estate not found.");
+  }
+
+  const deleted = await estateRepository.deleteLiability(estateId, liabilityId);
+
+  if (deleted) {
+    await writeAuditLog({
+      action: "ESTATE_LIABILITY_DELETED",
+      entityType: "EstateMatter",
+      entityId: estateId,
+      summary: `Deleted estate liability ${liabilityId} from ${estate.estateReference}.`,
+      afterData: { liabilityId },
+    });
+  }
+
+  return deleted;
+}
+
+export async function updateEstateBeneficiary(estateId: string, beneficiaryId: string, input: EstateBeneficiaryInput) {
+  const estate = await estateRepository.getEstateById(estateId);
+  if (!estate) {
+    throw new Error("Estate not found.");
+  }
+
+  const parsed = estateBeneficiaryInputSchema.parse(input);
+  const updated = await estateRepository.updateBeneficiary(estateId, beneficiaryId, parsed);
+
+  await writeAuditLog({
+    action: "ESTATE_BENEFICIARY_UPDATED",
+    entityType: "EstateMatter",
+    entityId: estateId,
+    summary: `Updated beneficiary ${updated.fullName} on ${estate.estateReference}.`,
+    afterData: {
+      beneficiaryId: updated.id,
+      allocationType: updated.allocationType,
+      sharePercentage: updated.sharePercentage,
+    },
+  });
+
+  return updated;
+}
+
+export async function deleteEstateBeneficiary(estateId: string, beneficiaryId: string) {
+  const estate = await estateRepository.getEstateById(estateId);
+  if (!estate) {
+    throw new Error("Estate not found.");
+  }
+
+  const deleted = await estateRepository.deleteBeneficiary(estateId, beneficiaryId);
+
+  if (deleted) {
+    await writeAuditLog({
+      action: "ESTATE_BENEFICIARY_DELETED",
+      entityType: "EstateMatter",
+      entityId: estateId,
+      summary: `Deleted beneficiary ${beneficiaryId} from ${estate.estateReference}.`,
+      afterData: { beneficiaryId },
+    });
+  }
+
+  return deleted;
 }
 
 export async function addEstateLiquidationEntry(

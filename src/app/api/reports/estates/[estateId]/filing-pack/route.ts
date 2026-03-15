@@ -6,6 +6,8 @@ import { authOptions } from "@/lib/auth-options";
 import { writeAuditLog } from "@/modules/audit/audit-writer";
 import { resolveStoragePath, storageProvider } from "@/modules/documents/storage-provider";
 import { buildEstateValuationDocx } from "@/modules/estates/forms/valuation-docx";
+import { buildLdAccountDocx } from "@/modules/estates/forms/ld-account-docx";
+import { buildRev267Docx } from "@/modules/estates/forms/rev267-docx";
 import { estateFilingPackService } from "@/modules/estates/forms/service";
 import type {
   EstateCgtDeathFields,
@@ -16,7 +18,11 @@ import type {
   EstateStoredFilingPackBundle,
   EstateStoredFilingPackManifest,
   EstateValuationReportDocument,
+  J190LdAccountFields,
+  J192AbridgedLdFields,
+  J243InventoryFields,
   MasterLdAccountFields,
+  Rev246EstateDutyReturnFields,
 } from "@/modules/estates/forms/types";
 import {
   ESTATE_YEAR_PACK_FORM_CODE_VALUES,
@@ -55,9 +61,13 @@ const SUPPORTED_ARTIFACT_RENDER_FORMATS: Record<
   BUSINESS_VALUATION_REPORT: ["pdf", "docx", "json"],
   SARS_ITR12: ["pdf", "json"],
   SARS_CGT_DEATH: ["pdf", "json"],
-  SARS_REV267: ["pdf", "json"],
+  SARS_REV267: ["pdf", "docx", "json"],
   SARS_IT_AE: ["pdf", "json"],
-  MASTER_LD_ACCOUNT: ["pdf", "json"],
+  MASTER_LD_ACCOUNT: ["pdf", "docx", "json"],
+  SARS_J190: ["pdf", "docx", "json"],
+  SARS_J192: ["pdf", "json"],
+  SARS_J243: ["pdf", "json"],
+  SARS_REV246: ["pdf", "json"],
 };
 
 export function sanitizeSegment(value: string) {
@@ -865,6 +875,288 @@ function renderArtifactToHtml(code: EstateYearPackFormCode, payload: unknown) {
           )}`,
         );
       }
+    case "SARS_J190":
+      {
+        const report = payload as J190LdAccountFields;
+        return buildReportShell(
+          "J190 - First and Final Liquidation and Distribution Account",
+          `${report.deceasedName} | Estate reference ${report.estateReference}`,
+          `${buildSummaryTable([
+            { label: "Estate reference", value: report.estateReference },
+            { label: "Deceased", value: report.deceasedName },
+            { label: "ID number", value: report.deceasedIdNumber || "Not supplied" },
+            { label: "Date of death", value: report.dateOfDeath },
+            { label: "Executor", value: report.executorName || "Not supplied" },
+            { label: "Executor address", value: report.executorAddress || "Not supplied" },
+            { label: "Gross estate value", value: formatCurrency(report.grossEstateValue) },
+            { label: "Total liabilities", value: formatCurrency(report.totalLiabilities) },
+            { label: "Net estate value", value: formatCurrency(report.netEstateValue) },
+          ])}
+          ${buildSection(
+            "Asset schedule",
+            buildSimpleTable(
+              ["Item no.", "Description", "Estimated value", "Realised value"],
+              report.assets.map((asset) => [
+                asset.itemNumber.toString(),
+                asset.description,
+                formatCurrency(asset.estimatedValue),
+                formatCurrency(asset.realisedValue),
+              ]),
+            ),
+          )}
+          ${buildSection(
+            "Liability schedule",
+            buildSimpleTable(
+              ["Description", "Creditor", "Amount"],
+              report.liabilities.map((liability) => [
+                liability.description,
+                liability.creditor,
+                formatCurrency(liability.amount),
+              ]),
+            ),
+          )}
+          ${buildSection(
+            "Administration costs",
+            buildSimpleTable(
+              ["Description", "Amount"],
+              [
+                ...report.administrationCosts.map((cost) => [
+                  cost.description,
+                  formatCurrency(cost.amount),
+                ]),
+                ["Total administration costs", formatCurrency(report.totalAdministrationCosts)],
+              ],
+            ),
+          )}
+          ${buildSection(
+            "Distribution schedule",
+            buildSimpleTable(
+              ["Beneficiary", "Relationship", "Description", "Amount"],
+              [
+                ...report.distributions.map((dist) => [
+                  dist.beneficiaryName,
+                  dist.relationship || "Not supplied",
+                  dist.description,
+                  formatCurrency(dist.amount),
+                ]),
+                ["Total distributions", "", "", formatCurrency(report.totalDistributions)],
+              ],
+            ),
+          )}
+          ${buildSection(
+            "Summary",
+            buildSummaryTable([
+              { label: "Gross estate value", value: formatCurrency(report.grossEstateValue) },
+              { label: "Less: liabilities", value: formatCurrency(report.totalLiabilities) },
+              {
+                label: "Less: administration costs",
+                value: formatCurrency(report.totalAdministrationCosts),
+              },
+              { label: "Less: distributions", value: formatCurrency(report.totalDistributions) },
+              {
+                label: "Balancing difference",
+                value: formatCurrency(report.balancingDifference),
+              },
+            ]),
+          )}`,
+        );
+      }
+    case "SARS_J192":
+      {
+        const report = payload as J192AbridgedLdFields;
+        return buildReportShell(
+          "J192 - Abridged Liquidation and Distribution Account",
+          `${report.deceasedName} | Estate reference ${report.estateReference}`,
+          `${buildSummaryTable([
+            { label: "Estate reference", value: report.estateReference },
+            { label: "Deceased", value: report.deceasedName },
+            { label: "ID number", value: report.deceasedIdNumber || "Not supplied" },
+            { label: "Date of death", value: report.dateOfDeath },
+            { label: "Executor", value: report.executorName || "Not supplied" },
+            { label: "Total assets", value: formatCurrency(report.totalAssets) },
+            { label: "Total liabilities", value: formatCurrency(report.totalLiabilities) },
+            { label: "Net estate value", value: formatCurrency(report.netEstateValue) },
+            {
+              label: "Small estate (< R250,000)",
+              value: formatBoolean(report.isSmallEstate),
+            },
+          ])}
+          ${buildSection(
+            "Distribution schedule",
+            buildSimpleTable(
+              ["Beneficiary", "Amount"],
+              report.distributions.map((dist) => [
+                dist.beneficiaryName,
+                formatCurrency(dist.amount),
+              ]),
+            ),
+          )}`,
+        );
+      }
+    case "SARS_J243":
+      {
+        const report = payload as J243InventoryFields;
+        return buildReportShell(
+          "J243 - Inventory of Deceased Estate",
+          `${report.deceasedName} | Estate reference ${report.estateReference}`,
+          `${buildSummaryTable([
+            { label: "Estate reference", value: report.estateReference },
+            { label: "Deceased", value: report.deceasedName },
+            { label: "ID number", value: report.deceasedIdNumber || "Not supplied" },
+            { label: "Date of death", value: report.dateOfDeath },
+            { label: "Marital status", value: report.maritalStatus || "Not supplied" },
+            {
+              label: "Total estimated assets",
+              value: formatCurrency(report.totalEstimatedAssets),
+            },
+            { label: "Total liabilities", value: formatCurrency(report.totalLiabilities) },
+          ])}
+          ${report.immovableProperty.length > 0
+            ? buildSection(
+                "Immovable property",
+                buildSimpleTable(
+                  ["Description", "ERF number", "Estimated value"],
+                  report.immovableProperty.map((prop) => [
+                    prop.description,
+                    prop.erfNumber || "Not supplied",
+                    formatCurrency(prop.estimatedValue),
+                  ]),
+                ),
+              )
+            : ""}
+          ${report.movableProperty.length > 0
+            ? buildSection(
+                "Movable property",
+                buildSimpleTable(
+                  ["Description", "Estimated value"],
+                  report.movableProperty.map((prop) => [
+                    prop.description,
+                    formatCurrency(prop.estimatedValue),
+                  ]),
+                ),
+              )
+            : ""}
+          ${report.investments.length > 0
+            ? buildSection(
+                "Investments and bank accounts",
+                buildSimpleTable(
+                  ["Institution", "Account type", "Balance"],
+                  report.investments.map((inv) => [
+                    inv.institution,
+                    inv.accountType,
+                    formatCurrency(inv.balance),
+                  ]),
+                ),
+              )
+            : ""}
+          ${report.insurancePolicies.length > 0
+            ? buildSection(
+                "Insurance policies",
+                buildSimpleTable(
+                  ["Company", "Policy number", "Amount", "Beneficiary designated"],
+                  report.insurancePolicies.map((policy) => [
+                    policy.company,
+                    policy.policyNumber,
+                    formatCurrency(policy.amount),
+                    formatBoolean(policy.beneficiaryDesignated),
+                  ]),
+                ),
+              )
+            : ""}
+          ${report.liabilities.length > 0
+            ? buildSection(
+                "Liabilities",
+                buildSimpleTable(
+                  ["Creditor", "Description", "Amount", "Secured"],
+                  report.liabilities.map((liability) => [
+                    liability.creditor,
+                    liability.description,
+                    formatCurrency(liability.amount),
+                    formatBoolean(liability.secured),
+                  ]),
+                ),
+              )
+            : ""}`,
+        );
+      }
+    case "SARS_REV246":
+      {
+        const report = payload as Rev246EstateDutyReturnFields;
+        return buildReportShell(
+          "REV246 - Estate Duty Return",
+          `${report.deceasedName} | Tax year ${report.taxYear}`,
+          `${buildSummaryTable([
+            { label: "Estate reference", value: report.estateReference },
+            { label: "Deceased", value: report.deceasedName },
+            { label: "ID number", value: report.deceasedIdNumber || "Not supplied" },
+            { label: "Date of death", value: report.dateOfDeath },
+            { label: "Tax year", value: report.taxYear.toString() },
+          ])}
+          ${buildSection(
+            "Property schedule",
+            buildSummaryTable([
+              { label: "Property in South Africa", value: formatCurrency(report.propertyInSA) },
+              {
+                label: "Property outside South Africa",
+                value: formatCurrency(report.propertyOutsideSA),
+              },
+            ]),
+          )}
+          ${buildSection(
+            "Deemed property (s3(2) and s3(3))",
+            buildSummaryTable([
+              {
+                label: "Insurance proceeds (s3(3)(a))",
+                value: formatCurrency(report.deemedPropertyInsurance),
+              },
+              {
+                label: "Pension and annuity payments (s3(3)(b))",
+                value: formatCurrency(report.deemedPropertyPensions),
+              },
+              {
+                label: "Donations made within three years (s3(3)(d))",
+                value: formatCurrency(report.deemedPropertyDonations),
+              },
+              {
+                label: "Trust property (s3(3)(e))",
+                value: formatCurrency(report.deemedPropertyTrusts),
+              },
+              {
+                label: "Total deemed property",
+                value: formatCurrency(report.totalDeemedProperty),
+              },
+            ]),
+          )}
+          ${buildSection(
+            "Estate duty calculation",
+            buildSummaryTable([
+              { label: "Gross estate", value: formatCurrency(report.grossEstate) },
+              { label: "Less: debts and liabilities", value: formatCurrency(report.deductionDebts) },
+              {
+                label: "Less: funeral and deathbed costs",
+                value: formatCurrency(report.deductionFuneralCosts),
+              },
+              {
+                label: "Less: administration costs (s4(a))",
+                value: formatCurrency(report.deductionAdminCosts),
+              },
+              {
+                label: "Less: bequests to public benefit organisations",
+                value: formatCurrency(report.deductionCharityBequests),
+              },
+              {
+                label: "Less: surviving spouse bequest (s4(q))",
+                value: formatCurrency(report.deductionSpouseBequest),
+              },
+              { label: "Total deductions", value: formatCurrency(report.totalDeductions) },
+              { label: "Net estate", value: formatCurrency(report.netEstate) },
+              { label: "Less: abatement (s4A)", value: formatCurrency(report.abatement) },
+              { label: "Dutiable estate", value: formatCurrency(report.dutiableEstate) },
+              { label: "Estate duty payable", value: formatCurrency(report.estateDuty) },
+            ]),
+          )}`,
+        );
+      }
   }
 }
 
@@ -908,11 +1200,16 @@ async function prepareArtifactFile(
     content = Buffer.from(pdfBuffer);
     contentType = "application/pdf";
   } else if (isDocxFormat(outputFormat)) {
-    if (artifact.code !== "BUSINESS_VALUATION_REPORT") {
+    if (artifact.code === "BUSINESS_VALUATION_REPORT") {
+      content = await buildEstateValuationDocx(artifact.payload as EstateValuationReportDocument);
+    } else if (artifact.code === "MASTER_LD_ACCOUNT") {
+      content = await buildLdAccountDocx(artifact.payload as MasterLdAccountFields);
+    } else if (artifact.code === "SARS_REV267") {
+      content = await buildRev267Docx(artifact.payload as EstateDutyRev267Report);
+    } else {
       throw new Error(`Form ${artifact.code} does not have a DOCX renderer.`);
     }
 
-    content = await buildEstateValuationDocx(artifact.payload as EstateValuationReportDocument);
     contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
   } else {
     content = Buffer.from(JSON.stringify(artifact.payload, null, 2), "utf8");

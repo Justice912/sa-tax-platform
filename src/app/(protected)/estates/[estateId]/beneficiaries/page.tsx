@@ -2,7 +2,7 @@ import Link from "next/link";
 import { notFound, redirect } from "next/navigation";
 import { revalidatePath } from "next/cache";
 import { EstateBeneficiaryRegister } from "@/components/estates/estate-beneficiary-register";
-import { addEstateBeneficiary, getEstateById } from "@/modules/estates/service";
+import { addEstateBeneficiary, updateEstateBeneficiary, deleteEstateBeneficiary, getEstateById } from "@/modules/estates/service";
 
 function parseOptionalNumber(formData: FormData, fieldName: string) {
   const raw = String(formData.get(fieldName) ?? "").trim();
@@ -42,7 +42,46 @@ export default async function EstateBeneficiariesPage({
     revalidatePath(`/estates/${estateId}`);
     revalidatePath(`/estates/${estateId}/beneficiaries`);
     revalidatePath(`/estates/${estateId}/liquidation`);
-    redirect(`/estates/${estateId}/beneficiaries`);
+  }
+
+  async function editBeneficiaryAction(formData: FormData) {
+    "use server";
+
+    const beneficiaryId = formData.get("beneficiaryId") as string;
+
+    try {
+      await updateEstateBeneficiary(estateId, beneficiaryId, {
+        fullName: String(formData.get("fullName") ?? ""),
+        idNumberOrPassport: String(formData.get("idNumberOrPassport") ?? "").trim() || undefined,
+        relationship: String(formData.get("relationship") ?? ""),
+        isMinor: formData.get("isMinor") === "on",
+        sharePercentage: parseOptionalNumber(formData, "sharePercentage") ?? 0,
+        allocationType: String(formData.get("allocationType") ?? "RESIDUARY") as never,
+        notes: String(formData.get("notes") ?? "").trim() || undefined,
+      });
+    } catch (error) {
+      console.error("Edit beneficiary failed.", error);
+    }
+
+    revalidatePath(`/estates/${estateId}`);
+    revalidatePath(`/estates/${estateId}/beneficiaries`);
+    revalidatePath(`/estates/${estateId}/liquidation`);
+  }
+
+  async function deleteBeneficiaryAction(formData: FormData) {
+    "use server";
+
+    const beneficiaryId = formData.get("beneficiaryId") as string;
+
+    try {
+      await deleteEstateBeneficiary(estateId, beneficiaryId);
+    } catch (error) {
+      console.error("Delete beneficiary failed.", error);
+    }
+
+    revalidatePath(`/estates/${estateId}`);
+    revalidatePath(`/estates/${estateId}/beneficiaries`);
+    revalidatePath(`/estates/${estateId}/liquidation`);
   }
 
   return (
@@ -73,6 +112,8 @@ export default async function EstateBeneficiariesPage({
       <EstateBeneficiaryRegister
         estateId={estateId}
         action={addBeneficiaryAction}
+        editAction={editBeneficiaryAction}
+        deleteAction={deleteBeneficiaryAction}
         beneficiaries={estate.beneficiaries}
       />
     </div>

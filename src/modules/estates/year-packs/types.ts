@@ -7,6 +7,10 @@ export const ESTATE_YEAR_PACK_FORM_CODE_VALUES = [
   "SARS_REV267",
   "SARS_IT_AE",
   "MASTER_LD_ACCOUNT",
+  "SARS_J190",
+  "SARS_J192",
+  "SARS_J243",
+  "SARS_REV246",
 ] as const;
 
 export const ESTATE_FORM_TEMPLATE_JURISDICTION_VALUES = ["SARS", "MASTER"] as const;
