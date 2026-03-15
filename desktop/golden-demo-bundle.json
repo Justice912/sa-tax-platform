@@ -1,0 +1,1060 @@
+{
+  "clients": [
+    {
+      "id": "golden_client_individual_001",
+      "code": "CLI-GOLD-IND-001",
+      "firmId": "firm_ubuntu",
+      "displayName": "Anele Maseko",
+      "clientType": "INDIVIDUAL",
+      "status": "ACTIVE",
+      "taxReferenceNumber": "9154/778/30/6",
+      "email": "anele.maseko@example.co.za",
+      "phone": "+27 82 444 1001",
+      "address": "12 Jan Smuts Avenue, Rosebank, Johannesburg",
+      "assignedStaffName": "Sipho Ndlovu",
+      "notes": "Golden demo verification client for individual tax and linked workflow checks."
+    },
+    {
+      "id": "golden_client_estate_001",
+      "code": "CLI-GOLD-EST-001",
+      "firmId": "firm_ubuntu",
+      "displayName": "Estate Late Lerato Khumalo",
+      "clientType": "ESTATE",
+      "status": "ACTIVE",
+      "taxReferenceNumber": "9018/112/44/0",
+      "email": "estate-demo@ubuntutax.co.za",
+      "phone": "+27 11 555 0188",
+      "address": "45 Corlett Drive, Melrose, Johannesburg",
+      "assignedStaffName": "Sipho Ndlovu",
+      "notes": "Golden demo verification estate with a full Phase 2 calculation chain."
+    }
+  ],
+  "cases": [
+    {
+      "id": "golden_case_individual_001",
+      "caseType": "RETURN_PREPARATION",
+      "taxType": "ITR12",
+      "clientId": "golden_client_individual_001",
+      "clientName": "Anele Maseko",
+      "title": "Golden demo ITR12 near-eFiling verification",
+      "taxPeriodLabel": "2026 Assessment",
+      "assignedUserName": "Sipho Ndlovu",
+      "dueDate": "2026-03-25",
+      "priority": "HIGH",
+      "status": "UNDER_REVIEW",
+      "reviewStatus": "REVIEW_REQUIRED",
+      "notes": "Used to verify near-eFiling input, assessment output, and report generation.",
+      "linkedDocumentIds": [
+        "golden_doc_individual_001"
+      ],
+      "linkedKnowledgeArticleIds": [
+        "kb_002"
+      ]
+    },
+    {
+      "id": "golden_case_estate_001",
+      "caseType": "COMPLIANCE_FOLLOW_UP",
+      "taxType": "ESTATE",
+      "clientId": "golden_client_estate_001",
+      "clientName": "Estate Late Lerato Khumalo",
+      "title": "Golden demo deceased-estate Phase 2 verification",
+      "taxPeriodLabel": "Estate Admin 2026",
+      "assignedUserName": "Sipho Ndlovu",
+      "dueDate": "2026-03-29",
+      "priority": "CRITICAL",
+      "status": "IN_PROGRESS",
+      "reviewStatus": "APPROVED",
+      "notes": "Used to verify the estate dashboard, calculators, and filing pack output chain.",
+      "linkedDocumentIds": [
+        "golden_doc_estate_001",
+        "golden_doc_estate_002"
+      ],
+      "linkedKnowledgeArticleIds": [
+        "kb_003"
+      ]
+    }
+  ],
+  "documents": [
+    {
+      "id": "golden_doc_individual_001",
+      "fileName": "Anele-Maseko-IRP5-and-medical-pack.pdf",
+      "category": "Tax Certificates",
+      "clientId": "golden_client_individual_001",
+      "clientName": "Anele Maseko",
+      "uploadedBy": "Sipho Ndlovu",
+      "uploadedAt": "2026-03-06",
+      "sizeLabel": "412 KB",
+      "tags": [
+        "itr12",
+        "irp5",
+        "medical"
+      ]
+    },
+    {
+      "id": "golden_doc_estate_001",
+      "fileName": "Lerato-Khumalo-business-valuation-support-pack.pdf",
+      "category": "Estate documents",
+      "clientId": "golden_client_estate_001",
+      "clientName": "Estate Late Lerato Khumalo",
+      "uploadedBy": "Nandi Maseko",
+      "uploadedAt": "2026-03-07",
+      "sizeLabel": "586 KB",
+      "tags": [
+        "estate",
+        "valuation",
+        "sars"
+      ]
+    },
+    {
+      "id": "golden_doc_estate_002",
+      "fileName": "Lerato-Khumalo-master-and-bank-pack.pdf",
+      "category": "Estate documents",
+      "clientId": "golden_client_estate_001",
+      "clientName": "Estate Late Lerato Khumalo",
+      "uploadedBy": "Sipho Ndlovu",
+      "uploadedAt": "2026-03-08",
+      "sizeLabel": "298 KB",
+      "tags": [
+        "estate",
+        "master",
+        "bank"
+      ]
+    }
+  ],
+  "deadlines": [
+    {
+      "id": "golden_deadline_individual_001",
+      "caseId": "golden_case_individual_001",
+      "title": "Release near-eFiling estimate and PDF",
+      "dueAt": "2026-03-25",
+      "status": "UNDER_REVIEW"
+    },
+    {
+      "id": "golden_deadline_estate_001",
+      "caseId": "golden_case_estate_001",
+      "title": "Validate valuation, tax engines, and filing pack",
+      "dueAt": "2026-03-29",
+      "status": "IN_PROGRESS"
+    }
+  ],
+  "individualTaxAssessments": [
+    {
+      "id": "golden_individual_tax_assessment_001",
+      "clientId": "golden_client_individual_001",
+      "referenceNumber": "7051442381",
+      "taxpayerName": "Anele Maseko",
+      "assessmentDate": "2026-03-10",
+      "assessmentYear": 2026,
+      "assessmentMode": "NEAR_EFILING_ESTIMATE",
+      "status": "APPROVED",
+      "input": {
+        "salaryIncome": 780000,
+        "localInterest": 14500,
+        "travelAllowance": 96000,
+        "retirementContributions": 65000,
+        "travelDeduction": 0,
+        "rebates": 0,
+        "medicalTaxCredit": 0,
+        "paye": 188400,
+        "priorAssessmentDebitOrCredit": 0,
+        "effectiveTaxRate": 0
+      },
+      "nearEfilingInput": {
+        "profile": {
+          "assessmentYear": 2026,
+          "dateOfBirth": "1989-08-12",
+          "maritalStatus": "SINGLE",
+          "medicalAidMembers": 2,
+          "medicalAidMonths": 12
+        },
+        "employment": {
+          "salaryIncome": 720000,
+          "bonusIncome": 60000,
+          "commissionIncome": 0,
+          "fringeBenefits": 0,
+          "otherTaxableEmploymentIncome": 0,
+          "payeWithheld": 188400
+        },
+        "travel": {
+          "hasTravelAllowance": true,
+          "travelAllowance": 96000,
+          "businessKilometres": 18500,
+          "totalKilometres": 32200,
+          "vehicleCost": 545000,
+          "vehiclePurchaseDate": "2024-06-15"
+        },
+        "medical": {
+          "medicalSchemeContributions": 46200,
+          "qualifyingOutOfPocketExpenses": 8500,
+          "disabilityFlag": false
+        },
+        "interest": {
+          "localInterest": 14500
+        },
+        "rental": {
+          "grossRentalIncome": 0,
+          "deductibleRentalExpenses": 0
+        },
+        "soleProprietor": {
+          "grossBusinessIncome": 0,
+          "deductibleBusinessExpenses": 0
+        },
+        "deductions": {
+          "retirementContributions": 65000,
+          "donationsUnderSection18A": 2500,
+          "priorAssessmentDebitOrCredit": 0
+        }
+      }
+    }
+  ],
+  "estateStore": {
+    "estates": [
+      {
+        "id": "golden_estate_001",
+        "clientId": "golden_client_estate_001",
+        "estateReference": "EST-GOLD-2026-0001",
+        "deceasedName": "Estate Late Lerato Khumalo",
+        "idNumberOrPassport": "6503050489087",
+        "dateOfBirth": "1965-03-05",
+        "dateOfDeath": "2026-01-19",
+        "maritalRegime": "OUT_OF_COMMUNITY_ACCRUAL",
+        "taxNumber": "9004455667",
+        "estateTaxNumber": "9016677889",
+        "hasWill": true,
+        "executorName": "Kagiso Dlamini",
+        "executorCapacity": "EXECUTOR_TESTAMENTARY",
+        "executorEmail": "estate-demo@ubuntutax.co.za",
+        "executorPhone": "+27 82 555 0188",
+        "assignedPractitionerName": "Sipho Ndlovu",
+        "currentStage": "TAX_READINESS",
+        "status": "ACTIVE",
+        "notes": "Golden demo estate used to validate the full Phase 2 calculator and filing-pack chain.",
+        "createdAt": "2026-03-06T09:00:00+02:00",
+        "updatedAt": "2026-03-13T09:30:00+02:00"
+      }
+    ],
+    "assets": [
+      {
+        "id": "golden_estate_asset_business_001",
+        "estateId": "golden_estate_001",
+        "category": "BUSINESS_INTEREST",
+        "description": "Khumalo Industrial Supplies (Pty) Ltd - 80% shareholding",
+        "dateOfDeathValue": 5400000,
+        "baseCost": 1100000,
+        "acquisitionDate": "2010-04-01",
+        "valuationDateValue": 5400000,
+        "isPrimaryResidence": false,
+        "isPersonalUse": false,
+        "spouseRollover": false,
+        "notes": "Golden demo NAV business valuation linked."
+      },
+      {
+        "id": "golden_estate_asset_property_001",
+        "estateId": "golden_estate_001",
+        "category": "IMMOVABLE_PROPERTY",
+        "description": "Primary residence in Bryanston",
+        "dateOfDeathValue": 2350000,
+        "baseCost": 760000,
+        "acquisitionDate": "2004-05-01",
+        "valuationDateValue": 420000,
+        "isPrimaryResidence": true,
+        "isPersonalUse": false,
+        "spouseRollover": false,
+        "notes": "Qualified for primary residence relief in CGT run."
+      },
+      {
+        "id": "golden_estate_asset_investment_001",
+        "estateId": "golden_estate_001",
+        "category": "INVESTMENT",
+        "description": "Listed share portfolio",
+        "dateOfDeathValue": 1250000,
+        "baseCost": 680000,
+        "acquisitionDate": "2016-08-12",
+        "isPrimaryResidence": false,
+        "isPersonalUse": false,
+        "spouseRollover": false
+      },
+      {
+        "id": "golden_estate_asset_cash_001",
+        "estateId": "golden_estate_001",
+        "category": "BANK_ACCOUNT",
+        "description": "Main current account",
+        "dateOfDeathValue": 450000,
+        "baseCost": 450000,
+        "acquisitionDate": "2025-01-01",
+        "isPrimaryResidence": false,
+        "isPersonalUse": false,
+        "spouseRollover": false
+      }
+    ],
+    "liabilities": [
+      {
+        "id": "golden_estate_liability_001",
+        "estateId": "golden_estate_001",
+        "description": "Mortgage bond outstanding",
+        "creditorName": "Ubuntu Bank",
+        "amount": 485000,
+        "securedByAssetDescription": "Primary residence in Bryanston",
+        "dueDate": "2026-04-15",
+        "notes": "Settlement figure confirmed."
+      },
+      {
+        "id": "golden_estate_liability_002",
+        "estateId": "golden_estate_001",
+        "description": "Outstanding legal and conveyancing fees",
+        "creditorName": "Mahlangu Attorneys",
+        "amount": 120000,
+        "dueDate": "2026-05-31"
+      }
+    ],
+    "beneficiaries": [
+      {
+        "id": "golden_estate_beneficiary_001",
+        "estateId": "golden_estate_001",
+        "fullName": "Bongiwe Khumalo",
+        "idNumberOrPassport": "7001010234088",
+        "relationship": "Spouse",
+        "isMinor": false,
+        "sharePercentage": 70,
+        "allocationType": "RESIDUARY",
+        "notes": "Surviving spouse."
+      },
+      {
+        "id": "golden_estate_beneficiary_002",
+        "estateId": "golden_estate_001",
+        "fullName": "Sibusiso Khumalo",
+        "idNumberOrPassport": "9803035234081",
+        "relationship": "Child",
+        "isMinor": false,
+        "sharePercentage": 30,
+        "allocationType": "RESIDUARY"
+      }
+    ],
+    "checklistItems": [
+      {
+        "id": "golden_estate_checklist_001",
+        "estateId": "golden_estate_001",
+        "stage": "REPORTED",
+        "title": "Death certificate received",
+        "mandatory": true,
+        "status": "COMPLETE",
+        "notes": "Certified copy on file."
+      },
+      {
+        "id": "golden_estate_checklist_002",
+        "estateId": "golden_estate_001",
+        "stage": "EXECUTOR_APPOINTED",
+        "title": "Letters of executorship issued",
+        "mandatory": true,
+        "status": "COMPLETE",
+        "notes": "Master reference captured."
+      },
+      {
+        "id": "golden_estate_checklist_003",
+        "estateId": "golden_estate_001",
+        "stage": "TAX_READINESS",
+        "title": "Tax engines approved for filing pack",
+        "mandatory": true,
+        "status": "COMPLETE",
+        "notes": "Golden demo approved chain ready."
+      }
+    ],
+    "stageEvents": [
+      {
+        "id": "golden_estate_stage_001",
+        "estateId": "golden_estate_001",
+        "toStage": "REPORTED",
+        "actorName": "Nandi Maseko",
+        "summary": "Opened the estate matter and captured deceased details.",
+        "createdAt": "2026-03-06T09:05:00+02:00"
+      },
+      {
+        "id": "golden_estate_stage_002",
+        "estateId": "golden_estate_001",
+        "fromStage": "REPORTED",
+        "toStage": "ASSETS_IDENTIFIED",
+        "actorName": "Sipho Ndlovu",
+        "summary": "Captured assets, liabilities, and beneficiary profile.",
+        "createdAt": "2026-03-07T10:15:00+02:00"
+      },
+      {
+        "id": "golden_estate_stage_003",
+        "estateId": "golden_estate_001",
+        "fromStage": "ASSETS_IDENTIFIED",
+        "toStage": "TAX_READINESS",
+        "actorName": "Kagiso Dlamini",
+        "summary": "Approved valuation, tax, and filing-pack readiness.",
+        "createdAt": "2026-03-13T09:15:00+02:00"
+      }
+    ],
+    "liquidationEntries": [
+      {
+        "id": "golden_estate_liq_entry_001",
+        "estateId": "golden_estate_001",
+        "category": "ADMINISTRATION_COST",
+        "description": "Advertising and Master filing costs",
+        "amount": 28500,
+        "effectiveDate": "2026-03-10"
+      },
+      {
+        "id": "golden_estate_liq_entry_002",
+        "estateId": "golden_estate_001",
+        "category": "EXECUTOR_REMUNERATION",
+        "description": "Estimated executor remuneration accrual",
+        "amount": 95000,
+        "effectiveDate": "2026-03-12"
+      }
+    ],
+    "liquidationDistributions": [
+      {
+        "id": "golden_estate_distribution_001",
+        "estateId": "golden_estate_001",
+        "beneficiaryId": "golden_estate_beneficiary_001",
+        "description": "Residual estate entitlement",
+        "amount": 4200000
+      },
+      {
+        "id": "golden_estate_distribution_002",
+        "estateId": "golden_estate_001",
+        "beneficiaryId": "golden_estate_beneficiary_002",
+        "description": "Residual estate entitlement",
+        "amount": 1800000
+      }
+    ],
+    "executorAccess": [
+      {
+        "id": "golden_estate_executor_access_001",
+        "estateId": "golden_estate_001",
+        "accessToken": "golden_exec_access_lerato_khumalo",
+        "recipientName": "Kagiso Dlamini",
+        "recipientEmail": "estate-demo@ubuntutax.co.za",
+        "expiresAt": "2026-12-31",
+        "status": "ACTIVE",
+        "lastAccessedAt": "2026-03-13T09:30:00+02:00",
+        "createdAt": "2026-03-08T16:00:00+02:00"
+      }
+    ]
+  },
+  "estateEngineRuns": [
+    {
+      "id": "golden_estate_engine_run_business_valuation_001",
+      "estateId": "golden_estate_001",
+      "yearPackId": "estate_year_pack_2026_v1",
+      "engineType": "BUSINESS_VALUATION",
+      "status": "APPROVED",
+      "reviewRequired": false,
+      "inputSnapshot": {
+        "estateId": "golden_estate_001",
+        "assetId": "golden_estate_asset_business_001",
+        "taxYear": 2026,
+        "valuationDate": "2026-01-19",
+        "subjectType": "COMPANY_SHAREHOLDING",
+        "subjectDescription": "Khumalo Industrial Supplies (Pty) Ltd - 80% shareholding",
+        "method": "NET_ASSET_VALUE",
+        "assetValue": 6750000,
+        "shareholdingPercentage": 80,
+        "registrationNumber": "2010/114477/07",
+        "industry": "Industrial supplies",
+        "latestAnnualFinancialStatementsOnFile": true,
+        "priorYearAnnualFinancialStatementsOnFile": true,
+        "twoYearsPriorAnnualFinancialStatementsOnFile": true,
+        "executorAuthorityOnFile": true,
+        "acquisitionDocumentsOnFile": true,
+        "rev246Required": false,
+        "rev246Included": false,
+        "patentValuationRequired": false,
+        "patentValuationIncluded": false,
+        "reportNotes": "Golden demo NAV valuation ready for SARS support-pack verification.",
+        "assumptions": [
+          "Net asset value approach selected for the golden demo baseline."
+        ]
+      },
+      "outputSnapshot": {
+        "calculation": {
+          "valuationDate": "2026-01-19",
+          "subjectType": "COMPANY_SHAREHOLDING",
+          "subjectDescription": "Khumalo Industrial Supplies (Pty) Ltd - 80% shareholding",
+          "method": "NET_ASSET_VALUE",
+          "assumptions": [
+            "Net asset value approach selected for the golden demo baseline."
+          ],
+          "concludedValue": 5400000,
+          "warnings": [],
+          "summary": {
+            "enterpriseValue": 6750000,
+            "netAdjustments": 0,
+            "shareholdingPercentage": 80
+          },
+          "downstreamCgtInput": {
+            "assetDescription": "Khumalo Industrial Supplies (Pty) Ltd - 80% shareholding",
+            "marketValueAtDeath": 5400000,
+            "valuationDate": "2026-01-19",
+            "valuationMethod": "NET_ASSET_VALUE"
+          }
+        },
+        "report": {
+          "header": {
+            "title": "Business valuation report",
+            "taxYear": 2026,
+            "valuationDate": "2026-01-19",
+            "estateReference": "EST-GOLD-2026-0001",
+            "deceasedName": "Estate Late Lerato Khumalo",
+            "executorName": "Kagiso Dlamini"
+          },
+          "purpose": "Prepared to support SARS estate duty, CGT on death, and estate administration at date of death.",
+          "subject": {
+            "subjectDescription": "Khumalo Industrial Supplies (Pty) Ltd - 80% shareholding",
+            "subjectType": "COMPANY_SHAREHOLDING",
+            "registrationNumber": "2010/114477/07",
+            "industry": "Industrial supplies",
+            "ownershipPercentage": 80
+          },
+          "methodology": {
+            "method": "NET_ASSET_VALUE",
+            "assetValue": 6750000,
+            "nonOperatingAssets": 0,
+            "liabilities": 0
+          },
+          "summary": {
+            "subjectDescription": "Khumalo Industrial Supplies (Pty) Ltd - 80% shareholding",
+            "method": "NET_ASSET_VALUE",
+            "concludedValue": 5400000,
+            "enterpriseValue": 6750000
+          },
+          "supportChecklist": {
+            "latestAnnualFinancialStatementsOnFile": true,
+            "priorYearAnnualFinancialStatementsOnFile": true,
+            "twoYearsPriorAnnualFinancialStatementsOnFile": true,
+            "executorAuthorityOnFile": true,
+            "acquisitionDocumentsOnFile": true,
+            "rev246Required": false,
+            "rev246Included": false,
+            "patentValuationRequired": false,
+            "patentValuationIncluded": false
+          },
+          "assumptions": [
+            "Net asset value approach selected for the golden demo baseline."
+          ],
+          "notes": "Golden demo NAV valuation ready for SARS support-pack verification.",
+          "sourceReferences": [
+            "SARS valuation support checklist for unlisted shares or member interests",
+            "AME Pro Deceased Estate Module System Specification"
+          ],
+          "mandate": {
+            "engagementMandate": "The executor engaged the valuer to determine the fair market value of the deceased's 80% shareholding in Khumalo Industrial Supplies (Pty) Ltd as at 19 January 2026 for estate administration, SARS compliance, and filing-pack support.",
+            "definitionOfValue": "The standard of value applied is fair market value, being the price a willing buyer would pay a willing seller, both reasonably informed and neither under compulsion.",
+            "sourcesOfInformation": [
+              "Annual financial statements for FY2023 to FY2025",
+              "Management accounts to valuation date",
+              "Fixed asset register and inventory support schedules",
+              "Industry reports and estate working papers"
+            ],
+            "limitations": [
+              "The valuation relies on records supplied by the executor and management.",
+              "No allowance has been made for changes in legislation or trading conditions after the valuation date.",
+              "This report is prepared for estate and SARS purposes and is not a fairness opinion."
+            ]
+          },
+          "executiveSummary": {
+            "concludedValue": 5400000,
+            "weightedAverageValue": 5380000,
+            "summaryText": "Three valuation methodologies were considered and reconciled to a rounded concluded value for the deceased's 80% equity interest."
+          },
+          "businessOverview": {
+            "legalName": "Khumalo Industrial Supplies (Pty) Ltd",
+            "registrationNumber": "2010/114477/07",
+            "industry": "Industrial supplies",
+            "taxReferenceNumber": "9012345678",
+            "vatNumber": "4012345678",
+            "employeeCount": 28,
+            "narrative": "Khumalo Industrial Supplies (Pty) Ltd is an established owner-managed supplier of industrial consumables and plant support products with recurring customer relationships and identifiable earnings capacity."
+          },
+          "historicalFinancialAnalysis": {
+            "years": [
+              {
+                "label": "FY2023",
+                "revenue": 14800000,
+                "grossProfit": 4100000,
+                "ebitda": 2100000,
+                "ebit": 1850000,
+                "npat": 1280000,
+                "totalAssets": 7800000,
+                "totalLiabilities": 2350000
+              },
+              {
+                "label": "FY2024",
+                "revenue": 16250000,
+                "grossProfit": 4620000,
+                "ebitda": 2480000,
+                "ebit": 2230000,
+                "npat": 1560000,
+                "totalAssets": 8450000,
+                "totalLiabilities": 2260000
+              },
+              {
+                "label": "FY2025",
+                "revenue": 17900000,
+                "grossProfit": 5240000,
+                "ebitda": 2960000,
+                "ebit": 2670000,
+                "npat": 1885000,
+                "totalAssets": 9180000,
+                "totalLiabilities": 2110000
+              }
+            ]
+          },
+          "methodResults": {
+            "discountedCashFlow": {
+              "fcffSchedule": [
+                {
+                  "label": "FY2026",
+                  "revenue": 19100000,
+                  "ebit": 3050000,
+                  "taxOnEbit": 823500,
+                  "nopat": 2226500,
+                  "depreciation": 280000,
+                  "capitalExpenditure": 360000,
+                  "workingCapitalChange": 140000,
+                  "fcff": 2006500,
+                  "discountFactor": 0.8321,
+                  "presentValue": 1669390
+                },
+                {
+                  "label": "FY2027",
+                  "revenue": 20400000,
+                  "ebit": 3280000,
+                  "taxOnEbit": 885600,
+                  "nopat": 2394400,
+                  "depreciation": 295000,
+                  "capitalExpenditure": 380000,
+                  "workingCapitalChange": 150000,
+                  "fcff": 2159400,
+                  "discountFactor": 0.6924,
+                  "presentValue": 1495121
+                }
+              ],
+              "costOfEquity": 0.2148,
+              "afterTaxCostOfDebt": 0.0858,
+              "wacc": 0.2019,
+              "gordonGrowthTerminalValue": 12980000,
+              "exitMultipleTerminalValue": 13850000,
+              "adoptedTerminalValue": 13415000,
+              "enterpriseValue": 7100000,
+              "preDiscountEquityValue": 6400000,
+              "marketabilityDiscountRate": 0.08,
+              "marketabilityDiscountAmount": 512000,
+              "minorityDiscountRate": 0,
+              "minorityDiscountAmount": 0,
+              "indicatedValue": 5750000
+            },
+            "maintainableEarnings": {
+              "years": [
+                {
+                  "label": "FY2023",
+                  "reportedNpat": 1280000,
+                  "nonRecurringAdjustments": 120000,
+                  "ownerRemunerationAdjustment": -80000,
+                  "normalisedNpat": 1320000,
+                  "weighting": 1
+                },
+                {
+                  "label": "FY2024",
+                  "reportedNpat": 1560000,
+                  "nonRecurringAdjustments": 0,
+                  "ownerRemunerationAdjustment": -90000,
+                  "normalisedNpat": 1470000,
+                  "weighting": 2
+                },
+                {
+                  "label": "FY2025",
+                  "reportedNpat": 1885000,
+                  "nonRecurringAdjustments": 60000,
+                  "ownerRemunerationAdjustment": -90000,
+                  "normalisedNpat": 1855000,
+                  "weighting": 3
+                }
+              ],
+              "maintainableEarnings": 1670833,
+              "selectedMultiple": 4,
+              "preDiscountValue": 6683332,
+              "marketabilityDiscountRate": 0.03,
+              "marketabilityDiscountAmount": 200500,
+              "minorityDiscountRate": 0,
+              "minorityDiscountAmount": 0,
+              "indicatedValue": 5400000
+            },
+            "netAssetValue": {
+              "assets": [
+                {
+                  "category": "Property and equipment",
+                  "bookValue": 2650000,
+                  "adjustment": 850000,
+                  "fairMarketValue": 3500000
+                },
+                {
+                  "category": "Inventory",
+                  "bookValue": 1950000,
+                  "adjustment": -150000,
+                  "fairMarketValue": 1800000
+                },
+                {
+                  "category": "Trade receivables",
+                  "bookValue": 2050000,
+                  "adjustment": -250000,
+                  "fairMarketValue": 1800000
+                },
+                {
+                  "category": "Cash and equivalents",
+                  "bookValue": 750000,
+                  "adjustment": 0,
+                  "fairMarketValue": 750000
+                }
+              ],
+              "liabilities": [
+                {
+                  "category": "Interest-bearing debt",
+                  "bookValue": 520000,
+                  "adjustment": 0,
+                  "fairMarketValue": 520000
+                },
+                {
+                  "category": "Trade payables",
+                  "bookValue": 940000,
+                  "adjustment": 0,
+                  "fairMarketValue": 940000
+                },
+                {
+                  "category": "Deferred tax",
+                  "bookValue": 0,
+                  "adjustment": 390000,
+                  "fairMarketValue": 390000
+                }
+              ],
+              "adjustedAssets": 7850000,
+              "adjustedLiabilities": 1850000,
+              "indicatedValue": 4950000
+            }
+          },
+          "reconciliation": {
+            "methods": [
+              {
+                "method": "DISCOUNTED_CASH_FLOW",
+                "indicatedValue": 5750000,
+                "weight": 0.4,
+                "weightedValue": 2300000
+              },
+              {
+                "method": "MAINTAINABLE_EARNINGS",
+                "indicatedValue": 5400000,
+                "weight": 0.35,
+                "weightedValue": 1890000
+              },
+              {
+                "method": "NET_ASSET_VALUE",
+                "indicatedValue": 4950000,
+                "weight": 0.25,
+                "weightedValue": 1237500
+              }
+            ],
+            "weightedAverageValue": 5427500,
+            "concludedValue": 5400000,
+            "rationale": "The concluded value reflects a weighted reconciliation of DCF, maintainable earnings, and adjusted NAV, with the heaviest reliance placed on trading performance and cash-generation capacity."
+          },
+          "sensitivityAnalysis": {
+            "scenarios": [
+              {
+                "scenario": "Bear Case",
+                "wacc": 0.22,
+                "growthRate": 0.03,
+                "earningsMultiple": 3.6,
+                "indicatedValue": 4800000
+              },
+              {
+                "scenario": "Base Case",
+                "wacc": 0.2019,
+                "growthRate": 0.05,
+                "earningsMultiple": 4,
+                "indicatedValue": 5400000
+              },
+              {
+                "scenario": "Bull Case",
+                "wacc": 0.185,
+                "growthRate": 0.06,
+                "earningsMultiple": 4.4,
+                "indicatedValue": 6050000
+              }
+            ]
+          },
+          "taxImplications": {
+            "cgtSummary": {
+              "deemedProceeds": 5400000,
+              "taxableCapitalGain": 1828000
+            },
+            "estateDutySummary": {
+              "grossEstate": 9450000,
+              "dutiableEstate": 4295000,
+              "estateDutyPayable": 859000
+            },
+            "section9haNotes": [
+              "Where the shares accrue to a surviving spouse, Section 9HA rollover treatment should be considered alongside the section 4(q) estate-duty deduction."
+            ]
+          },
+          "economicAndIndustryContext": {
+            "macroeconomicConditions": "The valuation considers South African macroeconomic conditions at the valuation date, including the interest-rate environment and the trading outlook for industrial suppliers.",
+            "industryOverview": "The industrial supplies sector was assessed with reference to demand stability, operating-margin resilience, and the marketability limitations attaching to private-company interests.",
+            "valueDrivers": [
+              "Recurring customer relationships",
+              "Working capital support and inventory depth",
+              "Established supplier positioning"
+            ],
+            "keyRisks": [
+              "Owner-dependency risk",
+              "Margin pressure from imported products",
+              "Private-company marketability limitations"
+            ]
+          },
+          "methodologySelection": {
+            "rationale": "DCF, maintainable earnings, and adjusted NAV were selected to triangulate value using both income-based and asset-based indicators relevant to this private trading business."
+          },
+          "rolloverConsiderations": {
+            "section9haNarrative": "Where estate assets accrue to a surviving spouse, the Section 9HA rollover may defer the immediate capital-gains-tax consequence, although the valuation remains necessary for disclosure and estate-duty purposes."
+          },
+          "qualificationsAndDisclaimers": [
+            "This valuation report has been prepared solely for estate-administration and SARS-compliance purposes.",
+            "The valuer relied on information supplied by the executor and available records without conducting a full audit.",
+            "Actual realizable values may differ from this estimate depending on transaction timing and market conditions."
+          ],
+          "appendices": [
+            {
+              "title": "Appendix A: WACC Calculation Detail",
+              "detail": "Supporting assumptions and calculations used in the DCF discount-rate build-up."
+            },
+            {
+              "title": "Appendix B: Supporting Financial Information",
+              "detail": "Historical financial statements, management accounts, and support schedules referenced in the valuation."
+            }
+          ],
+          "glossary": [
+            {
+              "term": "DCF",
+              "definition": "Discounted cash flow valuation based on projected future cash flows."
+            },
+            {
+              "term": "NAV",
+              "definition": "Net asset value based on adjusted fair values of assets and liabilities."
+            },
+            {
+              "term": "WACC",
+              "definition": "Weighted Average Cost of Capital used to discount future cash flows."
+            }
+          ],
+          "signOff": {
+            "preparedByLabel": "Prepared by:",
+            "acceptedByLabel": "Accepted by (Executor):"
+          }
+        }
+      },
+      "warnings": [],
+      "dependencyStates": [],
+      "approvedAt": "2026-03-13T08:15:00+02:00",
+      "approvedByName": "Ayesha Parker",
+      "createdAt": "2026-03-13T08:00:00+02:00",
+      "updatedAt": "2026-03-13T08:15:00+02:00"
+    },
+    {
+      "id": "golden_estate_engine_run_pre_death_001",
+      "estateId": "golden_estate_001",
+      "yearPackId": "estate_year_pack_2026_v1",
+      "engineType": "PRE_DEATH_ITR12",
+      "status": "APPROVED",
+      "reviewRequired": false,
+      "inputSnapshot": {
+        "estateId": "golden_estate_001",
+        "taxYear": 2026
+      },
+      "outputSnapshot": {
+        "transformedInput": {
+          "taxpayerName": "Estate Late Lerato Khumalo",
+          "estateId": "golden_estate_001",
+          "yearPackId": "estate_year_pack_2026_v1",
+          "dateOfDeath": "2026-01-19",
+          "deathTruncatedPeriodEnd": "2026-01-19"
+        },
+        "calculation": {
+          "assessmentYear": 2026,
+          "summary": {
+            "totalIncome": 1265400,
+            "totalDeductions": 244000,
+            "taxableIncome": 1021400,
+            "normalTax": 324950,
+            "totalCredits": 227540,
+            "netAmountPayable": 0,
+            "netAmountRefundable": 32590
+          },
+          "reviewRequired": true,
+          "disclaimer": "Professional review required before submission."
+        }
+      },
+      "warnings": [],
+      "dependencyStates": [],
+      "approvedAt": "2026-03-13T08:40:00+02:00",
+      "approvedByName": "Ayesha Parker",
+      "createdAt": "2026-03-13T08:25:00+02:00",
+      "updatedAt": "2026-03-13T08:40:00+02:00"
+    },
+    {
+      "id": "golden_estate_engine_run_cgt_001",
+      "estateId": "golden_estate_001",
+      "yearPackId": "estate_year_pack_2026_v1",
+      "engineType": "CGT_ON_DEATH",
+      "status": "APPROVED",
+      "reviewRequired": false,
+      "inputSnapshot": {
+        "taxYear": 2026,
+        "estateId": "golden_estate_001"
+      },
+      "outputSnapshot": {
+        "calculation": {
+          "assetResults": [
+            {
+              "description": "Khumalo Industrial Supplies (Pty) Ltd - 80% shareholding",
+              "deemedProceeds": 5400000,
+              "baseCostUsed": 1100000,
+              "capitalGainBeforeRelief": 4300000,
+              "reliefApplied": {
+                "primaryResidence": 0,
+                "spouseRollover": 0
+              },
+              "netCapitalGain": 4300000
+            },
+            {
+              "description": "Primary residence in Bryanston",
+              "deemedProceeds": 2350000,
+              "baseCostUsed": 760000,
+              "capitalGainBeforeRelief": 1590000,
+              "reliefApplied": {
+                "primaryResidence": 1590000,
+                "spouseRollover": 0
+              },
+              "netCapitalGain": 0
+            },
+            {
+              "description": "Listed share portfolio",
+              "deemedProceeds": 1250000,
+              "baseCostUsed": 680000,
+              "capitalGainBeforeRelief": 570000,
+              "reliefApplied": {
+                "primaryResidence": 0,
+                "spouseRollover": 0
+              },
+              "netCapitalGain": 570000
+            },
+            {
+              "description": "Main current account",
+              "deemedProceeds": 450000,
+              "baseCostUsed": 450000,
+              "capitalGainBeforeRelief": 0,
+              "reliefApplied": {
+                "primaryResidence": 0,
+                "spouseRollover": 0
+              },
+              "netCapitalGain": 0
+            }
+          ],
+          "warnings": [],
+          "summary": {
+            "aggregateNetCapitalGain": 4870000,
+            "annualExclusionApplied": 300000,
+            "inclusionRate": 0.4,
+            "taxableCapitalGain": 1828000
+          }
+        }
+      },
+      "warnings": [],
+      "dependencyStates": [],
+      "approvedAt": "2026-03-13T09:00:00+02:00",
+      "approvedByName": "Ayesha Parker",
+      "createdAt": "2026-03-13T08:45:00+02:00",
+      "updatedAt": "2026-03-13T09:00:00+02:00"
+    },
+    {
+      "id": "golden_estate_engine_run_estate_duty_001",
+      "estateId": "golden_estate_001",
+      "yearPackId": "estate_year_pack_2026_v1",
+      "engineType": "ESTATE_DUTY",
+      "status": "APPROVED",
+      "reviewRequired": false,
+      "inputSnapshot": {
+        "estateId": "golden_estate_001",
+        "taxYear": 2026,
+        "section4Deductions": 150000,
+        "spouseDeduction": 900000
+      },
+      "outputSnapshot": {
+        "calculation": {
+          "summary": {
+            "grossEstateValue": 9450000,
+            "liabilities": 605000,
+            "section4Deductions": 150000,
+            "spouseDeduction": 900000,
+            "totalDeductions": 1655000,
+            "netEstateBeforeAbatement": 7795000,
+            "abatementApplied": 3500000,
+            "dutiableEstate": 4295000,
+            "estateDutyPayable": 859000
+          }
+        }
+      },
+      "warnings": [],
+      "dependencyStates": [
+        {
+          "engineType": "CGT_ON_DEATH",
+          "runId": "golden_estate_engine_run_cgt_001",
+          "status": "APPROVED",
+          "isStale": false,
+          "reviewedAt": "2026-03-13T09:00:00+02:00"
+        },
+        {
+          "engineType": "BUSINESS_VALUATION",
+          "runId": "golden_estate_engine_run_business_valuation_001",
+          "status": "APPROVED",
+          "isStale": false,
+          "reviewedAt": "2026-03-13T08:15:00+02:00"
+        }
+      ],
+      "approvedAt": "2026-03-13T09:10:00+02:00",
+      "approvedByName": "Ayesha Parker",
+      "createdAt": "2026-03-13T09:02:00+02:00",
+      "updatedAt": "2026-03-13T09:10:00+02:00"
+    },
+    {
+      "id": "golden_estate_engine_run_post_death_001",
+      "estateId": "golden_estate_001",
+      "yearPackId": "estate_year_pack_2026_v1",
+      "engineType": "POST_DEATH_IT_AE",
+      "status": "APPROVED",
+      "reviewRequired": false,
+      "inputSnapshot": {
+        "estateId": "golden_estate_001",
+        "taxYear": 2026
+      },
+      "outputSnapshot": {
+        "calculation": {
+          "summary": {
+            "totalIncome": 380000,
+            "deductions": 25000,
+            "taxableIncome": 355000,
+            "appliedRate": 0.45,
+            "taxPayable": 159750
+          }
+        }
+      },
+      "warnings": [],
+      "dependencyStates": [],
+      "approvedAt": "2026-03-13T09:18:00+02:00",
+      "approvedByName": "Ayesha Parker",
+      "createdAt": "2026-03-13T09:12:00+02:00",
+      "updatedAt": "2026-03-13T09:18:00+02:00"
+    }
+  ]
+}

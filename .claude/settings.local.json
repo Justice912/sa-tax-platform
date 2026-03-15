@@ -1,0 +1,30 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(pandoc \"C:/Users/HP/Downloads/Deceased_Estate_Module_System_Spec.docx\" -o /tmp/spec_output.md)",
+      "Bash(python3 scripts/office/unpack.py \"C:/Users/HP/Downloads/Deceased_Estate_Module_System_Spec.docx\" /tmp/spec_unpacked/)",
+      "Bash(python scripts/office/unpack.py \"C:/Users/HP/Downloads/Deceased_Estate_Module_System_Spec.docx\" /tmp/spec_unpacked/)",
+      "Bash(pip install:*)",
+      "Bash(python3 -c \":*)",
+      "Bash(C:/Python314/python.exe -c \":*)",
+      "Bash(npx vitest:*)",
+      "Bash(npx tsc:*)",
+      "Bash(ls -la \"C:/Users/HP/sa-tax-platform/src/app/\\(protected\\)/estates/[estateId]/\")",
+      "Bash(ls -la \"src/app/\\(protected\\)/estates/[estateId]/deceased-info/page.tsx\")",
+      "Bash(find /c/Users/HP/sa-tax-platform -type f -name *.ts -o -name *.tsx -o -name *.js -o -name *.jsx)",
+      "mcp__Desktop_Commander__list_directory",
+      "mcp__Desktop_Commander__read_file",
+      "Bash(cat \"/c/Users/HP/sa-tax-platform/src/app/\\\\\\(protected\\\\\\)/estates/\\\\[estateId\\\\]/page.tsx\")",
+      "Bash(cat '/c/Users/HP/sa-tax-platform/src/app/\\(protected\\)/estates/[estateId]/page.tsx')",
+      "Bash(cat '/c/Users/HP/sa-tax-platform/src/app/\\(protected\\)/estates/[estateId]/valuation/page.tsx')",
+      "Bash(cat '/c/Users/HP/sa-tax-platform/src/app/\\(protected\\)/estates/[estateId]/tax/estate-duty/page.tsx')",
+      "Bash(cat '/c/Users/HP/sa-tax-platform/src/app/\\(protected\\)/estates/[estateId]/tax/pre-death/page.tsx')",
+      "Bash(cat '/c/Users/HP/sa-tax-platform/src/app/\\(protected\\)/estates/[estateId]/tax/post-death/page.tsx')",
+      "Bash(cat '/c/Users/HP/sa-tax-platform/src/app/\\(protected\\)/estates/[estateId]/tax/cgt/page.tsx')",
+      "Bash(gh auth:*)",
+      "Bash(gh repo:*)",
+      "Bash(git init:*)",
+      "Bash(git add:*)"
+    ]
+  }
+}

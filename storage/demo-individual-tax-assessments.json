@@ -1,0 +1,160 @@
+[
+  {
+    "id": "itax_001",
+    "clientId": "client_001",
+    "referenceNumber": "0441296142",
+    "taxpayerName": "M MABUTI",
+    "assessmentDate": "2025-11-28",
+    "assessmentYear": 2026,
+    "assessmentMode": "LEGACY_SCAFFOLD",
+    "status": "REVIEW_REQUIRED",
+    "input": {
+      "salaryIncome": 1324650,
+      "localInterest": 5493,
+      "travelAllowance": 324000,
+      "retirementContributions": 102301,
+      "travelDeduction": 297124,
+      "rebates": 17235,
+      "medicalTaxCredit": 11688,
+      "paye": 214185.48,
+      "priorAssessmentDebitOrCredit": -47166.76,
+      "effectiveTaxRate": 0.278
+    }
+  },
+  {
+    "id": "itax_1773226544643_933840",
+    "clientId": "client_001",
+    "referenceNumber": "9001/123/45/6",
+    "taxpayerName": "Thabo Mokoena",
+    "assessmentDate": "2026-03-11",
+    "assessmentYear": 2026,
+    "assessmentMode": "NEAR_EFILING_ESTIMATE",
+    "status": "REVIEW_REQUIRED",
+    "input": {
+      "salaryIncome": 0,
+      "localInterest": 0,
+      "travelAllowance": 0,
+      "retirementContributions": 0,
+      "travelDeduction": 0,
+      "rebates": 0,
+      "medicalTaxCredit": 0,
+      "paye": 0,
+      "priorAssessmentDebitOrCredit": 0,
+      "effectiveTaxRate": 0
+    },
+    "nearEfilingInput": {
+      "profile": {
+        "assessmentYear": 2026,
+        "dateOfBirth": "1990-01-01",
+        "maritalStatus": "SINGLE",
+        "medicalAidMembers": 1,
+        "medicalAidMonths": 12
+      },
+      "employment": {
+        "salaryIncome": 0,
+        "bonusIncome": 0,
+        "commissionIncome": 0,
+        "fringeBenefits": 0,
+        "otherTaxableEmploymentIncome": 0,
+        "payeWithheld": 0
+      },
+      "travel": {
+        "hasTravelAllowance": false,
+        "travelAllowance": 0,
+        "businessKilometres": 0,
+        "totalKilometres": 0,
+        "vehicleCost": 0,
+        "vehiclePurchaseDate": "2025-03-01"
+      },
+      "medical": {
+        "medicalSchemeContributions": 0,
+        "qualifyingOutOfPocketExpenses": 0,
+        "disabilityFlag": false
+      },
+      "interest": {
+        "localInterest": 0
+      },
+      "rental": {
+        "grossRentalIncome": 0,
+        "deductibleRentalExpenses": 0
+      },
+      "soleProprietor": {
+        "grossBusinessIncome": 0,
+        "deductibleBusinessExpenses": 0
+      },
+      "deductions": {
+        "retirementContributions": 0,
+        "donationsUnderSection18A": 0,
+        "priorAssessmentDebitOrCredit": 0
+      }
+    }
+  },
+  {
+    "id": "itax_1773226545141_858799",
+    "clientId": "client_001",
+    "referenceNumber": "9001/123/45/6",
+    "taxpayerName": "Thabo Mokoena",
+    "assessmentDate": "2026-03-11",
+    "assessmentYear": 2026,
+    "assessmentMode": "NEAR_EFILING_ESTIMATE",
+    "status": "REVIEW_REQUIRED",
+    "input": {
+      "salaryIncome": 0,
+      "localInterest": 0,
+      "travelAllowance": 0,
+      "retirementContributions": 0,
+      "travelDeduction": 0,
+      "rebates": 0,
+      "medicalTaxCredit": 0,
+      "paye": 0,
+      "priorAssessmentDebitOrCredit": 0,
+      "effectiveTaxRate": 0
+    },
+    "nearEfilingInput": {
+      "profile": {
+        "assessmentYear": 2026,
+        "dateOfBirth": "1990-01-01",
+        "maritalStatus": "SINGLE",
+        "medicalAidMembers": 1,
+        "medicalAidMonths": 12
+      },
+      "employment": {
+        "salaryIncome": 0,
+        "bonusIncome": 0,
+        "commissionIncome": 0,
+        "fringeBenefits": 0,
+        "otherTaxableEmploymentIncome": 0,
+        "payeWithheld": 0
+      },
+      "travel": {
+        "hasTravelAllowance": false,
+        "travelAllowance": 0,
+        "businessKilometres": 0,
+        "totalKilometres": 0,
+        "vehicleCost": 0,
+        "vehiclePurchaseDate": "2025-03-01"
+      },
+      "medical": {
+        "medicalSchemeContributions": 0,
+        "qualifyingOutOfPocketExpenses": 0,
+        "disabilityFlag": false
+      },
+      "interest": {
+        "localInterest": 0
+      },
+      "rental": {
+        "grossRentalIncome": 0,
+        "deductibleRentalExpenses": 0
+      },
+      "soleProprietor": {
+        "grossBusinessIncome": 0,
+        "deductibleBusinessExpenses": 0
+      },
+      "deductions": {
+        "retirementContributions": 0,
+        "donationsUnderSection18A": 0,
+        "priorAssessmentDebitOrCredit": 0
+      }
+    }
+  }
+]

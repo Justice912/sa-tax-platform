@@ -1,0 +1,1110 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum RoleCode {
+  ADMIN
+  TAX_PRACTITIONER
+  REVIEWER
+  STAFF
+  CLIENT_PORTAL
+}
+
+enum ClientType {
+  INDIVIDUAL
+  COMPANY
+  ESTATE
+  TRUST
+}
+
+enum ClientStatus {
+  ACTIVE
+  ONBOARDING
+  DORMANT
+  ARCHIVED
+}
+
+enum EstateStage {
+  REPORTED
+  EXECUTOR_APPOINTED
+  ASSETS_IDENTIFIED
+  VALUES_CAPTURED
+  TAX_READINESS
+  LD_DRAFTED
+  LD_UNDER_REVIEW
+  DISTRIBUTION_READY
+  DISTRIBUTED
+  FINALISED
+}
+
+enum EstateMatterStatus {
+  ACTIVE
+  ON_HOLD
+  FINALISED
+  ARCHIVED
+}
+
+enum EstateMaritalRegime {
+  IN_COMMUNITY
+  OUT_OF_COMMUNITY_NO_ACCRUAL
+  OUT_OF_COMMUNITY_ACCRUAL
+  CUSTOMARY
+  UNKNOWN
+}
+
+enum EstateExecutorCapacity {
+  EXECUTOR_DATIVE
+  EXECUTOR_TESTAMENTARY
+  ADMINISTRATOR
+}
+
+enum EstateAssetCategory {
+  IMMOVABLE_PROPERTY
+  VEHICLE
+  INVESTMENT
+  BANK_ACCOUNT
+  INSURANCE_POLICY
+  RETIREMENT_FUND
+  BUSINESS_INTEREST
+  PERSONAL_EFFECTS
+  OTHER
+}
+
+enum EstateBeneficiaryAllocationType {
+  RESIDUARY
+  CASH_LEGACY
+  SPECIFIC_ASSET
+  INCOME_RIGHT
+  TRUST_ALLOCATION
+}
+
+enum EstateChecklistStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETE
+  NOT_APPLICABLE
+}
+
+enum EstateLiquidationEntryCategory {
+  ASSET_REALISATION
+  LIABILITY_SETTLEMENT
+  ADMINISTRATION_COST
+  EXECUTOR_REMUNERATION
+  MASTER_FEE
+  FUNERAL_EXPENSE
+  TRANSFER_COST
+  OTHER_ADJUSTMENT
+}
+
+enum EstateLiquidationStatus {
+  DRAFT
+  REVIEW_REQUIRED
+  READY
+}
+
+enum EstateExecutorAccessStatus {
+  ACTIVE
+  REVOKED
+  EXPIRED
+}
+
+enum EstateYearPackStatus {
+  DRAFT
+  APPROVED
+  RETIRED
+}
+
+enum EstateFormTemplateCode {
+  BUSINESS_VALUATION_REPORT
+  SARS_ITR12
+  SARS_CGT_DEATH
+  SARS_REV267
+  SARS_IT_AE
+  MASTER_LD_ACCOUNT
+}
+
+enum EstateEngineType {
+  BUSINESS_VALUATION
+  PRE_DEATH_ITR12
+  CGT_ON_DEATH
+  ESTATE_DUTY
+  POST_DEATH_IT_AE
+  FILING_PACK
+}
+
+enum EstateEngineRunStatus {
+  DRAFT
+  REVIEW_REQUIRED
+  APPROVED
+}
+
+enum CaseType {
+  RETURN_PREPARATION
+  SUBMISSION_PENDING
+  VERIFICATION
+  AUDIT
+  OBJECTION
+  APPEAL
+  SUPPORTING_DOCUMENTS_REQUESTED
+  PAYMENT_ARRANGEMENT
+  COMPLIANCE_FOLLOW_UP
+}
+
+enum CaseStatus {
+  OPEN
+  IN_PROGRESS
+  AWAITING_DOCUMENTS
+  UNDER_REVIEW
+  SUBMITTED
+  CLOSED
+  ON_HOLD
+}
+
+enum PriorityLevel {
+  LOW
+  MEDIUM
+  HIGH
+  CRITICAL
+}
+
+enum ReminderStatus {
+  PENDING
+  SENT
+  ACKNOWLEDGED
+  CANCELLED
+}
+
+enum DocumentVisibility {
+  INTERNAL
+  CLIENT_SHARED
+  RESTRICTED
+}
+
+enum ITR12WorkflowState {
+  INTAKE
+  DATA_COLLECTION
+  WORKING_PAPERS_PREP
+  CALCULATION_DRAFT
+  REVIEW_REQUIRED
+  REVIEW_IN_PROGRESS
+  READY_FOR_SUBMISSION
+  SUBMITTED
+  POST_SUBMISSION
+}
+
+enum ITR12WorkpaperStatus {
+  TODO
+  IN_PROGRESS
+  READY_FOR_REVIEW
+  APPROVED
+}
+
+enum ITR12CalculationRunStatus {
+  DRAFT
+  REVIEW_REQUIRED
+  APPROVED
+}
+
+enum IndividualTaxAssessmentStatus {
+  DRAFT
+  REVIEW_REQUIRED
+  APPROVED
+}
+
+enum IndividualTaxAssessmentMode {
+  LEGACY_SCAFFOLD
+  NEAR_EFILING_ESTIMATE
+}
+
+enum IndividualTaxLineSection {
+  INCOME
+  DEDUCTION
+  TAX_CALCULATION
+}
+
+enum GeneratedReportType {
+  INDIVIDUAL_TAX_ASSESSMENT
+}
+
+model User {
+  id             String         @id @default(cuid())
+  firmId         String?
+  email          String         @unique
+  passwordHash   String
+  fullName       String
+  isActive       Boolean        @default(true)
+  lastLoginAt    DateTime?
+  createdAt      DateTime       @default(now())
+  updatedAt      DateTime       @updatedAt
+  firm           Firm?          @relation(fields: [firmId], references: [id])
+  roles          UserRole[]
+  assignedCases  Case[]         @relation("AssignedCases")
+  reviewedCases  Case[]         @relation("ReviewedCases")
+  createdCases   Case[]         @relation("CreatedCases")
+  caseActivities CaseActivity[]
+  comments       Comment[]
+  assignmentsTo  Assignment[]   @relation("AssignedTo")
+  assignmentsBy  Assignment[]   @relation("AssignedBy")
+  uploadedDocs   Document[]     @relation("UploadedDocuments")
+  auditLogs      AuditLog[]     @relation("AuditActor")
+  reminders      Reminder[]     @relation("ReminderRecipient")
+  tasks          Task[]         @relation("TaskOwner")
+  itr12ChecklistReviews ITR12ReviewChecklist[] @relation("ITR12ChecklistReviewer")
+  generatedReports GeneratedReport[]
+
+  @@index([firmId])
+}
+
+model Role {
+  id          String     @id @default(cuid())
+  code        RoleCode   @unique
+  name        String
+  description String?
+  permissions Json?
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  users       UserRole[]
+}
+
+model UserRole {
+  userId     String
+  roleId     String
+  assignedAt DateTime @default(now())
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role       Role     @relation(fields: [roleId], references: [id], onDelete: Cascade)
+
+  @@id([userId, roleId])
+  @@index([roleId])
+}
+
+model Firm {
+  id          String   @id @default(cuid())
+  name        String
+  registrationNo String?
+  vatNo       String?
+  email       String?
+  phone       String?
+  address     String?
+  timezone    String   @default("Africa/Johannesburg")
+  isActive    Boolean  @default(true)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  users       User[]
+  clients     Client[]
+  cases       Case[]
+  documents   Document[]
+}
+
+model Client {
+  id                 String         @id @default(cuid())
+  firmId             String
+  code               String         @unique
+  displayName        String
+  clientType         ClientType
+  status             ClientStatus   @default(ONBOARDING)
+  registrationNumber String?
+  taxReferenceNumber String?
+  vatNumber          String?
+  payeNumber         String?
+  email              String?
+  phone              String?
+  address            String?
+  assignedStaffId    String?
+  notes              String?
+  createdAt          DateTime       @default(now())
+  updatedAt          DateTime       @updatedAt
+  firm               Firm           @relation(fields: [firmId], references: [id])
+  profile            ClientProfile?
+  estateProfile      EstateProfile?
+  estateMatter       EstateMatter?
+  cases              Case[]
+  documents          Document[]
+  tasks              Task[]
+  comments           Comment[]
+  assignments        Assignment[]
+  individualTaxProfiles IndividualTaxProfile[]
+
+  @@index([firmId, status])
+  @@index([clientType])
+}
+
+model ClientProfile {
+  id                   String   @id @default(cuid())
+  clientId             String   @unique
+  identificationNumber String?
+  incorporationDate    DateTime?
+  dateOfBirth          DateTime?
+  contactPerson        String?
+  industry             String?
+  metadata             Json?
+  client               Client   @relation(fields: [clientId], references: [id], onDelete: Cascade)
+}
+
+model EstateProfile {
+  id                 String   @id @default(cuid())
+  clientId           String   @unique
+  deceasedFullName   String
+  deceasedIdNumber   String?
+  dateOfDeath        DateTime?
+  letterOfExecutorshipNo String?
+  estateMasterRef    String?
+  executorName       String?
+  valuationRequired  Boolean  @default(true)
+  metadata           Json?
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+  client             Client   @relation(fields: [clientId], references: [id], onDelete: Cascade)
+}
+
+model EstateMatter {
+  id                       String                    @id @default(cuid())
+  clientId                 String                    @unique
+  estateReference          String                    @unique
+  deceasedName             String
+  idNumberOrPassport       String?
+  dateOfBirth              DateTime?
+  dateOfDeath              DateTime
+  maritalRegime            EstateMaritalRegime
+  taxNumber                String?
+  estateTaxNumber          String?
+  hasWill                  Boolean                   @default(false)
+  executorName             String
+  executorCapacity         EstateExecutorCapacity
+  executorEmail            String?
+  executorPhone            String?
+  assignedPractitionerName String
+  currentStage             EstateStage               @default(REPORTED)
+  status                   EstateMatterStatus        @default(ACTIVE)
+  notes                    String?
+  createdAt                DateTime                  @default(now())
+  updatedAt                DateTime                  @updatedAt
+  client                   Client                    @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  assets                   EstateAsset[]
+  liabilities              EstateLiability[]
+  beneficiaries            EstateBeneficiary[]
+  checklistItems           EstateChecklistItem[]
+  stageEvents              EstateStageEvent[]
+  liquidationEntries       EstateLiquidationEntry[]
+  liquidationDistributions EstateLiquidationDistribution[]
+  executorAccess           EstateExecutorAccess[]
+  engineRuns               EstateEngineRun[]
+
+  @@index([currentStage, status])
+  @@index([dateOfDeath])
+}
+
+model EstateAsset {
+  id                      String              @id @default(cuid())
+  estateId                String
+  category                EstateAssetCategory
+  description             String
+  dateOfDeathValue        Decimal             @db.Decimal(18, 2)
+  baseCost                Decimal?            @db.Decimal(18, 2)
+  acquisitionDate         DateTime?
+  valuationDateValue      Decimal?            @db.Decimal(18, 2)
+  isPrimaryResidence      Boolean             @default(false)
+  isPersonalUse           Boolean             @default(false)
+  beneficiaryId           String?
+  spouseRollover          Boolean             @default(false)
+  notes                   String?
+  createdAt               DateTime            @default(now())
+  updatedAt               DateTime            @updatedAt
+  estate                  EstateMatter        @relation(fields: [estateId], references: [id], onDelete: Cascade)
+
+  @@index([estateId, category])
+}
+
+model EstateLiability {
+  id                      String              @id @default(cuid())
+  estateId                String
+  description             String
+  creditorName            String
+  amount                  Decimal             @db.Decimal(18, 2)
+  securedByAssetDescription String?
+  dueDate                 DateTime?
+  notes                   String?
+  createdAt               DateTime            @default(now())
+  updatedAt               DateTime            @updatedAt
+  estate                  EstateMatter        @relation(fields: [estateId], references: [id], onDelete: Cascade)
+
+  @@index([estateId])
+}
+
+model EstateBeneficiary {
+  id              String                           @id @default(cuid())
+  estateId        String
+  fullName        String
+  idNumberOrPassport String?
+  relationship    String
+  isMinor         Boolean                          @default(false)
+  sharePercentage Decimal                          @db.Decimal(5, 2)
+  allocationType  EstateBeneficiaryAllocationType
+  notes           String?
+  createdAt       DateTime                         @default(now())
+  updatedAt       DateTime                         @updatedAt
+  estate          EstateMatter                     @relation(fields: [estateId], references: [id], onDelete: Cascade)
+
+  @@index([estateId])
+}
+
+model EstateChecklistItem {
+  id          String               @id @default(cuid())
+  estateId    String
+  stage       EstateStage
+  title       String
+  mandatory   Boolean              @default(true)
+  status      EstateChecklistStatus @default(PENDING)
+  notes       String?
+  createdAt   DateTime             @default(now())
+  updatedAt   DateTime             @updatedAt
+  estate      EstateMatter         @relation(fields: [estateId], references: [id], onDelete: Cascade)
+
+  @@index([estateId, stage, status])
+}
+
+model EstateStageEvent {
+  id          String        @id @default(cuid())
+  estateId    String
+  fromStage   EstateStage?
+  toStage     EstateStage
+  actorName   String
+  summary     String
+  createdAt   DateTime      @default(now())
+  estate      EstateMatter  @relation(fields: [estateId], references: [id], onDelete: Cascade)
+
+  @@index([estateId, createdAt])
+}
+
+model EstateLiquidationEntry {
+  id            String                         @id @default(cuid())
+  estateId      String
+  category      EstateLiquidationEntryCategory
+  description   String
+  amount        Decimal                        @db.Decimal(18, 2)
+  effectiveDate DateTime?
+  notes         String?
+  createdAt     DateTime                       @default(now())
+  updatedAt     DateTime                       @updatedAt
+  estate        EstateMatter                   @relation(fields: [estateId], references: [id], onDelete: Cascade)
+
+  @@index([estateId, category])
+}
+
+model EstateLiquidationDistribution {
+  id            String                @id @default(cuid())
+  estateId      String
+  beneficiaryId String
+  description   String
+  amount        Decimal               @db.Decimal(18, 2)
+  notes         String?
+  createdAt     DateTime              @default(now())
+  updatedAt     DateTime              @updatedAt
+  estate        EstateMatter          @relation(fields: [estateId], references: [id], onDelete: Cascade)
+
+  @@index([estateId, beneficiaryId])
+}
+
+model EstateExecutorAccess {
+  id             String                    @id @default(cuid())
+  estateId       String
+  accessToken    String                    @unique
+  recipientName  String
+  recipientEmail String
+  expiresAt      DateTime
+  status         EstateExecutorAccessStatus @default(ACTIVE)
+  lastAccessedAt DateTime?
+  createdAt      DateTime                  @default(now())
+  updatedAt      DateTime                  @updatedAt
+  estate         EstateMatter              @relation(fields: [estateId], references: [id], onDelete: Cascade)
+
+  @@index([estateId, status])
+}
+
+model EstateYearPack {
+  id             String                @id @default(cuid())
+  taxYear        Int
+  version        Int
+  status         EstateYearPackStatus  @default(DRAFT)
+  effectiveFrom  DateTime
+  approvedAt     DateTime?
+  sourceReference String
+  rulesJson      Json
+  createdAt      DateTime              @default(now())
+  updatedAt      DateTime              @updatedAt
+  formTemplates  EstateFormTemplate[]
+  engineRuns     EstateEngineRun[]
+
+  @@unique([taxYear, version])
+  @@index([taxYear, status, version])
+}
+
+model EstateFormTemplate {
+  id              String                 @id @default(cuid())
+  yearPackId      String
+  code            EstateFormTemplateCode
+  templateVersion String
+  outputFormat    String
+  storageKey      String
+  metadataJson    Json
+  createdAt       DateTime               @default(now())
+  updatedAt       DateTime               @updatedAt
+  yearPack        EstateYearPack         @relation(fields: [yearPackId], references: [id], onDelete: Cascade)
+
+  @@unique([yearPackId, code])
+  @@index([yearPackId])
+}
+
+model EstateEngineRun {
+  id                 String                @id @default(cuid())
+  estateId           String
+  yearPackId         String
+  engineType         EstateEngineType
+  status             EstateEngineRunStatus @default(REVIEW_REQUIRED)
+  reviewRequired     Boolean               @default(true)
+  inputJson          Json
+  outputJson         Json
+  warningsJson       Json?
+  dependencySnapshot Json?
+  approvedAt         DateTime?
+  approvedByName     String?
+  createdAt          DateTime              @default(now())
+  updatedAt          DateTime              @updatedAt
+  estate             EstateMatter          @relation(fields: [estateId], references: [id], onDelete: Cascade)
+  yearPack           EstateYearPack        @relation(fields: [yearPackId], references: [id])
+
+  @@index([estateId, engineType, createdAt])
+  @@index([yearPackId])
+}
+
+model TaxType {
+  id          String                @id @default(cuid())
+  code        String                @unique
+  label       String
+  description String?
+  isActive    Boolean               @default(true)
+  cases       Case[]
+  submissions Submission[]
+  templates   CalculationTemplate[]
+}
+
+model TaxPeriod {
+  id          String       @id @default(cuid())
+  code        String
+  label       String
+  periodStart DateTime
+  periodEnd   DateTime
+  isOpen      Boolean      @default(true)
+  cases       Case[]
+  submissions Submission[]
+
+  @@unique([code, periodStart, periodEnd])
+}
+
+model ReviewStatus {
+  id               String      @id @default(cuid())
+  code             String      @unique
+  label            String
+  description      String?
+  requiresReviewer Boolean     @default(true)
+  isTerminal       Boolean     @default(false)
+  cases            Case[]
+  deadlines        Deadline[]
+  tasks            Task[]
+}
+
+model Case {
+  id              String           @id @default(cuid())
+  firmId          String
+  clientId        String
+  taxTypeId       String
+  taxPeriodId     String?
+  reviewStatusId  String
+  createdById     String
+  assignedUserId  String?
+  reviewerUserId  String?
+  caseType        CaseType
+  status          CaseStatus       @default(OPEN)
+  priority        PriorityLevel    @default(MEDIUM)
+  title           String
+  description     String?
+  sarsReference   String?
+  dueDate         DateTime?
+  openedAt        DateTime         @default(now())
+  closedAt        DateTime?
+  createdAt       DateTime         @default(now())
+  updatedAt       DateTime         @updatedAt
+  firm            Firm             @relation(fields: [firmId], references: [id])
+  client          Client           @relation(fields: [clientId], references: [id])
+  taxType         TaxType          @relation(fields: [taxTypeId], references: [id])
+  taxPeriod       TaxPeriod?       @relation(fields: [taxPeriodId], references: [id])
+  reviewStatus    ReviewStatus     @relation(fields: [reviewStatusId], references: [id])
+  createdBy       User             @relation("CreatedCases", fields: [createdById], references: [id])
+  assignedUser    User?            @relation("AssignedCases", fields: [assignedUserId], references: [id])
+  reviewerUser    User?            @relation("ReviewedCases", fields: [reviewerUserId], references: [id])
+  activities      CaseActivity[]
+  comments        Comment[]
+  deadlines       Deadline[]
+  tasks           Task[]
+  assignments     Assignment[]
+  caseDocuments   CaseDocument[]
+  knowledgeLinks  CaseKnowledgeArticle[]
+  reminders       Reminder[]
+  submissions     Submission[]
+  itr12Profile    ITR12Profile?
+  itr12Workpapers ITR12Workpaper[]
+  itr12CalculationRuns ITR12CalculationRun[]
+
+  @@index([firmId, status])
+  @@index([clientId, dueDate])
+  @@index([taxTypeId])
+}
+
+model CaseActivity {
+  id          String   @id @default(cuid())
+  caseId      String
+  actorId     String
+  action      String
+  summary     String
+  metadata    Json?
+  createdAt   DateTime @default(now())
+  case        Case     @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  actor       User     @relation(fields: [actorId], references: [id])
+
+  @@index([caseId, createdAt])
+}
+
+model DocumentCategory {
+  id          String     @id @default(cuid())
+  code        String     @unique
+  label       String
+  description String?
+  documents   Document[]
+}
+
+model Document {
+  id             String             @id @default(cuid())
+  firmId         String
+  clientId       String?
+  uploadedById   String?
+  categoryId     String
+  fileName       String
+  storageKey     String
+  mimeType       String
+  fileSizeBytes  Int
+  checksum       String?
+  visibility     DocumentVisibility @default(INTERNAL)
+  tags           String[]
+  metadata       Json?
+  uploadedAt     DateTime           @default(now())
+  updatedAt      DateTime           @updatedAt
+  firm           Firm               @relation(fields: [firmId], references: [id])
+  client         Client?            @relation(fields: [clientId], references: [id])
+  uploadedBy     User?              @relation("UploadedDocuments", fields: [uploadedById], references: [id])
+  category       DocumentCategory   @relation(fields: [categoryId], references: [id])
+  caseLinks      CaseDocument[]
+
+  @@index([firmId, uploadedAt])
+  @@index([clientId])
+}
+
+model CaseDocument {
+  caseId      String
+  documentId  String
+  linkedAt    DateTime @default(now())
+  case        Case     @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  document    Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+
+  @@id([caseId, documentId])
+}
+
+model KnowledgeBaseArticle {
+  id               String                  @id @default(cuid())
+  title            String
+  category         String
+  jurisdiction     String                  @default("South Africa")
+  effectiveDate    DateTime
+  repealDate       DateTime?
+  sourceReference  String
+  summary          String
+  body             String
+  tags             String[]
+  relatedModules   String[]
+  isIllustrative   Boolean                 @default(true)
+  createdBy        String?
+  createdAt        DateTime                @default(now())
+  updatedAt        DateTime                @updatedAt
+  tagLinks         ArticleTag[]
+  caseLinks        CaseKnowledgeArticle[]
+
+  @@index([category, effectiveDate])
+}
+
+model KnowledgeBaseTag {
+  id        String       @id @default(cuid())
+  name      String       @unique
+  createdAt DateTime     @default(now())
+  articles  ArticleTag[]
+}
+
+model ArticleTag {
+  articleId String
+  tagId     String
+  article   KnowledgeBaseArticle @relation(fields: [articleId], references: [id], onDelete: Cascade)
+  tag       KnowledgeBaseTag     @relation(fields: [tagId], references: [id], onDelete: Cascade)
+
+  @@id([articleId, tagId])
+}
+
+model CaseKnowledgeArticle {
+  caseId    String
+  articleId String
+  linkedAt  DateTime @default(now())
+  case      Case     @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  article   KnowledgeBaseArticle @relation(fields: [articleId], references: [id], onDelete: Cascade)
+
+  @@id([caseId, articleId])
+}
+
+model Deadline {
+  id              String       @id @default(cuid())
+  caseId          String
+  reviewStatusId  String
+  title           String
+  dueAt           DateTime
+  completedAt     DateTime?
+  notes           String?
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
+  case            Case         @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  reviewStatus    ReviewStatus @relation(fields: [reviewStatusId], references: [id])
+  reminders       Reminder[]
+
+  @@index([dueAt])
+}
+
+model Reminder {
+  id                String         @id @default(cuid())
+  deadlineId        String?
+  caseId            String?
+  reminderForUserId String?
+  status            ReminderStatus @default(PENDING)
+  scheduledFor      DateTime
+  sentAt            DateTime?
+  note              String?
+  deadline          Deadline?      @relation(fields: [deadlineId], references: [id], onDelete: Cascade)
+  case              Case?          @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  recipient         User?          @relation("ReminderRecipient", fields: [reminderForUserId], references: [id])
+
+  @@index([scheduledFor, status])
+}
+
+model AuditLog {
+  id          String   @id @default(cuid())
+  actorId     String?
+  action      String
+  entityType  String
+  entityId    String
+  summary     String
+  beforeData  Json?
+  afterData   Json?
+  ipAddress   String?
+  userAgent   String?
+  createdAt   DateTime @default(now())
+  actor       User?    @relation("AuditActor", fields: [actorId], references: [id])
+
+  @@index([entityType, entityId])
+  @@index([createdAt])
+}
+
+model Assignment {
+  id           String   @id @default(cuid())
+  caseId       String?
+  clientId     String?
+  taskId       String?
+  assignedById String?
+  assignedToId String
+  roleLabel    String
+  assignedAt   DateTime @default(now())
+  notes        String?
+  case         Case?    @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  client       Client?  @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  task         Task?    @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  assignedBy   User?    @relation("AssignedBy", fields: [assignedById], references: [id])
+  assignedTo   User     @relation("AssignedTo", fields: [assignedToId], references: [id])
+
+  @@index([assignedToId, assignedAt])
+}
+
+model Comment {
+  id         String   @id @default(cuid())
+  caseId     String?
+  clientId   String?
+  taskId     String?
+  authorId   String
+  body       String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+  case       Case?    @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  client     Client?  @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  task       Task?    @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  author     User     @relation(fields: [authorId], references: [id])
+
+  @@index([createdAt])
+}
+
+model Task {
+  id             String        @id @default(cuid())
+  caseId         String?
+  clientId       String?
+  ownerId        String?
+  reviewStatusId String
+  title          String
+  description    String?
+  dueDate        DateTime?
+  status         String
+  priority       PriorityLevel @default(MEDIUM)
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  case           Case?         @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  client         Client?       @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  owner          User?         @relation("TaskOwner", fields: [ownerId], references: [id])
+  reviewStatus   ReviewStatus  @relation(fields: [reviewStatusId], references: [id])
+  comments       Comment[]
+  assignments    Assignment[]
+
+  @@index([status, dueDate])
+}
+
+model Submission {
+  id              String    @id @default(cuid())
+  caseId          String?
+  taxTypeId       String
+  taxPeriodId     String?
+  status          String
+  submissionType  String
+  channel         String
+  submittedAt     DateTime?
+  referenceNumber String?
+  payload         Json?
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  case            Case?     @relation(fields: [caseId], references: [id], onDelete: SetNull)
+  taxType         TaxType   @relation(fields: [taxTypeId], references: [id])
+  taxPeriod       TaxPeriod? @relation(fields: [taxPeriodId], references: [id])
+
+  @@index([status, submissionType])
+}
+
+model CalculationTemplate {
+  id               String   @id @default(cuid())
+  taxTypeId        String
+  name             String
+  versionLabel     String
+  effectiveFrom    DateTime
+  effectiveTo      DateTime?
+  assumptions      Json?
+  formulaDefinition Json?
+  isActive         Boolean  @default(true)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  taxType          TaxType  @relation(fields: [taxTypeId], references: [id])
+
+  @@index([taxTypeId, effectiveFrom])
+}
+
+model ITR12Profile {
+  id               String            @id @default(cuid())
+  caseId           String            @unique
+  assessmentYear   Int
+  periodStart      DateTime
+  periodEnd        DateTime
+  taxpayerCategory String            @default("INDIVIDUAL")
+  workflowState    ITR12WorkflowState @default(INTAKE)
+  reviewRequired   Boolean           @default(true)
+  assumptions      Json?
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+  case             Case              @relation(fields: [caseId], references: [id], onDelete: Cascade)
+}
+
+model ITR12Workpaper {
+  id              String             @id @default(cuid())
+  caseId          String
+  code            String
+  title           String
+  status          ITR12WorkpaperStatus @default(TODO)
+  sourceReference String
+  notes           String?
+  createdAt       DateTime           @default(now())
+  updatedAt       DateTime           @updatedAt
+  case            Case               @relation(fields: [caseId], references: [id], onDelete: Cascade)
+
+  @@index([caseId, status])
+}
+
+model ITR12CalculationRun {
+  id              String                  @id @default(cuid())
+  caseId          String
+  assessmentYear  Int
+  status          ITR12CalculationRunStatus @default(DRAFT)
+  reviewRequired  Boolean                 @default(true)
+  summary         Json?
+  legalDisclaimer String?
+  ranAt           DateTime                @default(now())
+  createdAt       DateTime                @default(now())
+  updatedAt       DateTime                @updatedAt
+  case            Case                    @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  lineItems       ITR12CalculationLineItem[]
+  assumptions     ITR12Assumption[]
+  reviewChecklist ITR12ReviewChecklist[]
+
+  @@index([caseId, status])
+}
+
+model ITR12CalculationLineItem {
+  id              String             @id @default(cuid())
+  runId           String
+  lineCode        String
+  label           String
+  amount          Decimal            @db.Decimal(18, 2)
+  working         String
+  assumptions     Json?
+  sourceReference String
+  reviewRequired  Boolean            @default(true)
+  run             ITR12CalculationRun @relation(fields: [runId], references: [id], onDelete: Cascade)
+
+  @@index([runId, lineCode])
+}
+
+model ITR12Assumption {
+  id              String             @id @default(cuid())
+  runId           String
+  assumption      String
+  sourceReference String?
+  createdAt       DateTime           @default(now())
+  run             ITR12CalculationRun @relation(fields: [runId], references: [id], onDelete: Cascade)
+
+  @@index([runId])
+}
+
+model ITR12ReviewChecklist {
+  id          String             @id @default(cuid())
+  runId       String
+  reviewerId  String?
+  status      String
+  notes       String?
+  reviewedAt  DateTime?
+  createdAt   DateTime           @default(now())
+  run         ITR12CalculationRun @relation(fields: [runId], references: [id], onDelete: Cascade)
+  reviewer    User?              @relation("ITR12ChecklistReviewer", fields: [reviewerId], references: [id])
+
+  @@index([runId, status])
+}
+
+model IndividualTaxRuleVersion {
+  id            String   @id @default(cuid())
+  ruleYear      Int
+  versionLabel  String
+  effectiveFrom DateTime
+  effectiveTo   DateTime?
+  rulesJson     Json?
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  assessments   IndividualTaxAssessment[]
+
+  @@index([ruleYear, effectiveFrom])
+}
+
+model IndividualTaxProfile {
+  id              String   @id @default(cuid())
+  clientId         String?
+  taxpayerName     String
+  referenceNumber  String
+  identityNumber   String?
+  address          String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+  client           Client? @relation(fields: [clientId], references: [id], onDelete: SetNull)
+  assessments      IndividualTaxAssessment[]
+}
+
+model IndividualTaxAssessment {
+  id                           String                        @id @default(cuid())
+  profileId                    String
+  ruleVersionId                String
+  assessmentYear               Int
+  assessmentDate               DateTime
+  assessmentMode               IndividualTaxAssessmentMode   @default(LEGACY_SCAFFOLD)
+  status                       IndividualTaxAssessmentStatus @default(REVIEW_REQUIRED)
+  taxpayerName                 String
+  referenceNumber              String
+  salaryIncome                 Decimal                       @db.Decimal(18, 2)
+  localInterest                Decimal                       @db.Decimal(18, 2)
+  travelAllowance              Decimal                       @db.Decimal(18, 2)
+  retirementContributions      Decimal                       @db.Decimal(18, 2)
+  travelDeduction              Decimal                       @db.Decimal(18, 2)
+  rebates                      Decimal                       @db.Decimal(18, 2)
+  medicalTaxCredit             Decimal                       @db.Decimal(18, 2)
+  paye                         Decimal                       @db.Decimal(18, 2)
+  priorAssessmentDebitOrCredit Decimal                       @db.Decimal(18, 2)
+  effectiveTaxRate             Decimal                       @db.Decimal(8, 5)
+  structuredInput              Json?
+  createdAt                    DateTime                      @default(now())
+  updatedAt                    DateTime                      @updatedAt
+  profile                      IndividualTaxProfile          @relation(fields: [profileId], references: [id], onDelete: Cascade)
+  ruleVersion                  IndividualTaxRuleVersion      @relation(fields: [ruleVersionId], references: [id])
+  lineItems                    IndividualTaxLineItem[]
+  notes                        IndividualTaxNote[]
+  generatedReports             GeneratedReport[]
+
+  @@index([assessmentYear, status])
+  @@index([referenceNumber])
+}
+
+model IndividualTaxLineItem {
+  id              String                   @id @default(cuid())
+  assessmentId    String
+  section         IndividualTaxLineSection
+  code            String
+  description     String
+  computations    String
+  amountAssessed  Decimal                  @db.Decimal(18, 2)
+  reviewRequired  Boolean                  @default(true)
+  sourceReference String
+  createdAt       DateTime                 @default(now())
+  assessment      IndividualTaxAssessment  @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
+
+  @@index([assessmentId, section])
+}
+
+model IndividualTaxNote {
+  id             String                  @id @default(cuid())
+  assessmentId   String
+  noteOrder      Int
+  noteText       String
+  createdAt      DateTime                @default(now())
+  assessment     IndividualTaxAssessment @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
+
+  @@index([assessmentId, noteOrder])
+}
+
+model GeneratedReport {
+  id            String              @id @default(cuid())
+  assessmentId  String
+  reportType    GeneratedReportType
+  storageKey    String
+  checksum      String?
+  generatedById String?
+  generatedAt   DateTime            @default(now())
+  assessment    IndividualTaxAssessment @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
+  generatedBy   User?               @relation(fields: [generatedById], references: [id])
+
+  @@index([assessmentId, generatedAt])
+}
+

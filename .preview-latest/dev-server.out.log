@@ -1,0 +1,31 @@
+
+> sa-tax-platform@0.1.0 dev
+> next dev --hostname 127.0.0.1 --port 3000
+
+▲ Next.js 16.1.6 (Turbopack)
+- Local:         http://127.0.0.1:3000
+- Network:       http://127.0.0.1:3000
+- Environments: .env.local
+
+✓ Starting...
+✓ Ready in 10.5s
+○ Compiling /login ...
+ GET /login 200 in 7.4s (compile: 5.3s, render: 2.2s)
+ GET /login 200 in 1409ms (compile: 15ms, render: 1394ms)
+ GET /api/auth/session 200 in 7.4s (compile: 7.2s, render: 212ms)
+ GET /api/auth/providers 200 in 143ms (compile: 32ms, render: 111ms)
+ GET /api/auth/csrf 200 in 150ms (compile: 5ms, render: 144ms)
+ POST /api/auth/callback/credentials 200 in 234ms (compile: 100ms, render: 133ms)
+ GET /api/auth/session 200 in 71ms (compile: 36ms, render: 34ms)
+ GET /dashboard 200 in 4.3s (compile: 611ms, render: 3.7s)
+ GET /dashboard 200 in 2.8s (compile: 132ms, render: 2.6s)
+○ Compiling /individual-tax ...
+ GET /individual-tax 200 in 10.8s (compile: 4.9s, render: 5.8s)
+ GET /api/auth/session 200 in 402ms (compile: 192ms, render: 210ms)
+○ Compiling /individual-tax/[assessmentId] ...
+ GET /individual-tax/itax_001 200 in 13.6s (compile: 10.1s, render: 3.5s)
+ GET /api/auth/session 200 in 48ms (compile: 26ms, render: 22ms)
+ GET /reports/individual-tax/itax_001/print 200 in 12.4s (compile: 7.4s, render: 5.0s)
+ GET /api/auth/session 200 in 52ms (compile: 26ms, render: 26ms)
+ GET /reports/individual-tax/itax_001/print 200 in 2.2s (compile: 35ms, render: 2.2s)
+ GET /api/auth/session 200 in 118ms (compile: 94ms, render: 25ms)
