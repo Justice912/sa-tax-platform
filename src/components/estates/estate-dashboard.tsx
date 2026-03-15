@@ -40,9 +40,22 @@ export function EstateDashboard({
   revokeExecutorAccessAction?: EstateAction;
 }) {
   const executorAccess = estate.executorAccess.find((access) => access.status === "ACTIVE");
+  const businessInterestAssets = estate.assets.filter(
+    (asset) => asset.category === "BUSINESS_INTEREST",
+  );
 
   return (
     <div className="space-y-6">
+      {businessInterestAssets.length > 0 && (
+        <div className="rounded-lg border border-purple-200 bg-purple-50 px-4 py-3 text-sm text-purple-800">
+          <strong>
+            {businessInterestAssets.length} business interest
+            {businessInterestAssets.length > 1 ? "s" : ""}
+          </strong>{" "}
+          flagged for valuation review:{" "}
+          {businessInterestAssets.map((a) => a.description).join(", ")}
+        </div>
+      )}
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div>
           <div className="flex flex-wrap items-center gap-2">

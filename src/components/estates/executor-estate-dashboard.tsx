@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Card, CardDescription, CardTitle } from "@/components/ui/card";
 import { StatusBadge } from "@/components/ui/status-badge";
 import { formatDate } from "@/lib/utils";
@@ -13,10 +14,49 @@ function formatCurrency(value: number) {
   return currencyFormatter.format(value);
 }
 
+/**
+ * Navigation tabs shown when the executor is authenticated via the RBAC
+ * session (i.e. has an estateId). These tabs represent the read-only routes
+ * that the EXECUTOR role has permission to access. Valuation, Liquidation, and
+ * Tax workspaces are intentionally excluded — executors do not have estate:manage.
+ */
+function ExecutorNavTabs({ estateId }: { estateId: string }) {
+  const tabs = [
+    { href: `/estates/${estateId}`, label: "Overview" },
+    { href: `/estates/${estateId}/documents`, label: "Documents" },
+    { href: `/estates/${estateId}/timeline`, label: "Timeline" },
+    { href: `/estates/${estateId}/filing-pack`, label: "Filing Pack" },
+  ];
+
+  return (
+    <nav
+      aria-label="Executor estate navigation"
+      className="flex flex-wrap gap-2 rounded-lg border border-teal-100 bg-teal-50/50 px-4 py-3"
+    >
+      {tabs.map((tab) => (
+        <Link
+          key={tab.href}
+          href={tab.href}
+          className="rounded-full border border-teal-200 px-4 py-2 text-sm font-medium text-teal-800 transition hover:border-teal-400 hover:bg-teal-100"
+        >
+          {tab.label}
+        </Link>
+      ))}
+    </nav>
+  );
+}
+
 export function ExecutorEstateDashboard({
   estate,
+  estateId,
 }: {
   estate: ExecutorEstateView;
+  /**
+   * When provided, the component renders RBAC-aware navigation tabs linking to
+   * the sub-routes the executor has permission to access. Omit this prop when
+   * rendering the token-based (unauthenticated) executor view.
+   */
+  estateId?: string;
 }) {
   return (
     <div className="mx-auto max-w-6xl space-y-6 px-4 py-8 sm:px-6 lg:px-8">
@@ -51,6 +91,9 @@ export function ExecutorEstateDashboard({
           </div>
         </Card>
       </div>
+
+      {/* Navigation tabs are only rendered in the RBAC-authenticated context */}
+      {estateId ? <ExecutorNavTabs estateId={estateId} /> : null}
 
       <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
         <Card>

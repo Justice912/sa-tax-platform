@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
-import { chromium } from "@playwright/test";
 import { authOptions } from "@/lib/auth-options";
+import { withPooledPage } from "@/lib/browser-pool";
 import { prisma } from "@/lib/db";
 import { isDemoMode } from "@/lib/env";
 import { getIndividualTaxReportData } from "@/modules/individual-tax/service";
@@ -28,20 +28,18 @@ export async function GET(
     request.url,
   ).toString();
 
-  let browser;
   try {
-    browser = await chromium.launch({ headless: true });
-    const page = await browser.newPage();
-    const cookieHeader = request.headers.get("cookie");
-    if (cookieHeader) {
-      await page.setExtraHTTPHeaders({ cookie: cookieHeader });
-    }
-    await page.goto(printUrl, { waitUntil: "networkidle" });
-
-    const pdfBuffer = await page.pdf({
-      format: "A4",
-      printBackground: true,
-      margin: { top: "10mm", right: "8mm", bottom: "10mm", left: "8mm" },
+    const pdfBuffer = await withPooledPage(async (page) => {
+      const cookieHeader = request.headers.get("cookie");
+      if (cookieHeader) {
+        await page.setExtraHTTPHeaders({ cookie: cookieHeader });
+      }
+      await page.goto(printUrl, { waitUntil: "networkidle" });
+      return page.pdf({
+        format: "A4",
+        printBackground: true,
+        margin: { top: "10mm", right: "8mm", bottom: "10mm", left: "8mm" },
+      });
     });
 
     const fileName = `taxops-individual-tax-${reportData.assessment.referenceNumber}.pdf`;
@@ -91,9 +89,5 @@ export async function GET(
       },
       { status: 500 },
     );
-  } finally {
-    if (browser) {
-      await browser.close();
-    }
   }
 }

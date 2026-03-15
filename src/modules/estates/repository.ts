@@ -139,6 +139,17 @@ export interface EstateRepository {
     input: CreateEstateExecutorAccessRecordInput,
   ): Promise<EstateExecutorAccessRecord>;
   addChecklistItems(estateId: string, items: CreateEstateChecklistItemInput[]): Promise<void>;
+  addChecklistItem(
+    estateId: string,
+    input: {
+      stage: EstateStageCode;
+      title: string;
+      mandatory: boolean;
+      status: EstateChecklistStatus;
+      linkedAssetId?: string;
+      notes?: string;
+    },
+  ): Promise<void>;
   updateChecklistItemStatus(
     checklistItemId: string,
     status: EstateChecklistStatus,
@@ -1173,6 +1184,44 @@ class DemoEstateRepository implements EstateRepository {
         status: item.status,
         notes: item.notes ?? null,
       })),
+    });
+  }
+
+  async addChecklistItem(
+    estateId: string,
+    input: {
+      stage: EstateStageCode;
+      title: string;
+      mandatory: boolean;
+      status: EstateChecklistStatus;
+      linkedAssetId?: string;
+      notes?: string;
+    },
+  ) {
+    if (isDemoMode) {
+      const store = readDemoStore();
+      store.checklistItems.push({
+        id: `estate_checklist_${Date.now()}_${Math.floor(Math.random() * 1_000_000)}`,
+        estateId,
+        stage: input.stage,
+        title: input.title,
+        mandatory: input.mandatory,
+        status: input.status,
+        notes: input.notes,
+      });
+      writeDemoStore(store);
+      return;
+    }
+
+    await prisma.estateChecklistItem.create({
+      data: {
+        estateId,
+        stage: input.stage,
+        title: input.title,
+        mandatory: input.mandatory,
+        status: input.status,
+        notes: input.notes ?? null,
+      },
     });
   }
 

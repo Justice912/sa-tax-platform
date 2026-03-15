@@ -2,6 +2,14 @@ import type { NearEfilingIndividualTaxInput } from "@/modules/individual-tax/typ
 
 export type RoleCode = "ADMIN" | "TAX_PRACTITIONER" | "REVIEWER" | "STAFF" | "CLIENT_PORTAL";
 
+/**
+ * ExtendedRoleCode includes EXECUTOR, which is a session-only role for estate
+ * executors. It is not stored in the database (no Prisma RoleCode entry) but
+ * is issued as part of the JWT session when an executor authenticates via the
+ * executor access portal.
+ */
+export type ExtendedRoleCode = RoleCode | "EXECUTOR";
+
 export type ClientType = "INDIVIDUAL" | "COMPANY" | "ESTATE" | "TRUST";
 
 export type ClientStatus = "ACTIVE" | "ONBOARDING" | "DORMANT" | "ARCHIVED";

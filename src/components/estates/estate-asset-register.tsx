@@ -389,13 +389,23 @@ export function EstateAssetRegister({
                         <td className="px-4 py-3 text-sm text-slate-700 align-top">{asset.category.replaceAll("_", " ")}</td>
                         <td className="px-4 py-3 text-sm text-slate-700 align-top">{formatCurrency(asset.dateOfDeathValue)}</td>
                         <td className="px-4 py-3 text-sm text-slate-700 align-top">
-                          {[
-                            asset.isPrimaryResidence ? "Primary-home flag" : null,
-                            asset.isPersonalUse ? "Personal use" : null,
-                            asset.spouseRollover ? "Spouse rollover" : null,
-                          ]
-                            .filter(Boolean)
-                            .join(" | ") || "None"}
+                          <div className="flex flex-wrap gap-1">
+                            {asset.category === "BUSINESS_INTEREST" && (
+                              <span className="inline-flex items-center gap-1 rounded-full bg-purple-100 px-2 py-0.5 text-xs font-medium text-purple-700">
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" viewBox="0 0 20 20" fill="currentColor">
+                                  <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
+                                </svg>
+                                Valuation required
+                              </span>
+                            )}
+                            {[
+                              asset.isPrimaryResidence ? "Primary-home flag" : null,
+                              asset.isPersonalUse ? "Personal use" : null,
+                              asset.spouseRollover ? "Spouse rollover" : null,
+                            ]
+                              .filter(Boolean)
+                              .join(" | ") || (asset.category !== "BUSINESS_INTEREST" ? "None" : null)}
+                          </div>
                         </td>
                         <td className="px-4 py-3 text-right align-top">
                           <div className="flex items-center justify-end gap-1">

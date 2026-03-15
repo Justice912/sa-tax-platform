@@ -143,6 +143,23 @@ function buildExecutorEstateView(
   };
 }
 
+/**
+ * Public export of the executor estate view builder, used by the estate detail
+ * page to render the executor dashboard for EXECUTOR-role session users.
+ */
+export function buildExecutorEstateViewFromDetail(
+  estate: EstateDetailRecord,
+  access: {
+    recipientName: string;
+    recipientEmail: string;
+    expiresAt: string;
+    status: "ACTIVE" | "REVOKED" | "EXPIRED";
+    lastAccessedAt?: string;
+  },
+) {
+  return buildExecutorEstateView(estate, access);
+}
+
 export async function listEstates() {
   return estateRepository.listEstates();
 }
@@ -339,6 +356,33 @@ export async function addEstateAsset(estateId: string, input: EstateAssetInput) 
     },
   });
 
+  if (parsed.category === "BUSINESS_INTEREST") {
+    try {
+      await estateRepository.addChecklistItem(estateId, {
+        stage: "VALUES_CAPTURED",
+        title: `Business valuation required: ${parsed.description}`,
+        mandatory: true,
+        status: "PENDING",
+        linkedAssetId: created.id,
+        notes: "Auto-generated: This business interest requires a formal valuation for estate duty purposes.",
+      });
+
+      await writeAuditLog({
+        action: "BUSINESS_INTEREST_FLAGGED",
+        entityType: "EstateMatter",
+        entityId: estateId,
+        summary: `Business interest asset ${created.description} flagged for valuation review on ${estate.estateReference}.`,
+        afterData: {
+          assetId: created.id,
+          assetDescription: parsed.description,
+          reason: "Business interest assets require valuation review per SARS guidelines",
+        },
+      });
+    } catch {
+      // Don't fail the asset creation if flagging fails
+    }
+  }
+
   return created;
 }
 
@@ -448,6 +492,9 @@ export async function updateEstateAsset(estateId: string, assetId: string, input
     throw new Error("Estate not found.");
   }
 
+  const existingAsset = estate.assets.find((asset) => asset.id === assetId);
+  const previousCategory = existingAsset?.category;
+
   const parsed = estateAssetInputSchema.parse(input);
   const updated = await estateRepository.updateAsset(estateId, assetId, parsed);
 
@@ -462,6 +509,33 @@ export async function updateEstateAsset(estateId: string, assetId: string, input
       dateOfDeathValue: updated.dateOfDeathValue,
     },
   });
+
+  if (parsed.category === "BUSINESS_INTEREST" && previousCategory !== "BUSINESS_INTEREST") {
+    try {
+      await estateRepository.addChecklistItem(estateId, {
+        stage: "VALUES_CAPTURED",
+        title: `Business valuation required: ${parsed.description}`,
+        mandatory: true,
+        status: "PENDING",
+        linkedAssetId: updated.id,
+        notes: "Auto-generated: This business interest requires a formal valuation for estate duty purposes.",
+      });
+
+      await writeAuditLog({
+        action: "BUSINESS_INTEREST_FLAGGED",
+        entityType: "EstateMatter",
+        entityId: estateId,
+        summary: `Business interest asset ${updated.description} flagged for valuation review on ${estate.estateReference}.`,
+        afterData: {
+          assetId: updated.id,
+          assetDescription: parsed.description,
+          reason: "Business interest assets require valuation review per SARS guidelines",
+        },
+      });
+    } catch {
+      // Don't fail the asset update if flagging fails
+    }
+  }
 
   return updated;
 }

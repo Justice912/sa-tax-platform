@@ -8,6 +8,21 @@ const writeAuditLog = vi.fn();
 const resolveStoragePath = vi.fn();
 const chromiumLaunch = vi.fn();
 
+// withPooledPage mock — captures the mock page functions set up per-test.
+// The mock factory is a closure that reads the current mockPage at call time.
+let mockSetContent: ReturnType<typeof vi.fn>;
+let mockPdf: ReturnType<typeof vi.fn>;
+
+// Stable reference to the withPooledPage mock so we can restore the
+// implementation after vi.resetAllMocks() wipes it in beforeEach.
+const withPooledPage = vi.fn(async (fn: (page: unknown) => Promise<unknown>) => {
+  return fn({ setContent: mockSetContent, pdf: mockPdf });
+});
+
+vi.mock("@/lib/browser-pool", () => ({
+  withPooledPage,
+}));
+
 vi.mock("next-auth/next", () => ({
   getServerSession,
 }));
@@ -43,6 +58,12 @@ vi.mock("@/modules/audit/audit-writer", () => ({
 describe("estate filing-pack route", () => {
   beforeEach(() => {
     vi.resetAllMocks();
+    mockSetContent = vi.fn().mockResolvedValue(undefined);
+    mockPdf = vi.fn().mockResolvedValue(Buffer.from("pdf-placeholder"));
+    // Restore withPooledPage implementation after vi.resetAllMocks() wipes it.
+    withPooledPage.mockImplementation(async (fn: (page: unknown) => Promise<unknown>) => {
+      return fn({ setContent: mockSetContent, pdf: mockPdf });
+    });
   });
 
   it("stores business valuation reports as Word documents when the artifact format is docx", async () => {
@@ -228,12 +249,7 @@ describe("estate filing-pack route", () => {
 
   it("can download the SARS CGT on death report as a PDF", async () => {
     getServerSession.mockResolvedValue({ user: { id: "user_001" } });
-    const setContent = vi.fn().mockResolvedValue(undefined);
-    const pdf = vi.fn().mockResolvedValue(Buffer.from("pdf-cgt"));
-    chromiumLaunch.mockResolvedValue({
-      newPage: vi.fn().mockResolvedValue({ setContent, pdf }),
-      close: vi.fn().mockResolvedValue(undefined),
-    });
+    mockPdf.mockResolvedValue(Buffer.from("pdf-cgt"));
     resolveStoragePath.mockImplementation((storageKey: string) => `C:/storage/${storageKey}`);
     save.mockImplementation(async ({ fileName, content }: { fileName: string; content: Buffer }) => ({
       storageKey: `uploads/${fileName}`,
@@ -298,12 +314,7 @@ describe("estate filing-pack route", () => {
 
   it("can download the Master liquidation and distribution report as a PDF", async () => {
     getServerSession.mockResolvedValue({ user: { id: "user_001" } });
-    const setContent = vi.fn().mockResolvedValue(undefined);
-    const pdf = vi.fn().mockResolvedValue(Buffer.from("pdf-master"));
-    chromiumLaunch.mockResolvedValue({
-      newPage: vi.fn().mockResolvedValue({ setContent, pdf }),
-      close: vi.fn().mockResolvedValue(undefined),
-    });
+    mockPdf.mockResolvedValue(Buffer.from("pdf-master"));
     resolveStoragePath.mockImplementation((storageKey: string) => `C:/storage/${storageKey}`);
     save.mockImplementation(async ({ fileName, content }: { fileName: string; content: Buffer }) => ({
       storageKey: `uploads/${fileName}`,
@@ -376,12 +387,7 @@ describe("estate filing-pack route", () => {
 
   it("can download the complete filing pack as a ZIP bundle", async () => {
     getServerSession.mockResolvedValue({ user: { id: "user_001" } });
-    const setContent = vi.fn().mockResolvedValue(undefined);
-    const pdf = vi.fn().mockResolvedValue(Buffer.from("pdf-bundle"));
-    chromiumLaunch.mockResolvedValue({
-      newPage: vi.fn().mockResolvedValue({ setContent, pdf }),
-      close: vi.fn().mockResolvedValue(undefined),
-    });
+    mockPdf.mockResolvedValue(Buffer.from("pdf-bundle"));
     generateFilingPackManifest.mockResolvedValue({
       estateId: "estate_001",
       estateReference: "EST-2026-0001",

@@ -1,8 +1,9 @@
 import JSZip from "jszip";
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
-import { chromium } from "@playwright/test";
+import type { Page } from "@playwright/test";
 import { authOptions } from "@/lib/auth-options";
+import { withPooledPage } from "@/lib/browser-pool";
 import { writeAuditLog } from "@/modules/audit/audit-writer";
 import { resolveStoragePath, storageProvider } from "@/modules/documents/storage-provider";
 import { buildEstateValuationDocx } from "@/modules/estates/forms/valuation-docx";
@@ -45,14 +46,7 @@ type FilingPackManifest = Awaited<
   ReturnType<typeof estateFilingPackService.generateFilingPackManifest>
 >;
 type FilingPackArtifactRecord = FilingPackManifest["artifacts"][number];
-type PdfPage = {
-  setContent: (html: string, options: { waitUntil: "domcontentloaded" }) => Promise<void>;
-  pdf: (options: {
-    format: "A4";
-    printBackground: boolean;
-    margin: { top: string; right: string; bottom: string; left: string };
-  }) => Promise<Uint8Array>;
-};
+// Page is imported from @playwright/test and used directly for PDF rendering.
 
 const SUPPORTED_ARTIFACT_RENDER_FORMATS: Record<
   EstateYearPackFormCode,
@@ -1178,7 +1172,7 @@ function buildDownloadResponse(
 async function prepareArtifactFile(
   artifact: FilingPackArtifactRecord,
   manifest: FilingPackManifest,
-  page: PdfPage | null,
+  page: Page | null,
   requestedRenderFormat?: RequestedRenderFormat,
 ): Promise<PreparedArtifactFile> {
   const outputFormat = resolveOutputFormat(artifact, requestedRenderFormat);
@@ -1358,116 +1352,85 @@ export async function GET(
     const needsPdfBrowser = artifactsToStore.some((artifact) =>
       isPdfFormat(resolveOutputFormat(artifact, requestedRenderFormat)),
     );
-    const browser = needsPdfBrowser ? await chromium.launch({ headless: true }) : null;
-    const page = browser ? ((await browser.newPage()) as PdfPage) : null;
 
-    try {
-      const preparedArtifacts: PreparedArtifactFile[] = [];
-
+    // When PDF output is needed we borrow a single pooled page for the entire
+    // artifact loop, then release it back to the pool when done.  Non-PDF
+    // requests skip the pool entirely.
+    const prepareAll = async (page: Page | null): Promise<PreparedArtifactFile[]> => {
+      const results: PreparedArtifactFile[] = [];
       for (const artifact of artifactsToStore) {
-        preparedArtifacts.push(
+        results.push(
           await prepareArtifactFile(artifact, manifest, page, requestedRenderFormat),
         );
       }
+      return results;
+    };
 
-      const storedManifest: EstateStoredFilingPackManifest = {
-        ...manifest,
-        artifacts: preparedArtifacts.map((entry) => entry.artifact),
-      };
+    const preparedArtifacts = needsPdfBrowser
+      ? await withPooledPage((page) => prepareAll(page))
+      : await prepareAll(null);
 
-      if (requestedArtifactCode) {
-        await writeAuditLog({
-          actorId: session?.user?.id,
-          action: "ESTATE_FILING_PACK_ARTIFACT_GENERATED",
-          entityType: "EstateMatter",
-          entityId: estateId,
-          summary: `Generated filing-pack artifact ${requestedArtifactCode} for ${manifest.estateReference} (${taxYear}).`,
-          afterData: {
-            taxYear,
-            artifactCode: requestedArtifactCode,
-            outputFormat: preparedArtifacts[0]?.artifact.outputFormat,
-            storageKey: preparedArtifacts[0]?.artifact.storageKey,
-          },
-        });
+    const storedManifest: EstateStoredFilingPackManifest = {
+      ...manifest,
+      artifacts: preparedArtifacts.map((entry) => entry.artifact),
+    };
 
-        if (downloadRequested) {
-          return buildDownloadResponse(
-            preparedArtifacts[0]?.content ?? Buffer.alloc(0),
-            preparedArtifacts[0]?.artifact.contentType ?? "application/octet-stream",
-            preparedArtifacts[0]?.artifact.fileName ?? "estate-artifact.bin",
-          );
-        }
+    if (requestedArtifactCode) {
+      await writeAuditLog({
+        actorId: session?.user?.id,
+        action: "ESTATE_FILING_PACK_ARTIFACT_GENERATED",
+        entityType: "EstateMatter",
+        entityId: estateId,
+        summary: `Generated filing-pack artifact ${requestedArtifactCode} for ${manifest.estateReference} (${taxYear}).`,
+        afterData: {
+          taxYear,
+          artifactCode: requestedArtifactCode,
+          outputFormat: preparedArtifacts[0]?.artifact.outputFormat,
+          storageKey: preparedArtifacts[0]?.artifact.storageKey,
+        },
+      });
 
-        return NextResponse.json(storedManifest, { status: 200 });
-      }
-
-      const storedManifestJson = await storeManifestJson(storedManifest);
-
-      if (requestedBundle) {
-        const preparedBundle = await prepareBundleFile(
-          {
-            ...storedManifest,
-            manifestStorageKey: storedManifestJson.storageKey,
-          },
-          preparedArtifacts,
-        );
-
-        await writeAuditLog({
-          actorId: session?.user?.id,
-          action: "ESTATE_FILING_PACK_GENERATED",
-          entityType: "EstateMatter",
-          entityId: estateId,
-          summary: `Generated estate filing-pack ZIP for ${manifest.estateReference} (${taxYear}).`,
-          afterData: {
-            taxYear,
-            manifestStorageKey: storedManifestJson.storageKey,
-            bundleStorageKey: preparedBundle.bundle.storageKey,
-            artifactCount: preparedArtifacts.length,
-          },
-        });
-
-        if (downloadRequested) {
-          return buildDownloadResponse(
-            preparedBundle.content,
-            preparedBundle.bundle.contentType,
-            preparedBundle.bundle.fileName,
-          );
-        }
-
-        return NextResponse.json(
-          {
-            ...storedManifest,
-            manifestStorageKey: storedManifestJson.storageKey,
-            bundle: preparedBundle.bundle,
-          },
-          {
-            status: 200,
-            headers: {
-              "X-Storage-Key": storedManifestJson.storageKey,
-              "X-Bundle-Storage-Key": preparedBundle.bundle.storageKey,
-            },
-          },
+      if (downloadRequested) {
+        return buildDownloadResponse(
+          preparedArtifacts[0]?.content ?? Buffer.alloc(0),
+          preparedArtifacts[0]?.artifact.contentType ?? "application/octet-stream",
+          preparedArtifacts[0]?.artifact.fileName ?? "estate-artifact.bin",
         );
       }
+
+      return NextResponse.json(storedManifest, { status: 200 });
+    }
+
+    const storedManifestJson = await storeManifestJson(storedManifest);
+
+    if (requestedBundle) {
+      const preparedBundle = await prepareBundleFile(
+        {
+          ...storedManifest,
+          manifestStorageKey: storedManifestJson.storageKey,
+        },
+        preparedArtifacts,
+      );
 
       await writeAuditLog({
         actorId: session?.user?.id,
         action: "ESTATE_FILING_PACK_GENERATED",
         entityType: "EstateMatter",
         entityId: estateId,
-        summary: `Generated estate filing pack for ${manifest.estateReference} (${taxYear}).`,
+        summary: `Generated estate filing-pack ZIP for ${manifest.estateReference} (${taxYear}).`,
         afterData: {
           taxYear,
           manifestStorageKey: storedManifestJson.storageKey,
+          bundleStorageKey: preparedBundle.bundle.storageKey,
           artifactCount: preparedArtifacts.length,
         },
       });
 
       if (downloadRequested) {
         return buildDownloadResponse(
-          storedManifestJson.content,
-          "application/json",
-          storedManifestJson.fileName,
+          preparedBundle.content,
+          preparedBundle.bundle.contentType,
+          preparedBundle.bundle.fileName,
         );
       }
 
@@ -1475,19 +1438,51 @@ export async function GET(
         {
           ...storedManifest,
           manifestStorageKey: storedManifestJson.storageKey,
+          bundle: preparedBundle.bundle,
         },
         {
           status: 200,
           headers: {
             "X-Storage-Key": storedManifestJson.storageKey,
+            "X-Bundle-Storage-Key": preparedBundle.bundle.storageKey,
           },
         },
       );
-    } finally {
-      if (browser) {
-        await browser.close();
-      }
     }
+
+    await writeAuditLog({
+      actorId: session?.user?.id,
+      action: "ESTATE_FILING_PACK_GENERATED",
+      entityType: "EstateMatter",
+      entityId: estateId,
+      summary: `Generated estate filing pack for ${manifest.estateReference} (${taxYear}).`,
+      afterData: {
+        taxYear,
+        manifestStorageKey: storedManifestJson.storageKey,
+        artifactCount: preparedArtifacts.length,
+      },
+    });
+
+    if (downloadRequested) {
+      return buildDownloadResponse(
+        storedManifestJson.content,
+        "application/json",
+        storedManifestJson.fileName,
+      );
+    }
+
+    return NextResponse.json(
+      {
+        ...storedManifest,
+        manifestStorageKey: storedManifestJson.storageKey,
+      },
+      {
+        status: 200,
+        headers: {
+          "X-Storage-Key": storedManifestJson.storageKey,
+        },
+      },
+    );
   } catch (error) {
     const detail = error instanceof Error ? error.message : "Unknown error";
     const status = /approved estate engine runs|year pack|estate not found/i.test(detail)
