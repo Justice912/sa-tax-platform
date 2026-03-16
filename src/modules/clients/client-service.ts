@@ -1,3 +1,5 @@
+import fs from "node:fs";
+import path from "node:path";
 import { prisma } from "@/lib/db";
 import { isDemoMode } from "@/lib/env";
 import { writeAuditLog } from "@/modules/audit/audit-writer";
@@ -65,6 +67,69 @@ function buildClientCode(existingCount: number) {
   return `CLI-${String(existingCount + 1).padStart(4, "0")}`;
 }
 
+// ---------------------------------------------------------------------------
+// Demo-mode file-based persistence (survives HMR recompilations & restarts)
+// ---------------------------------------------------------------------------
+
+const demoClientsFileName = "demo-clients.json";
+
+function getDemoClientsFilePath() {
+  const storageRoot = process.env.STORAGE_ROOT?.trim();
+  const basePath = storageRoot ? storageRoot : path.join(process.cwd(), ".storage");
+  return path.join(basePath, demoClientsFileName);
+}
+
+function readDemoClientsFromDisk(): ClientRecord[] {
+  // In test mode, use the in-memory array directly (no disk I/O)
+  if (process.env.NODE_ENV === "test") {
+    return demoClients;
+  }
+
+  const filePath = getDemoClientsFilePath();
+
+  try {
+    if (!fs.existsSync(filePath)) {
+      // First run — seed from the in-memory demo data and persist
+      const seeded = [...demoClients];
+      fs.mkdirSync(path.dirname(filePath), { recursive: true });
+      fs.writeFileSync(filePath, JSON.stringify(seeded, null, 2), "utf8");
+      return seeded;
+    }
+
+    const raw = fs.readFileSync(filePath, "utf8").trim();
+    if (!raw) {
+      const seeded = [...demoClients];
+      fs.writeFileSync(filePath, JSON.stringify(seeded, null, 2), "utf8");
+      return seeded;
+    }
+
+    const parsed = JSON.parse(raw);
+    if (!Array.isArray(parsed)) {
+      const seeded = [...demoClients];
+      fs.writeFileSync(filePath, JSON.stringify(seeded, null, 2), "utf8");
+      return seeded;
+    }
+
+    return parsed as ClientRecord[];
+  } catch {
+    return [...demoClients];
+  }
+}
+
+function writeDemoClientsToDisk(records: ClientRecord[]) {
+  if (process.env.NODE_ENV === "test") {
+    return;
+  }
+
+  const filePath = getDemoClientsFilePath();
+  fs.mkdirSync(path.dirname(filePath), { recursive: true });
+  fs.writeFileSync(filePath, JSON.stringify(records, null, 2), "utf8");
+}
+
+// ---------------------------------------------------------------------------
+// Public API
+// ---------------------------------------------------------------------------
+
 export async function listClients(query?: string, status?: string, clientType?: string) {
   const normalizedQuery = query?.toLowerCase().trim();
 
@@ -91,7 +156,9 @@ export async function listClients(query?: string, status?: string, clientType?: 
     return clients.map<ClientRecord>((client) => toClientRecord(client));
   }
 
-  return demoClients.filter((client) => {
+  const allClients = readDemoClientsFromDisk();
+
+  return allClients.filter((client) => {
     const matchesQuery =
       !normalizedQuery ||
       client.displayName.toLowerCase().includes(normalizedQuery) ||
@@ -114,7 +181,8 @@ export async function getClientById(clientId: string) {
     return toClientRecord(client);
   }
 
-  return demoClients.find((client) => client.id === clientId) ?? null;
+  const allClients = readDemoClientsFromDisk();
+  return allClients.find((client) => client.id === clientId) ?? null;
 }
 
 export async function createClient(input: CreateClientInput): Promise<ClientRecord> {
@@ -164,9 +232,11 @@ export async function createClient(input: CreateClientInput): Promise<ClientReco
     return record;
   }
 
+  const allClients = readDemoClientsFromDisk();
+
   const created: ClientRecord = {
     id: `client_${Date.now()}_${Math.floor(Math.random() * 1_000_000)}`,
-    code: buildClientCode(demoClients.length),
+    code: buildClientCode(allClients.length),
     firmId: input.firmId,
     displayName: parsed.displayName,
     clientType: parsed.clientType,
@@ -178,7 +248,14 @@ export async function createClient(input: CreateClientInput): Promise<ClientReco
     notes: parsed.notes || undefined,
   };
 
-  demoClients.push(created);
+  allClients.push(created);
+  writeDemoClientsToDisk(allClients);
+
+  // Also keep the in-memory array in sync for tests
+  if (!demoClients.find((c) => c.id === created.id)) {
+    demoClients.push(created);
+  }
+
   await writeAuditLog({
     action: "CLIENT_CREATED",
     entityType: "Client",
@@ -245,7 +322,8 @@ export async function updateClient(clientId: string, input: UpdateClientInput): 
     return record;
   }
 
-  const client = demoClients.find((entry) => entry.id === clientId);
+  const allClients = readDemoClientsFromDisk();
+  const client = allClients.find((entry) => entry.id === clientId);
   if (!client) {
     throw new Error("Client not found.");
   }
@@ -258,6 +336,8 @@ export async function updateClient(clientId: string, input: UpdateClientInput): 
   client.email = parsed.email || undefined;
   client.phone = parsed.phone || undefined;
   client.notes = parsed.notes || undefined;
+
+  writeDemoClientsToDisk(allClients);
 
   await writeAuditLog({
     action: "CLIENT_UPDATED",
@@ -278,4 +358,3 @@ export async function updateClient(clientId: string, input: UpdateClientInput): 
 
   return client;
 }
-
