@@ -36,10 +36,28 @@ export default async function ClientDetailPage({ params }: { params: Promise<{ c
         <div>
           <h1 className="text-2xl font-semibold">{client.displayName}</h1>
           <p className="text-sm text-slate-600">
-            {client.code} - {client.clientType}
+            {client.code} &mdash;{" "}
+            <span className={`inline-flex rounded-full px-2 py-0.5 text-xs font-semibold ${
+              client.clientType === "INDIVIDUAL" ? "bg-blue-50 text-blue-700" :
+              client.clientType === "COMPANY" ? "bg-purple-50 text-purple-700" :
+              client.clientType === "TRUST" ? "bg-amber-50 text-amber-700" :
+              "bg-emerald-50 text-emerald-700"
+            }`}>
+              {client.clientType === "INDIVIDUAL" ? "Individual" :
+               client.clientType === "COMPANY" ? "Company" :
+               client.clientType === "TRUST" ? "Trust" : "Estate"}
+            </span>
           </p>
         </div>
         <div className="flex items-center gap-2">
+          <Link
+            href={`/clients?type=${client.clientType}`}
+            className="rounded-md border border-slate-200 px-3 py-2 text-sm font-medium text-slate-700 transition hover:border-teal-300 hover:text-teal-700"
+          >
+            Back to {client.clientType === "INDIVIDUAL" ? "Individuals" :
+                     client.clientType === "COMPANY" ? "Companies" :
+                     client.clientType === "TRUST" ? "Trusts" : "Estates"}
+          </Link>
           <StatusBadge value={client.status} />
           <Link
             href={`/clients/${client.id}/edit`}

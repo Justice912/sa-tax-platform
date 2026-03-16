@@ -9,6 +9,18 @@ describe("client creation flow", () => {
     expect(clients.some((client) => client.id === "golden_client_estate_001")).toBe(true);
   });
 
+  it("filters clients by clientType", async () => {
+    const individuals = await listClients(undefined, undefined, "INDIVIDUAL");
+    expect(individuals.length).toBeGreaterThan(0);
+    expect(individuals.every((c) => c.clientType === "INDIVIDUAL")).toBe(true);
+
+    const companies = await listClients(undefined, undefined, "COMPANY");
+    expect(companies.every((c) => c.clientType === "COMPANY")).toBe(true);
+
+    const all = await listClients(undefined, undefined, "ALL");
+    expect(all.length).toBeGreaterThanOrEqual(individuals.length + companies.length);
+  });
+
   it("creates a client record and can fetch it by id", async () => {
     const created = await createClient({
       firmId: "firm_ubuntu",

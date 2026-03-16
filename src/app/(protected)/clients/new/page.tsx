@@ -39,6 +39,8 @@ export default async function NewClientPage() {
     });
 
     revalidatePath("/clients");
+    // Redirect to client detail page; the clients list will show the new client
+    // under the correct type tab when the user navigates back
     redirect(`/clients/${created.id}`);
   }
 

@@ -65,7 +65,7 @@ function buildClientCode(existingCount: number) {
   return `CLI-${String(existingCount + 1).padStart(4, "0")}`;
 }
 
-export async function listClients(query?: string, status?: string) {
+export async function listClients(query?: string, status?: string, clientType?: string) {
   const normalizedQuery = query?.toLowerCase().trim();
 
   if (!isDemoMode) {
@@ -73,6 +73,7 @@ export async function listClients(query?: string, status?: string) {
       where: {
         AND: [
           status && status !== "ALL" ? { status: status as never } : {},
+          clientType && clientType !== "ALL" ? { clientType: clientType as never } : {},
           normalizedQuery
             ? {
                 OR: [
@@ -98,7 +99,8 @@ export async function listClients(query?: string, status?: string) {
       client.taxReferenceNumber?.toLowerCase().includes(normalizedQuery);
 
     const matchesStatus = !status || status === "ALL" || client.status === status;
-    return Boolean(matchesQuery && matchesStatus);
+    const matchesType = !clientType || clientType === "ALL" || client.clientType === clientType;
+    return Boolean(matchesQuery && matchesStatus && matchesType);
   });
 }
 
