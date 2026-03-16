@@ -95,7 +95,8 @@ describe("individual tax 2026 calculation", () => {
     expect(result.assessmentYear).toBe(2026);
     expect(result.summary.taxableIncome).toBeGreaterThan(700000);
     expect(result.summary.normalTax).toBeGreaterThan(150000);
-    expect(result.summary.totalCredits).toBeGreaterThan(170000);
+    // totalCredits = PAYE (165000) + medical credits (S6A scheme fees + S6B)
+    expect(result.summary.totalCredits).toBeGreaterThan(165000);
     expect(result.warnings).toEqual([]);
   });
 

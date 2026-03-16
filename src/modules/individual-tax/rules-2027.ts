@@ -35,6 +35,13 @@ export const INDIVIDUAL_TAX_RULEPACK_2027: IndividualTaxRulePack = {
     deductiblePercentageLimit: 0.275,
     annualCap: 350000,
   },
+  cgt: {
+    annualExclusion: 40000,
+    deathExclusion: 300000,
+    inclusionRate: 0.40,
+    primaryResidenceExclusion: 2000000,
+  },
+  foreignEmploymentExemption: 1250000,
   sourceReference:
     "SARS 2027 rates of tax for individuals and SARS Budget Tax Guide 2026 medical tax credits.",
 };

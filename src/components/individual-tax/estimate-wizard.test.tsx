@@ -36,10 +36,20 @@ describe("EstimateWizard", () => {
     expect(screen.getByLabelText(/business kilometres/i)).toBeInTheDocument();
 
     await user.click(screen.getByRole("button", { name: /next: medical/i }));
+    await user.click(screen.getByRole("button", { name: /next: capital gains/i }));
+    expect(screen.getByRole("heading", { name: /capital gains/i })).toBeInTheDocument();
+
     await user.click(screen.getByRole("button", { name: /next: other income/i }));
     expect(screen.getByRole("heading", { name: /other income/i })).toBeInTheDocument();
     expect(screen.getByLabelText(/gross rental income/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/gross sole proprietor income/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/pension income/i)).toBeInTheDocument();
+
+    await user.click(screen.getByRole("button", { name: /next: provisional tax/i }));
+    expect(screen.getByRole("heading", { name: /provisional tax/i })).toBeInTheDocument();
+
+    await user.click(screen.getByRole("button", { name: /next: home office/i }));
+    expect(screen.getByRole("heading", { name: /home office/i })).toBeInTheDocument();
 
     await user.click(screen.getByRole("button", { name: /next: deductions/i }));
     await user.click(screen.getByRole("button", { name: /next: review/i }));

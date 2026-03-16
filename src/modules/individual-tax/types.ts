@@ -60,7 +60,33 @@ export interface IndividualTaxDeductionsInput {
 }
 
 export interface IndividualTaxCapitalGainsInput {
-  taxableCapitalGain: number;
+  proceeds: number;
+  baseCost: number;
+  primaryResidenceExclusion: boolean;
+}
+
+export interface IndividualTaxOtherIncomeInput {
+  pensionIncome: number;
+  annuityIncome: number;
+  foreignEmploymentIncome: number;
+}
+
+export interface IndividualTaxProvisionalTaxInput {
+  firstPayment: number;
+  secondPayment: number;
+  thirdPayment: number;
+}
+
+export interface IndividualTaxHomeOfficeInput {
+  qualifies: boolean;
+  officeArea: number;
+  totalHomeArea: number;
+  rent: number;
+  bondInterest: number;
+  ratesAndTaxes: number;
+  electricity: number;
+  cleaning: number;
+  repairs: number;
 }
 
 export interface NearEfilingIndividualTaxInput {
@@ -73,6 +99,9 @@ export interface NearEfilingIndividualTaxInput {
   soleProprietor: IndividualTaxSoleProprietorInput;
   deductions: IndividualTaxDeductionsInput;
   capitalGains?: IndividualTaxCapitalGainsInput;
+  otherIncome?: IndividualTaxOtherIncomeInput;
+  provisionalTax?: IndividualTaxProvisionalTaxInput;
+  homeOffice?: IndividualTaxHomeOfficeInput;
 }
 
 export interface LegacyIndividualTaxInput {
@@ -137,6 +166,13 @@ export interface IndividualTaxRulePack {
     deductiblePercentageLimit: number;
     annualCap: number;
   };
+  cgt: {
+    annualExclusion: number;
+    deathExclusion: number;
+    inclusionRate: number;
+    primaryResidenceExclusion: number;
+  };
+  foreignEmploymentExemption: number;
   sourceReference: string;
 }
 

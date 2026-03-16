@@ -93,6 +93,32 @@ export function buildDefaultNearEfilingInput(
       donationsUnderSection18A: 0,
       priorAssessmentDebitOrCredit: 0,
     },
+    capitalGains: {
+      proceeds: 0,
+      baseCost: 0,
+      primaryResidenceExclusion: false,
+    },
+    otherIncome: {
+      pensionIncome: 0,
+      annuityIncome: 0,
+      foreignEmploymentIncome: 0,
+    },
+    provisionalTax: {
+      firstPayment: 0,
+      secondPayment: 0,
+      thirdPayment: 0,
+    },
+    homeOffice: {
+      qualifies: false,
+      officeArea: 0,
+      totalHomeArea: 0,
+      rent: 0,
+      bondInterest: 0,
+      ratesAndTaxes: 0,
+      electricity: 0,
+      cleaning: 0,
+      repairs: 0,
+    },
   };
 }
 
@@ -200,6 +226,32 @@ export function parseNearEfilingEstimateFormData(
           formData,
           "deductions.priorAssessmentDebitOrCredit",
         ),
+      },
+      capitalGains: {
+        proceeds: readFormNumber(formData, "capitalGains.proceeds"),
+        baseCost: readFormNumber(formData, "capitalGains.baseCost"),
+        primaryResidenceExclusion: readFormBoolean(formData, "capitalGains.primaryResidenceExclusion"),
+      },
+      otherIncome: {
+        pensionIncome: readFormNumber(formData, "otherIncome.pensionIncome"),
+        annuityIncome: readFormNumber(formData, "otherIncome.annuityIncome"),
+        foreignEmploymentIncome: readFormNumber(formData, "otherIncome.foreignEmploymentIncome"),
+      },
+      provisionalTax: {
+        firstPayment: readFormNumber(formData, "provisionalTax.firstPayment"),
+        secondPayment: readFormNumber(formData, "provisionalTax.secondPayment"),
+        thirdPayment: readFormNumber(formData, "provisionalTax.thirdPayment"),
+      },
+      homeOffice: {
+        qualifies: readFormBoolean(formData, "homeOffice.qualifies"),
+        officeArea: readFormNumber(formData, "homeOffice.officeArea"),
+        totalHomeArea: readFormNumber(formData, "homeOffice.totalHomeArea"),
+        rent: readFormNumber(formData, "homeOffice.rent"),
+        bondInterest: readFormNumber(formData, "homeOffice.bondInterest"),
+        ratesAndTaxes: readFormNumber(formData, "homeOffice.ratesAndTaxes"),
+        electricity: readFormNumber(formData, "homeOffice.electricity"),
+        cleaning: readFormNumber(formData, "homeOffice.cleaning"),
+        repairs: readFormNumber(formData, "homeOffice.repairs"),
       },
     },
   };

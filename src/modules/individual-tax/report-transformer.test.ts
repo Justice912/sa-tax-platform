@@ -55,7 +55,6 @@ describe("individual tax report transformer", () => {
     expect(report.income.groups[0]?.title).toBe("Employment income [IRP5/IT3(a)]");
     expect(report.income.groups[0]?.rows.map((row) => row.code)).toEqual([
       "3601",
-      "3704",
       "3701",
       "3713",
       "3810",

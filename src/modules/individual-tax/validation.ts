@@ -86,6 +86,29 @@ export const nearEfilingIndividualTaxInputSchema = z.object({
     priorAssessmentDebitOrCredit: z.number(),
   }),
   capitalGains: z.object({
-    taxableCapitalGain: z.number().nonnegative(),
+    proceeds: z.number().min(0),
+    baseCost: z.number().min(0),
+    primaryResidenceExclusion: z.boolean(),
+  }).optional(),
+  otherIncome: z.object({
+    pensionIncome: z.number().min(0),
+    annuityIncome: z.number().min(0),
+    foreignEmploymentIncome: z.number().min(0),
+  }).optional(),
+  provisionalTax: z.object({
+    firstPayment: z.number().min(0),
+    secondPayment: z.number().min(0),
+    thirdPayment: z.number().min(0),
+  }).optional(),
+  homeOffice: z.object({
+    qualifies: z.boolean(),
+    officeArea: z.number().min(0),
+    totalHomeArea: z.number().min(0),
+    rent: z.number().min(0),
+    bondInterest: z.number().min(0),
+    ratesAndTaxes: z.number().min(0),
+    electricity: z.number().min(0),
+    cleaning: z.number().min(0),
+    repairs: z.number().min(0),
   }).optional(),
 });

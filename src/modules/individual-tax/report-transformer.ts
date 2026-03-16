@@ -112,13 +112,26 @@ function buildAssessmentSummary(calc: IndividualTaxCalculation, seed: number) {
 }
 
 function buildIncomeGroups(calc: IndividualTaxCalculation) {
+  // Read all income values directly from the calculation lines to avoid
+  // derived arithmetic that breaks when new income types are present.
   const salary = findLine(calc.incomeLines, "3601")?.amountAssessed ?? 0;
   const travelAllowance = findLine(calc.incomeLines, "3701")?.amountAssessed ?? 0;
-  const localInterestAssessed = findLine(calc.incomeLines, "4201")?.amountAssessed ?? 0;
-  const localInterestGross = calc.summary.totalIncome - salary - travelAllowance + localInterestAssessed;
-  const localInterestExemption = asCurrencyAmount(localInterestGross - localInterestAssessed);
+  const localInterestLine = findLine(calc.incomeLines, "4201");
+  const localInterestAssessed = localInterestLine?.amountAssessed ?? 0;
+  // The exemption is stored as a separate line where present; fall back to 0.
+  const localInterestExemptionLine = findLine(calc.incomeLines, "4218");
+  const localInterestExemption = localInterestExemptionLine
+    ? Math.abs(localInterestExemptionLine.amountAssessed)
+    : 0;
 
-  return [
+  // New income lines added to the calculation engine.
+  const pensionIncome = findLine(calc.incomeLines, "3704")?.amountAssessed ?? 0;
+  const annuityIncome = findLine(calc.incomeLines, "3708")?.amountAssessed ?? 0;
+  const foreignEmploymentIncome = findLine(calc.incomeLines, "3651")?.amountAssessed ?? 0;
+  const foreignExemption = findLine(calc.incomeLines, "3652")?.amountAssessed ?? 0;
+  const capitalGain = findLine(calc.incomeLines, "CGT")?.amountAssessed ?? 0;
+
+  const groups: IndividualTaxReport["income"]["groups"] = [
     {
       title: "Employment income [IRP5/IT3(a)]",
       rows: [
@@ -127,12 +140,6 @@ function buildIncomeGroups(calc: IndividualTaxCalculation) {
           description: "Income - Salary",
           computations: "Declared taxable salary income",
           amountAssessed: asCurrencyAmount(salary),
-        },
-        {
-          code: "3704",
-          description: "Pension income",
-          computations: "No separate pension income declared",
-          amountAssessed: 0,
         },
         {
           code: "3701",
@@ -178,6 +185,65 @@ function buildIncomeGroups(calc: IndividualTaxCalculation) {
       ],
     },
   ];
+
+  // Pension & Annuity Income — only include when at least one line is non-zero.
+  if (pensionIncome !== 0 || annuityIncome !== 0) {
+    groups.push({
+      title: "Pension & Annuity Income",
+      rows: [
+        {
+          code: "3704",
+          description: "Pension income",
+          computations: findLine(calc.incomeLines, "3704")?.computations ?? "Pension income received",
+          amountAssessed: asCurrencyAmount(pensionIncome),
+        },
+        {
+          code: "3708",
+          description: "Annuity income",
+          computations: findLine(calc.incomeLines, "3708")?.computations ?? "Annuity income received",
+          amountAssessed: asCurrencyAmount(annuityIncome),
+        },
+      ],
+    });
+  }
+
+  // Foreign Employment Income — only include when at least one line is non-zero.
+  if (foreignEmploymentIncome !== 0 || foreignExemption !== 0) {
+    groups.push({
+      title: "Foreign Employment Income",
+      rows: [
+        {
+          code: "3651",
+          description: "Foreign employment income",
+          computations: findLine(calc.incomeLines, "3651")?.computations ?? "Foreign employment income received",
+          amountAssessed: asCurrencyAmount(foreignEmploymentIncome),
+        },
+        {
+          code: "3652",
+          description: "Foreign employment exemption",
+          computations: findLine(calc.incomeLines, "3652")?.computations ?? "Exemption applied under s10(1)(o)(ii)",
+          amountAssessed: asCurrencyAmount(foreignExemption),
+        },
+      ],
+    });
+  }
+
+  // Capital Gains — only include when the CGT line is non-zero.
+  if (capitalGain !== 0) {
+    groups.push({
+      title: "Capital Gains",
+      rows: [
+        {
+          code: "CGT",
+          description: "Capital gain included in income",
+          computations: findLine(calc.incomeLines, "CGT")?.computations ?? "Taxable capital gain (inclusion rate applied)",
+          amountAssessed: asCurrencyAmount(capitalGain),
+        },
+      ],
+    });
+  }
+
+  return groups;
 }
 
 function buildDeductionRows(calc: IndividualTaxCalculation) {
@@ -185,7 +251,7 @@ function buildDeductionRows(calc: IndividualTaxCalculation) {
   const travelAmount = Math.abs(findLine(calc.deductionLines, "4014")?.amountAssessed ?? 0);
   const retirementCap = asCurrencyAmount(calc.summary.totalIncome * 0.275);
 
-  return [
+  const rows: IndividualTaxReport["deductions"]["rows"] = [
     {
       code: "4029",
       description: "Retirement fund contributions",
@@ -200,6 +266,30 @@ function buildDeductionRows(calc: IndividualTaxCalculation) {
       amountAssessed: asCurrencyAmount(travelAmount),
     },
   ];
+
+  // S18A donations — include only when the line exists in the calculation.
+  const donationsLine = findLine(calc.deductionLines, "4013");
+  if (donationsLine) {
+    rows.push({
+      code: "4013",
+      description: "Donations under s18A",
+      computations: donationsLine.computations,
+      amountAssessed: asCurrencyAmount(Math.abs(donationsLine.amountAssessed)),
+    });
+  }
+
+  // Home office deduction — include only when the line exists in the calculation.
+  const homeOfficeLine = findLine(calc.deductionLines, "4028");
+  if (homeOfficeLine) {
+    rows.push({
+      code: "4028",
+      description: "Home office deduction",
+      computations: homeOfficeLine.computations,
+      amountAssessed: asCurrencyAmount(Math.abs(homeOfficeLine.amountAssessed)),
+    });
+  }
+
+  return rows;
 }
 
 function buildTaxCalculationRows(calc: IndividualTaxCalculation) {
@@ -259,6 +349,18 @@ function buildTaxCalculationRows(calc: IndividualTaxCalculation) {
       computations: "Employees' tax withheld",
       amountAssessed: asCurrencyAmount(paye),
     },
+    ...(findLine(calc.taxCalculationLines, "IRP6")
+      ? [
+          {
+            code: "IRP6",
+            description: "Provisional tax paid",
+            computations: findLine(calc.taxCalculationLines, "IRP6")!.computations,
+            amountAssessed: asCurrencyAmount(
+              Math.abs(findLine(calc.taxCalculationLines, "IRP6")!.amountAssessed),
+            ),
+          },
+        ]
+      : []),
     {
       code: "PREV_ASSESSMENT",
       description: "Previous assessment result",

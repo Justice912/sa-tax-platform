@@ -37,7 +37,10 @@ describe("individual tax schedules", () => {
     expect(result.warnings).toHaveLength(0);
   });
 
-  it("calculates medical scheme and out-of-pocket credits", () => {
+  it("calculates medical scheme and out-of-pocket credits (under 65)", () => {
+    // S6A: (364 × 2 + 246 × 1) × 12 = 11 688
+    // S6B under 65: 25% × (12000 - 7.5% × 700000) = 25% × (12000 - 52500) = 0 (floor)
+    // Total: 11 688
     const result = calculateMedicalSchedule({
       medical: {
         medicalSchemeContributions: 54000,
@@ -46,10 +49,36 @@ describe("individual tax schedules", () => {
       },
       medicalAidMembers: 3,
       medicalAidMonths: 12,
+      age: 35,
+      taxableIncomeBeforeMedical: 700000,
       rulePack: getIndividualTaxRulePack(2026),
     });
 
-    expect(result.taxCredits).toBe(14688);
+    // S6B = max(0, 25% × (12000 - 52500)) = 0
+    expect(result.taxCredits).toBe(11688);
+  });
+
+  it("calculates medical credits for over-65 category", () => {
+    // S6A: (364 × 2 + 246 × 1) × 12 = 11 688
+    // S6B over 65: 33.3% × (12000 + 3×54000) - 3×11688
+    //            = 33.3% × 174000 - 35064
+    //            = 57942 - 35064 = 22878
+    // Total: 11688 + 22878 = 34566
+    const result = calculateMedicalSchedule({
+      medical: {
+        medicalSchemeContributions: 54000,
+        qualifyingOutOfPocketExpenses: 12000,
+        disabilityFlag: false,
+      },
+      medicalAidMembers: 3,
+      medicalAidMonths: 12,
+      age: 68,
+      taxableIncomeBeforeMedical: 700000,
+      rulePack: getIndividualTaxRulePack(2026),
+    });
+
+    expect(result.taxCredits).toBeGreaterThan(30000);
+    expect(result.lines[1].description).toContain("over 65");
   });
 
   it("applies age-based interest exemptions by year", () => {

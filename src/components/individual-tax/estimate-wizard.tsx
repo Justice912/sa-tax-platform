@@ -28,7 +28,10 @@ const steps = [
   "Employment",
   "Travel",
   "Medical",
+  "Capital Gains",
   "Other Income",
+  "Provisional Tax",
+  "Home Office",
   "Deductions",
   "Review Estimate",
 ] as const;
@@ -125,6 +128,31 @@ export function EstimateWizard(props: EstimateWizardProps) {
   function goToNext() {
     setStepIndex((index) => Math.min(steps.length - 1, index + 1));
   }
+
+  const defaultCapitalGains = { proceeds: 0, baseCost: 0, primaryResidenceExclusion: false };
+  const defaultOtherIncome = { pensionIncome: 0, annuityIncome: 0, foreignEmploymentIncome: 0 };
+  const defaultProvisionalTax = { firstPayment: 0, secondPayment: 0, thirdPayment: 0 };
+  const defaultHomeOffice = {
+    qualifies: false,
+    officeArea: 0,
+    totalHomeArea: 0,
+    rent: 0,
+    bondInterest: 0,
+    ratesAndTaxes: 0,
+    electricity: 0,
+    cleaning: 0,
+    repairs: 0,
+  };
+
+  const capitalGains = values.input.capitalGains ?? defaultCapitalGains;
+  const otherIncomeExtra = values.input.otherIncome ?? defaultOtherIncome;
+  const provisionalTax = values.input.provisionalTax ?? defaultProvisionalTax;
+  const homeOffice = values.input.homeOffice ?? defaultHomeOffice;
+
+  const irp6Total =
+    (values.input.provisionalTax?.firstPayment ?? 0) +
+    (values.input.provisionalTax?.secondPayment ?? 0) +
+    (values.input.provisionalTax?.thirdPayment ?? 0);
 
   return (
     <form action={props.action} className="space-y-6">
@@ -224,6 +252,7 @@ export function EstimateWizard(props: EstimateWizardProps) {
         </div>
 
         <div className="mt-5">
+          {/* Step 1: Taxpayer Profile */}
           {stepIndex === 0 ? (
             <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
               <FieldShell label="Assessment Year">
@@ -333,6 +362,7 @@ export function EstimateWizard(props: EstimateWizardProps) {
             </div>
           ) : null}
 
+          {/* Step 2: Employment */}
           {stepIndex === 1 ? (
             <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
               <NumberField label="Salary Income" name="employment.salaryIncome" value={values.input.employment.salaryIncome} onChange={(amount) => updateInput({ ...values.input, employment: { ...values.input.employment, salaryIncome: amount } })} />
@@ -344,6 +374,7 @@ export function EstimateWizard(props: EstimateWizardProps) {
             </div>
           ) : null}
 
+          {/* Step 3: Travel */}
           {stepIndex === 2 ? (
             <div className="space-y-4">
               <label className="flex items-center gap-2 text-sm font-medium text-slate-700">
@@ -398,6 +429,7 @@ export function EstimateWizard(props: EstimateWizardProps) {
             </div>
           ) : null}
 
+          {/* Step 4: Medical */}
           {stepIndex === 3 ? (
             <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
               <NumberField label="Medical Scheme Contributions" name="medical.medicalSchemeContributions" value={values.input.medical.medicalSchemeContributions} onChange={(amount) => updateInput({ ...values.input, medical: { ...values.input.medical, medicalSchemeContributions: amount } })} />
@@ -423,17 +455,256 @@ export function EstimateWizard(props: EstimateWizardProps) {
             </div>
           ) : null}
 
+          {/* Step 5: Capital Gains — NEW */}
           {stepIndex === 4 ? (
+            <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+              <NumberField
+                label="Disposal Proceeds"
+                name="capitalGains.proceeds"
+                value={capitalGains.proceeds}
+                onChange={(amount) =>
+                  updateInput({
+                    ...values.input,
+                    capitalGains: { ...capitalGains, proceeds: amount },
+                  })
+                }
+              />
+              <NumberField
+                label="Base Cost"
+                name="capitalGains.baseCost"
+                value={capitalGains.baseCost}
+                onChange={(amount) =>
+                  updateInput({
+                    ...values.input,
+                    capitalGains: { ...capitalGains, baseCost: amount },
+                  })
+                }
+              />
+              <label className="flex items-center gap-2 text-sm font-medium text-slate-700">
+                <input
+                  type="checkbox"
+                  name="capitalGains.primaryResidenceExclusion"
+                  checked={capitalGains.primaryResidenceExclusion}
+                  onChange={(event) =>
+                    updateInput({
+                      ...values.input,
+                      capitalGains: {
+                        ...capitalGains,
+                        primaryResidenceExclusion: event.target.checked,
+                      },
+                    })
+                  }
+                  className="h-4 w-4 rounded border-slate-300"
+                />
+                Primary Residence Exclusion Applies
+              </label>
+            </div>
+          ) : null}
+
+          {/* Step 6: Other Income — EXISTING + new fields */}
+          {stepIndex === 5 ? (
             <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
               <NumberField label="Local Interest" name="interest.localInterest" value={values.input.interest.localInterest} onChange={(amount) => updateInput({ ...values.input, interest: { localInterest: amount } })} />
               <NumberField label="Gross Rental Income" name="rental.grossRentalIncome" value={values.input.rental.grossRentalIncome} onChange={(amount) => updateInput({ ...values.input, rental: { ...values.input.rental, grossRentalIncome: amount } })} />
               <NumberField label="Deductible Rental Expenses" name="rental.deductibleRentalExpenses" value={values.input.rental.deductibleRentalExpenses} onChange={(amount) => updateInput({ ...values.input, rental: { ...values.input.rental, deductibleRentalExpenses: amount } })} />
               <NumberField label="Gross Sole Proprietor Income" name="soleProprietor.grossBusinessIncome" value={values.input.soleProprietor.grossBusinessIncome} onChange={(amount) => updateInput({ ...values.input, soleProprietor: { ...values.input.soleProprietor, grossBusinessIncome: amount } })} />
               <NumberField label="Deductible Business Expenses" name="soleProprietor.deductibleBusinessExpenses" value={values.input.soleProprietor.deductibleBusinessExpenses} onChange={(amount) => updateInput({ ...values.input, soleProprietor: { ...values.input.soleProprietor, deductibleBusinessExpenses: amount } })} />
+              <NumberField
+                label="Pension Income (3704)"
+                name="otherIncome.pensionIncome"
+                value={otherIncomeExtra.pensionIncome}
+                onChange={(amount) =>
+                  updateInput({
+                    ...values.input,
+                    otherIncome: { ...otherIncomeExtra, pensionIncome: amount },
+                  })
+                }
+              />
+              <NumberField
+                label="Annuity Income (3708)"
+                name="otherIncome.annuityIncome"
+                value={otherIncomeExtra.annuityIncome}
+                onChange={(amount) =>
+                  updateInput({
+                    ...values.input,
+                    otherIncome: { ...otherIncomeExtra, annuityIncome: amount },
+                  })
+                }
+              />
+              <NumberField
+                label="Foreign Employment Income"
+                name="otherIncome.foreignEmploymentIncome"
+                value={otherIncomeExtra.foreignEmploymentIncome}
+                onChange={(amount) =>
+                  updateInput({
+                    ...values.input,
+                    otherIncome: { ...otherIncomeExtra, foreignEmploymentIncome: amount },
+                  })
+                }
+              />
             </div>
           ) : null}
 
-          {stepIndex === 5 ? (
+          {/* Step 7: Provisional Tax — NEW */}
+          {stepIndex === 6 ? (
+            <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+              <NumberField
+                label="IRP6 First Payment"
+                name="provisionalTax.firstPayment"
+                value={provisionalTax.firstPayment}
+                onChange={(amount) =>
+                  updateInput({
+                    ...values.input,
+                    provisionalTax: { ...provisionalTax, firstPayment: amount },
+                  })
+                }
+              />
+              <NumberField
+                label="IRP6 Second Payment"
+                name="provisionalTax.secondPayment"
+                value={provisionalTax.secondPayment}
+                onChange={(amount) =>
+                  updateInput({
+                    ...values.input,
+                    provisionalTax: { ...provisionalTax, secondPayment: amount },
+                  })
+                }
+              />
+              <NumberField
+                label="IRP6 Third Payment (Voluntary)"
+                name="provisionalTax.thirdPayment"
+                value={provisionalTax.thirdPayment}
+                onChange={(amount) =>
+                  updateInput({
+                    ...values.input,
+                    provisionalTax: { ...provisionalTax, thirdPayment: amount },
+                  })
+                }
+              />
+            </div>
+          ) : null}
+
+          {/* Step 8: Home Office — NEW */}
+          {stepIndex === 7 ? (
+            <div className="space-y-4">
+              <label className="flex items-center gap-2 text-sm font-medium text-slate-700">
+                <input
+                  type="checkbox"
+                  name="homeOffice.qualifies"
+                  checked={homeOffice.qualifies}
+                  onChange={(event) =>
+                    updateInput({
+                      ...values.input,
+                      homeOffice: { ...homeOffice, qualifies: event.target.checked },
+                    })
+                  }
+                  className="h-4 w-4 rounded border-slate-300"
+                />
+                Qualifies for Home Office Deduction (S23(b))
+              </label>
+
+              {homeOffice.qualifies ? (
+                <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+                  <NumberField
+                    label="Office Area (m²)"
+                    name="homeOffice.officeArea"
+                    value={homeOffice.officeArea}
+                    onChange={(amount) =>
+                      updateInput({
+                        ...values.input,
+                        homeOffice: { ...homeOffice, officeArea: amount },
+                      })
+                    }
+                  />
+                  <NumberField
+                    label="Total Home Area (m²)"
+                    name="homeOffice.totalHomeArea"
+                    value={homeOffice.totalHomeArea}
+                    onChange={(amount) =>
+                      updateInput({
+                        ...values.input,
+                        homeOffice: { ...homeOffice, totalHomeArea: amount },
+                      })
+                    }
+                  />
+                  <NumberField
+                    label="Rent"
+                    name="homeOffice.rent"
+                    value={homeOffice.rent}
+                    onChange={(amount) =>
+                      updateInput({
+                        ...values.input,
+                        homeOffice: { ...homeOffice, rent: amount },
+                      })
+                    }
+                  />
+                  <NumberField
+                    label="Bond Interest"
+                    name="homeOffice.bondInterest"
+                    value={homeOffice.bondInterest}
+                    onChange={(amount) =>
+                      updateInput({
+                        ...values.input,
+                        homeOffice: { ...homeOffice, bondInterest: amount },
+                      })
+                    }
+                  />
+                  <NumberField
+                    label="Rates & Taxes"
+                    name="homeOffice.ratesAndTaxes"
+                    value={homeOffice.ratesAndTaxes}
+                    onChange={(amount) =>
+                      updateInput({
+                        ...values.input,
+                        homeOffice: { ...homeOffice, ratesAndTaxes: amount },
+                      })
+                    }
+                  />
+                  <NumberField
+                    label="Electricity"
+                    name="homeOffice.electricity"
+                    value={homeOffice.electricity}
+                    onChange={(amount) =>
+                      updateInput({
+                        ...values.input,
+                        homeOffice: { ...homeOffice, electricity: amount },
+                      })
+                    }
+                  />
+                  <NumberField
+                    label="Cleaning"
+                    name="homeOffice.cleaning"
+                    value={homeOffice.cleaning}
+                    onChange={(amount) =>
+                      updateInput({
+                        ...values.input,
+                        homeOffice: { ...homeOffice, cleaning: amount },
+                      })
+                    }
+                  />
+                  <NumberField
+                    label="Repairs & Maintenance"
+                    name="homeOffice.repairs"
+                    value={homeOffice.repairs}
+                    onChange={(amount) =>
+                      updateInput({
+                        ...values.input,
+                        homeOffice: { ...homeOffice, repairs: amount },
+                      })
+                    }
+                  />
+                </div>
+              ) : (
+                <div className="rounded-lg border border-slate-200 bg-slate-50 p-4 text-sm text-slate-600">
+                  Home office deduction requires a dedicated office used regularly
+                  and exclusively for trade, with &gt;50% of duties performed there.
+                </div>
+              )}
+            </div>
+          ) : null}
+
+          {/* Step 9: Deductions */}
+          {stepIndex === 8 ? (
             <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
               <NumberField label="Retirement Contributions" name="deductions.retirementContributions" value={values.input.deductions.retirementContributions} onChange={(amount) => updateInput({ ...values.input, deductions: { ...values.input.deductions, retirementContributions: amount } })} />
               <NumberField label="Donations Under Section 18A" name="deductions.donationsUnderSection18A" value={values.input.deductions.donationsUnderSection18A} onChange={(amount) => updateInput({ ...values.input, deductions: { ...values.input.deductions, donationsUnderSection18A: amount } })} />
@@ -441,6 +712,7 @@ export function EstimateWizard(props: EstimateWizardProps) {
             </div>
           ) : null}
 
+          {/* Step 10: Review Estimate */}
           {isReview ? (
             <div className="space-y-4">
               <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
@@ -449,10 +721,14 @@ export function EstimateWizard(props: EstimateWizardProps) {
                 <SummaryItem label="Salary Income" value={zarc(values.input.employment.salaryIncome)} />
                 <SummaryItem label="PAYE Withheld" value={zarc(values.input.employment.payeWithheld)} />
                 <SummaryItem label="Travel Allowance" value={values.input.travel.hasTravelAllowance ? zarc(values.input.travel.travelAllowance) : "Not included"} />
+                <SummaryItem label="Capital Gains Proceeds" value={zarc(values.input.capitalGains?.proceeds ?? 0)} />
                 <SummaryItem label="Local Interest" value={zarc(values.input.interest.localInterest)} />
                 <SummaryItem label="Gross Rental Income" value={zarc(values.input.rental.grossRentalIncome)} />
                 <SummaryItem label="Gross Sole Proprietor Income" value={zarc(values.input.soleProprietor.grossBusinessIncome)} />
+                <SummaryItem label="Pension Income" value={zarc(values.input.otherIncome?.pensionIncome ?? 0)} />
                 <SummaryItem label="Medical Out-of-Pocket" value={zarc(values.input.medical.qualifyingOutOfPocketExpenses)} />
+                <SummaryItem label="IRP6 Total Paid" value={zarc(irp6Total)} />
+                <SummaryItem label="Home Office" value={values.input.homeOffice?.qualifies ? "Yes" : "No"} />
                 <SummaryItem label="Retirement Contributions" value={zarc(values.input.deductions.retirementContributions)} />
               </div>
               <div className="rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900">
@@ -623,6 +899,23 @@ function PersistedHiddenFields({
         value={String(values.input.medical.disabilityFlag)}
       />
 
+      {/* Capital Gains hidden fields */}
+      <input
+        type="hidden"
+        name="capitalGains.proceeds"
+        value={String(values.input.capitalGains?.proceeds ?? 0)}
+      />
+      <input
+        type="hidden"
+        name="capitalGains.baseCost"
+        value={String(values.input.capitalGains?.baseCost ?? 0)}
+      />
+      <input
+        type="hidden"
+        name="capitalGains.primaryResidenceExclusion"
+        value={String(values.input.capitalGains?.primaryResidenceExclusion ?? false)}
+      />
+
       <input
         type="hidden"
         name="interest.localInterest"
@@ -649,6 +942,87 @@ function PersistedHiddenFields({
         type="hidden"
         name="soleProprietor.deductibleBusinessExpenses"
         value={String(values.input.soleProprietor.deductibleBusinessExpenses)}
+      />
+
+      {/* Other Income extra hidden fields */}
+      <input
+        type="hidden"
+        name="otherIncome.pensionIncome"
+        value={String(values.input.otherIncome?.pensionIncome ?? 0)}
+      />
+      <input
+        type="hidden"
+        name="otherIncome.annuityIncome"
+        value={String(values.input.otherIncome?.annuityIncome ?? 0)}
+      />
+      <input
+        type="hidden"
+        name="otherIncome.foreignEmploymentIncome"
+        value={String(values.input.otherIncome?.foreignEmploymentIncome ?? 0)}
+      />
+
+      {/* Provisional Tax hidden fields */}
+      <input
+        type="hidden"
+        name="provisionalTax.firstPayment"
+        value={String(values.input.provisionalTax?.firstPayment ?? 0)}
+      />
+      <input
+        type="hidden"
+        name="provisionalTax.secondPayment"
+        value={String(values.input.provisionalTax?.secondPayment ?? 0)}
+      />
+      <input
+        type="hidden"
+        name="provisionalTax.thirdPayment"
+        value={String(values.input.provisionalTax?.thirdPayment ?? 0)}
+      />
+
+      {/* Home Office hidden fields */}
+      <input
+        type="hidden"
+        name="homeOffice.qualifies"
+        value={String(values.input.homeOffice?.qualifies ?? false)}
+      />
+      <input
+        type="hidden"
+        name="homeOffice.officeArea"
+        value={String(values.input.homeOffice?.officeArea ?? 0)}
+      />
+      <input
+        type="hidden"
+        name="homeOffice.totalHomeArea"
+        value={String(values.input.homeOffice?.totalHomeArea ?? 0)}
+      />
+      <input
+        type="hidden"
+        name="homeOffice.rent"
+        value={String(values.input.homeOffice?.rent ?? 0)}
+      />
+      <input
+        type="hidden"
+        name="homeOffice.bondInterest"
+        value={String(values.input.homeOffice?.bondInterest ?? 0)}
+      />
+      <input
+        type="hidden"
+        name="homeOffice.ratesAndTaxes"
+        value={String(values.input.homeOffice?.ratesAndTaxes ?? 0)}
+      />
+      <input
+        type="hidden"
+        name="homeOffice.electricity"
+        value={String(values.input.homeOffice?.electricity ?? 0)}
+      />
+      <input
+        type="hidden"
+        name="homeOffice.cleaning"
+        value={String(values.input.homeOffice?.cleaning ?? 0)}
+      />
+      <input
+        type="hidden"
+        name="homeOffice.repairs"
+        value={String(values.input.homeOffice?.repairs ?? 0)}
       />
 
       <input
