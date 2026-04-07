@@ -15,12 +15,20 @@ export default async function IndividualTaxPage() {
             Near-eFiling estimates and legacy individual assessment workflow.
           </p>
         </div>
-        <Link
-          href="/individual-tax/new"
-          className="rounded-md bg-[#0E2433] px-4 py-2 text-sm font-medium text-white transition hover:bg-[#12344a]"
-        >
-          New Estimate
-        </Link>
+        <div className="flex gap-2">
+          <Link
+            href="/individual-tax/tools"
+            className="rounded-md border border-slate-200 px-3 py-2 text-sm font-medium text-slate-700 transition hover:border-teal-300 hover:text-teal-700"
+          >
+            Tax Tools
+          </Link>
+          <Link
+            href="/individual-tax/new"
+            className="rounded-md bg-[#0E2433] px-4 py-2 text-sm font-medium text-white transition hover:bg-[#12344a]"
+          >
+            New Estimate
+          </Link>
+        </div>
       </div>
 
       <DataTable
