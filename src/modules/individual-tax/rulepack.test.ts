@@ -21,7 +21,11 @@ describe("individual tax rulepack registry", () => {
     expect(rulepacks.every((rulepack) => rulepack.thresholds.under65 > 0)).toBe(true);
     expect(rulepacks.every((rulepack) => rulepack.interestExemption.under65 > 0)).toBe(true);
     expect(rulepacks.every((rulepack) => rulepack.medicalTaxCredit.firstTwoMembersPerMonth > 0)).toBe(true);
-    expect(rulepacks.every((rulepack) => rulepack.retirement.annualCap === 350000)).toBe(true);
+    expect(
+      rulepacks.every((rulepack) =>
+        rulepack.retirement.annualCap === (rulepack.assessmentYear === 2027 ? 430000 : 350000),
+      ),
+    ).toBe(true);
   });
 
   it("uses the published 2027 bracket and rebate updates", () => {
@@ -45,6 +49,13 @@ describe("individual tax rulepack registry", () => {
     expect(rulepack2027.medicalTaxCredit).toEqual({
       firstTwoMembersPerMonth: 376,
       additionalMemberPerMonth: 254,
+    });
+    expect(rulepack2027.retirement.annualCap).toBe(430000);
+    expect(rulepack2027.cgt).toEqual({
+      annualExclusion: 50000,
+      deathExclusion: 440000,
+      inclusionRate: 0.40,
+      primaryResidenceExclusion: 3000000,
     });
   });
 });
