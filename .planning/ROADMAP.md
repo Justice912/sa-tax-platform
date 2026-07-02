@@ -31,10 +31,12 @@ Decimal phases appear between their surrounding integers in numeric order.
   2. The 2027 rulepack reflects the changed retirement s11F cap (R430,000), CGT annual exclusion (R50,000), and primary residence exclusion (R3,000,000)
   3. No tax-tools component contains a hardcoded rate table — all values trace back to `rulepack-registry.ts`
   4. A rulepack-completeness test fails the build if any year's table is missing, duplicated, or a placeholder
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
-- [ ] 01-01: TBD
+- [ ] 01-01-PLAN.md — Extend rulepack types, populate verified 2025/2026/2027 travel + provisional tax data, fix stale 2027 retirement/CGT values
+- [ ] 01-02-PLAN.md — Rulepack-completeness test as a build gate (presence, structure, distinctness, sanity ranges)
+- [ ] 01-03-PLAN.md — Remove all hardcoded rate tables from tax-tools.tsx, add 2025/2026/2027 year selector wired to the rulepack
 
 ### Phase 2: Logbook Domain Module
 **Goal**: A practitioner's logbook data (vehicle, odometers, trips) is captured, persisted, and correctly calculated under both SARS cost methods — independent of any UI.
