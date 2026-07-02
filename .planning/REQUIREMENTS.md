@@ -78,13 +78,37 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| (populated by roadmap) | | |
+| RULE-01 | Phase 1 - Rulepack Extension | Pending |
+| RULE-02 | Phase 1 - Rulepack Extension | Pending |
+| RULE-03 | Phase 1 - Rulepack Extension | Pending |
+| LOG-01 | Phase 2 - Logbook Domain Module | Pending |
+| LOG-02 | Phase 2 - Logbook Domain Module | Pending |
+| LOG-03 | Phase 2 - Logbook Domain Module | Pending |
+| LOG-04 | Phase 2 - Logbook Domain Module | Pending |
+| LOG-05 | Phase 2 - Logbook Domain Module | Pending |
+| LOG-06 | Phase 2 - Logbook Domain Module | Pending |
+| ITR-01 | Phase 3 - ITR12 Travel Schedule Integration | Pending |
+| ITR-02 | Phase 3 - ITR12 Travel Schedule Integration | Pending |
+| IMP-01 | Phase 4 - Import Pipeline | Pending |
+| IMP-02 | Phase 4 - Import Pipeline | Pending |
+| IMP-03 | Phase 4 - Import Pipeline | Pending |
+| IMP-04 | Phase 4 - Import Pipeline | Pending |
+| IMP-05 | Phase 4 - Import Pipeline | Pending |
+| PERF-01 | Phase 5 - Component Decomposition | Pending |
+| PERF-02 | Phase 6 - Logbook UI, Import Wizard & Performance Hardening | Pending |
+| PERF-03 | Phase 6 - Logbook UI, Import Wizard & Performance Hardening | Pending |
+| CALC-01 | Phase 7 - Calculator Audit | Pending |
+| CALC-02 | Phase 7 - Calculator Audit | Pending |
+| CALC-03 | Phase 7 - Calculator Audit | Pending |
+| CALC-04 | Phase 7 - Calculator Audit | Pending |
+| CALC-05 | Phase 7 - Calculator Audit | Pending |
+| CALC-06 | Phase 7 - Calculator Audit | Pending |
 
 **Coverage:**
-- v1 requirements: 22 total
-- Mapped to phases: 0
-- Unmapped: 22 ⚠️
+- v1 requirements: 25 total (corrected from initial count of 22 — recount of RULE/LOG/IMP/ITR/PERF/CALC categories in this file)
+- Mapped to phases: 25
+- Unmapped: 0 ✓
 
 ---
 *Requirements defined: 2026-07-02*
-*Last updated: 2026-07-02 after initial definition*
+*Last updated: 2026-07-02 after roadmap creation*
