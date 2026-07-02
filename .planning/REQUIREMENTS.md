@@ -9,8 +9,8 @@ Requirements for this milestone. Each maps to roadmap phases.
 
 ### Rulepacks & Rates
 
-- [ ] **RULE-01**: Rulepacks for 2025, 2026 and 2027 contain verified per-year deemed-cost travel rate tables (fixed cost, fuel, maintenance by vehicle value bracket) from the official SARS PAYE-GEN-01-G03-A01 schedules
-- [ ] **RULE-02**: Rulepacks carry year-specific values including 2027 changes: retirement s11F cap R430,000, CGT annual exclusion R50,000, primary residence exclusion R3,000,000
+- [x] **RULE-01**: Rulepacks for 2025, 2026 and 2027 contain verified per-year deemed-cost travel rate tables (fixed cost, fuel, maintenance by vehicle value bracket) from the official SARS PAYE-GEN-01-G03-A01 schedules
+- [x] **RULE-02**: Rulepacks carry year-specific values including 2027 changes: retirement s11F cap R430,000, CGT annual exclusion R50,000, primary residence exclusion R3,000,000
 - [ ] **RULE-03**: All tax-tools calculators read rates from the rulepack for a user-selected tax year — no hardcoded tax tables in components
 
 ### Logbook
@@ -78,8 +78,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| RULE-01 | Phase 1 - Rulepack Extension | Pending |
-| RULE-02 | Phase 1 - Rulepack Extension | Pending |
+| RULE-01 | Phase 1 - Rulepack Extension | Complete |
+| RULE-02 | Phase 1 - Rulepack Extension | Complete |
 | RULE-03 | Phase 1 - Rulepack Extension | Pending |
 | LOG-01 | Phase 2 - Logbook Domain Module | Pending |
 | LOG-02 | Phase 2 - Logbook Domain Module | Pending |
