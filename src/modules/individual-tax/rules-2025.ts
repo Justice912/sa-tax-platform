@@ -42,6 +42,28 @@ export const INDIVIDUAL_TAX_RULEPACK_2025: IndividualTaxRulePack = {
     primaryResidenceExclusion: 2000000,
   },
   foreignEmploymentExemption: 1250000,
+  // SARS PAYE-GEN-01-G03-A01 Revision 17, effective 29 Feb 2024 (2025 year of assessment).
+  // Rates published in cents/km, stored here as rand/km (÷100). Simplified rate: R4.84/km.
+  travelDeemedCostTable: [
+    { min: 0,      max: 100000, fixedCostAnnual: 34480,  fuelCostPerKm: 1.517, maintenanceCostPerKm: 0.460 },
+    { min: 100001, max: 200000, fixedCostAnnual: 61770,  fuelCostPerKm: 1.694, maintenanceCostPerKm: 0.576 },
+    { min: 200001, max: 300000, fixedCostAnnual: 89119,  fuelCostPerKm: 1.840, maintenanceCostPerKm: 0.635 },
+    { min: 300001, max: 400000, fixedCostAnnual: 113436, fuelCostPerKm: 1.979, maintenanceCostPerKm: 0.693 },
+    { min: 400001, max: 500000, fixedCostAnnual: 137752, fuelCostPerKm: 2.118, maintenanceCostPerKm: 0.815 },
+    { min: 500001, max: 600000, fixedCostAnnual: 163178, fuelCostPerKm: 2.430, maintenanceCostPerKm: 0.956 },
+    { min: 600001, max: 700000, fixedCostAnnual: 188653, fuelCostPerKm: 2.471, maintenanceCostPerKm: 1.073 },
+    { min: 700001, max: 800000, fixedCostAnnual: 215447, fuelCostPerKm: 2.512, maintenanceCostPerKm: 1.189 },
+    { min: 800001, max: null,   fixedCostAnnual: 215447, fuelCostPerKm: 2.512, maintenanceCostPerKm: 1.189 },
+  ],
+  // SARS Guide for Provisional Tax (para 19/20). Escalation fields MEDIUM confidence (IN1 Issue 3) — data only.
+  provisionalTax: {
+    basicAmountEscalationRate: 0.08,
+    basicAmountEscalationThresholdMonths: 18,
+    safeHarbourTaxableIncomeThreshold: 1000000,
+    safeHarbourBasicAmountOrActualPctBelowThreshold: 0.90,
+    safeHarbourActualPctAboveThreshold: 0.80,
+    underestimationPenaltyRate: 0.20,
+  },
   sourceReference:
-    "SARS Rates of Tax for Individuals and Medical Tax Credit Rates for the 2025 tax year.",
+    "SARS Rates of Tax for Individuals and Medical Tax Credit Rates for the 2025 tax year; PAYE-GEN-01-G03-A01 Revision 17 (travel deemed cost); SARS Guide for Provisional Tax",
 };
