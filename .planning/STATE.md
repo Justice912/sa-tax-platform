@@ -4,17 +4,17 @@ milestone: v1.0
 milestone_name: milestone
 current_phase: 1
 current_phase_name: Rulepack Extension
-current_plan: 1
+current_plan: 3
 status: executing
-stopped_at: Completed 01-01-PLAN.md
-last_updated: "2026-07-02T16:29:55.241Z"
+stopped_at: Completed 01-03-PLAN.md
+last_updated: "2026-07-02T17:01:27.632Z"
 last_activity: 2026-07-02
 progress:
   total_phases: 7
-  completed_phases: 0
+  completed_phases: 1
   total_plans: 3
-  completed_plans: 1
-  percent: 33
+  completed_plans: 3
+  percent: 100
 ---
 
 # Project State
@@ -31,12 +31,12 @@ See: .planning/PROJECT.md (updated 2026-07-02)
 **Current Phase:** 1
 **Current Phase Name:** Rulepack Extension
 **Total Phases:** 7
-**Current Plan:** 1
+**Current Plan:** 3
 **Total Plans in Phase:** 3
 **Status:** Ready to execute
 **Last Activity:** 2026-07-02
 
-**Progress:** [███░░░░░░░] 33%
+**Progress:** [██████████] 100%
 
 ## Performance Metrics
 
@@ -57,6 +57,8 @@ See: .planning/PROJECT.md (updated 2026-07-02)
 
 *Updated after each plan completion*
 | Phase 01 P01 | 9min | 3 tasks | 6 files |
+| Phase 01 P02 | 27min | 2 tasks | 2 files |
+| Phase 01 P03 | 30 | 3 tasks | 1 files |
 
 ## Accumulated Context
 
@@ -73,6 +75,8 @@ Recent decisions affecting current work:
 - Tax years 2025-2027 in scope (2024 excluded)
 - [Phase 01]: Fixed 2027 retirement/CGT values as a live compliance bug in this plan rather than deferring (Budget 2026 change set)
 - [Phase 01]: 2024 rulepack carries 2025 travel/provisionalTax values verbatim as a flagged, non-compliance-verified structural placeholder
+- [Phase 01]: Rulepack completeness build gate proven via mutation testing: copy-paste and unconverted-cents corruptions both independently fail the gate; no assertion strengthening needed
+- [Phase 01]: Fixed inverted provisional-tax safe-harbour branch orientation while wiring rulepack fields (0.90 at/below R1m, 0.80 above, per SARS para 20)
 
 ### Pending Todos
 
@@ -89,6 +93,6 @@ None yet.
 
 ## Session Continuity
 
-**Last Session:** 2026-07-02T16:29:55.222Z
-**Stopped At:** Completed 01-01-PLAN.md
+**Last Session:** 2026-07-02T17:01:27.624Z
+**Stopped At:** Completed 01-03-PLAN.md
 **Resume File:** None

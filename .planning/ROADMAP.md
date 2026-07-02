@@ -12,7 +12,7 @@ This milestone takes the Individual Tax module from "crude travel estimate + mon
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: Rulepack Extension** - Per-year SARS constants (deemed-cost travel table, medical, retirement, CGT, provisional tax) added to rulepacks as the single source of truth
+- [x] **Phase 1: Rulepack Extension** - Per-year SARS constants (deemed-cost travel table, medical, retirement, CGT, provisional tax) added to rulepacks as the single source of truth (completed 2026-07-02)
 - [ ] **Phase 2: Logbook Domain Module** - Vehicle/trip/logbook data model and deemed/actual cost calculation engine, persisted and unit-tested in isolation
 - [ ] **Phase 3: ITR12 Travel Schedule Integration** - Logbook results feed the ITR12 travel schedule with correct source codes, without breaking existing schedule tests
 - [ ] **Phase 4: Import Pipeline** - CSV/XLSX import with SARS eLogbook auto-detection, off-main-thread parsing, and pre-commit validation
@@ -133,7 +133,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Rulepack Extension | 1/3 | In Progress|  |
+| 1. Rulepack Extension | 3/3 | Complete   | 2026-07-02 |
 | 2. Logbook Domain Module | 0/TBD | Not started | - |
 | 3. ITR12 Travel Schedule Integration | 0/TBD | Not started | - |
 | 4. Import Pipeline | 0/TBD | Not started | - |
