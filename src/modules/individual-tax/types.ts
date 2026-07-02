@@ -139,6 +139,33 @@ export interface IndividualTaxBracket {
   rate: number;
 }
 
+export interface TravelDeemedCostBracket {
+  /** Vehicle value lower bound in rand (inclusive). */
+  min: number;
+  /** Vehicle value upper bound in rand (inclusive); null = uncapped top bracket. */
+  max: number | null;
+  /** Fixed cost in rand per YEAR (SARS publishes annual figures). */
+  fixedCostAnnual: number;
+  /** Rand per km. SARS publishes cents/km — values here are pre-converted (c/km ÷ 100). */
+  fuelCostPerKm: number;
+  /** Rand per km. SARS publishes cents/km — values here are pre-converted (c/km ÷ 100). */
+  maintenanceCostPerKm: number;
+}
+
+export interface ProvisionalTaxRules {
+  /** Para 19 basic-amount escalation: +8%/yr if latest assessment older than thresholdMonths. MEDIUM confidence (IN1 Issue 3) — data only, no logic this milestone. */
+  basicAmountEscalationRate: number;
+  basicAmountEscalationThresholdMonths: number;
+  /** Para 20 safe harbour: taxable income threshold (R1,000,000). */
+  safeHarbourTaxableIncomeThreshold: number;
+  /** At/below threshold: lesser of basic amount or this fraction of actual taxable income (0.90). */
+  safeHarbourBasicAmountOrActualPctBelowThreshold: number;
+  /** Above threshold: this fraction of actual taxable income (0.80); basic-amount option unavailable. */
+  safeHarbourActualPctAboveThreshold: number;
+  /** Underestimation penalty rate (0.20 of shortfall). */
+  underestimationPenaltyRate: number;
+}
+
 export interface IndividualTaxRulePack {
   assessmentYear: SupportedAssessmentYear;
   periodStart: string;
@@ -173,6 +200,8 @@ export interface IndividualTaxRulePack {
     primaryResidenceExclusion: number;
   };
   foreignEmploymentExemption: number;
+  travelDeemedCostTable: TravelDeemedCostBracket[];
+  provisionalTax: ProvisionalTaxRules;
   sourceReference: string;
 }
 
