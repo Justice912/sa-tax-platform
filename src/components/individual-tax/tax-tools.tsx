@@ -1,53 +1,31 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
+import { getIndividualTaxRulePackByYear } from "@/modules/individual-tax/rulepack-registry";
+import type {
+  IndividualTaxRulePack,
+  SupportedAssessmentYear,
+} from "@/modules/individual-tax/types";
 
-/* ═══════════════════════════════════════════
-   SARS CONSTANTS — 2024/2025 Tax Year
-   ═══════════════════════════════════════════ */
-const TAX_BRACKETS = [
-  { min: 0, max: 237100, rate: 0.18, base: 0 },
-  { min: 237101, max: 370500, rate: 0.26, base: 42678 },
-  { min: 370501, max: 512800, rate: 0.31, base: 77362 },
-  { min: 512801, max: 673000, rate: 0.36, base: 121475 },
-  { min: 673001, max: 857900, rate: 0.39, base: 179147 },
-  { min: 857901, max: 1817000, rate: 0.41, base: 251258 },
-  { min: 1817001, max: Infinity, rate: 0.45, base: 644489 },
-];
-const REBATES = { primary: 17235, secondary: 9444, tertiary: 3145 };
-const MEDICAL_CREDITS = { mainPlus1: 364, additional: 246 };
-const DEEMED_COST_TABLE = [
-  { min: 0, max: 100000, fixed: 4637, fuel: 159.3, maint: 76.1 },
-  { min: 100001, max: 200000, fixed: 8253, fuel: 176.6, maint: 97.3 },
-  { min: 200001, max: 300000, fixed: 11802, fuel: 186.8, maint: 115.4 },
-  { min: 300001, max: 400000, fixed: 15077, fuel: 207.3, maint: 128.9 },
-  { min: 400001, max: 500000, fixed: 18846, fuel: 228.5, maint: 148.0 },
-  { min: 500001, max: 600000, fixed: 22510, fuel: 228.5, maint: 166.8 },
-  { min: 600001, max: 700000, fixed: 25503, fuel: 238.0, maint: 176.3 },
-  { min: 700001, max: 800000, fixed: 30538, fuel: 253.6, maint: 199.4 },
-  { min: 800001, max: Infinity, fixed: 30538, fuel: 253.6, maint: 199.4 },
-];
-const CGT_EXCLUSION = 40000;
-const CGT_DEATH_EXCLUSION = 300000;
-const CGT_PRIMARY_RES = 2000000;
-const CGT_INCLUSION_RATE = 0.40;
-const RETIRE_PERCENT = 0.275;
-const RETIRE_CAP = 350000;
-
-const calcTax = (taxable: number) => {
+const calcTax = (rulePack: IndividualTaxRulePack, taxable: number) => {
   if (taxable <= 0) return 0;
-  const b = TAX_BRACKETS.find((br) => taxable >= br.min && taxable <= br.max);
+  const b = rulePack.taxBrackets.find(
+    (br) => taxable >= br.min && (br.max === null || taxable <= br.max),
+  );
   if (!b) return 0;
-  return b.base + (taxable - b.min + 1) * b.rate;
+  return b.baseTax + (taxable - b.min + 1) * b.rate;
 };
-const getMarginalRate = (taxable: number) => {
+const getMarginalRate = (rulePack: IndividualTaxRulePack, taxable: number) => {
   if (taxable <= 0) return 0.18;
-  const b = TAX_BRACKETS.find((br) => taxable >= br.min && taxable <= br.max);
+  const b = rulePack.taxBrackets.find(
+    (br) => taxable >= br.min && (br.max === null || taxable <= br.max),
+  );
   return b ? b.rate : 0.45;
 };
-const getDeemedRate = (v: number) =>
-  DEEMED_COST_TABLE.find((r) => v >= r.min && v <= r.max) ??
-  DEEMED_COST_TABLE[0];
+const getDeemedRate = (rulePack: IndividualTaxRulePack, v: number) =>
+  rulePack.travelDeemedCostTable.find(
+    (r) => v >= r.min && (r.max === null || v <= r.max),
+  ) ?? rulePack.travelDeemedCostTable[0];
 const fmt = (n: number) =>
   "R " +
   Number(n || 0).toLocaleString("en-ZA", {
@@ -189,6 +167,9 @@ const selectCls = inputCls;
    ═══════════════════════════════════════════ */
 export function TaxTools() {
   const [tab, setTab] = useState<TabKey>("dashboard");
+  const [assessmentYear, setAssessmentYear] =
+    useState<SupportedAssessmentYear>(2026);
+  const rulePack = getIndividualTaxRulePackByYear(assessmentYear);
   const [toast, setToast] = useState<{
     msg: string;
     type: "success" | "error";
@@ -393,10 +374,10 @@ export function TaxTools() {
 
   // Deemed cost
   const vVal = parseFloat(vehicleValue) || 0;
-  const sRate = getDeemedRate(vVal);
-  const deemedFixed = sRate.fixed * 12;
-  const deemedFuel = sRate.fuel * tripStats.totalKm;
-  const deemedMaint = sRate.maint * tripStats.totalKm;
+  const sRate = getDeemedRate(rulePack, vVal);
+  const deemedFixed = sRate.fixedCostAnnual;
+  const deemedFuel = sRate.fuelCostPerKm * tripStats.totalKm;
+  const deemedMaint = sRate.maintenanceCostPerKm * tripStats.totalKm;
   const deemedTotal = deemedFixed + deemedFuel + deemedMaint;
   const travelDeduction = (deemedTotal * bizPct) / 100;
 
@@ -407,8 +388,8 @@ export function TaxTools() {
     const oop = parseFloat(med.outOfPocket) || 0;
     const taxInc = parseFloat(med.taxableIncome) || 0;
     const s6aMonthly =
-      Math.min(deps, 2) * MEDICAL_CREDITS.mainPlus1 +
-      Math.max(0, deps - 2) * MEDICAL_CREDITS.additional;
+      Math.min(deps, 2) * rulePack.medicalTaxCredit.firstTwoMembersPerMonth +
+      Math.max(0, deps - 2) * rulePack.medicalTaxCredit.additionalMemberPerMonth;
     const s6a = Math.min(s6aMonthly * 12, contrib);
     let s6b = 0;
     if (med.age !== "under65" || med.disability) {
@@ -433,11 +414,14 @@ export function TaxTools() {
     const eeC = (parseFloat(ret.employeeContrib) || 0) * 12;
     const raC = (parseFloat(ret.raContrib) || 0) * 12;
     const current = empC + eeC + raC;
-    const limit = Math.min(inc * RETIRE_PERCENT, RETIRE_CAP);
+    const limit = Math.min(
+      inc * rulePack.retirement.deductiblePercentageLimit,
+      rulePack.retirement.annualCap,
+    );
     const headroom = Math.max(0, limit - current);
     const addRA = ret.additionalRA * 12;
     const usable = Math.min(addRA, headroom);
-    const marginal = getMarginalRate(inc);
+    const marginal = getMarginalRate(rulePack, inc);
     const saving = usable * marginal;
     return { current, limit, headroom, usable, saving, marginal };
   };
@@ -451,12 +435,14 @@ export function TaxTools() {
     const sell = parseFloat(cgt.sellingCosts) || 0;
     const taxInc = parseFloat(cgt.taxableIncome) || 0;
     const gain = proceeds - base - impr - sell;
-    let exclusion = cgt.death ? CGT_DEATH_EXCLUSION : CGT_EXCLUSION;
+    let exclusion = cgt.death
+      ? rulePack.cgt.deathExclusion
+      : rulePack.cgt.annualExclusion;
     if (cgt.primaryRes && gain > 0)
-      exclusion += Math.min(gain, CGT_PRIMARY_RES);
+      exclusion += Math.min(gain, rulePack.cgt.primaryResidenceExclusion);
     const netGain = Math.max(0, gain - exclusion);
-    const taxableGain = netGain * CGT_INCLUSION_RATE;
-    const marginal = getMarginalRate(taxInc);
+    const taxableGain = netGain * rulePack.cgt.inclusionRate;
+    const marginal = getMarginalRate(rulePack, taxInc);
     const cgtPayable = taxableGain * marginal;
     const effectiveRate = gain > 0 ? (cgtPayable / gain) * 100 : 0;
     return {
@@ -477,13 +463,16 @@ export function TaxTools() {
     const paye = parseFloat(prov.payeDeducted) || 0;
     const credits = parseFloat(prov.credits) || 0;
     const priorTax = parseFloat(prov.priorTax) || 0;
-    const fullTax = calcTax(estTaxable) - REBATES.primary;
+    const fullTax = calcTax(rulePack, estTaxable) - rulePack.rebates.primary;
     const netTax = Math.max(0, fullTax - credits);
     let payment = 0;
     if (prov.period === "P1") payment = Math.max(0, netTax * 0.5 - paye * 0.5);
     else payment = Math.max(0, netTax - paye);
+    const pt = rulePack.provisionalTax;
     const safeHarbour =
-      estTaxable > 1000000 ? priorTax * 0.9 : priorTax * 0.8;
+      estTaxable > pt.safeHarbourTaxableIncomeThreshold
+        ? priorTax * pt.safeHarbourActualPctAboveThreshold
+        : priorTax * pt.safeHarbourBasicAmountOrActualPctBelowThreshold;
     const risk =
       netTax > 0 && payment < safeHarbour * 0.8
         ? "red"
@@ -685,20 +674,38 @@ export function TaxTools() {
       />
 
       {/* ── Tab Navigation ── */}
-      <div className="flex flex-wrap gap-1.5 rounded-lg border border-slate-200/80 bg-white p-1.5 shadow-sm">
-        {NAV.map((n) => (
-          <button
-            key={n.key}
-            onClick={() => setTab(n.key)}
-            className={`rounded-md px-3.5 py-2 text-sm font-medium transition ${
-              tab === n.key
-                ? "bg-[#0E2433] text-white"
-                : "text-slate-600 hover:bg-slate-100"
-            }`}
+      <div className="flex flex-wrap items-center justify-between gap-3 rounded-lg border border-slate-200/80 bg-white p-1.5 shadow-sm">
+        <div className="flex flex-wrap gap-1.5">
+          {NAV.map((n) => (
+            <button
+              key={n.key}
+              onClick={() => setTab(n.key)}
+              className={`rounded-md px-3.5 py-2 text-sm font-medium transition ${
+                tab === n.key
+                  ? "bg-[#0E2433] text-white"
+                  : "text-slate-600 hover:bg-slate-100"
+              }`}
+            >
+              {n.label}
+            </button>
+          ))}
+        </div>
+        <label className="flex items-center gap-2 pr-2 text-sm">
+          <span className="font-medium text-slate-600">Tax year</span>
+          <select
+            className={selectCls}
+            value={assessmentYear}
+            onChange={(e) =>
+              setAssessmentYear(
+                Number(e.target.value) as SupportedAssessmentYear,
+              )
+            }
           >
-            {n.label}
-          </button>
-        ))}
+            <option value={2025}>2025 (Mar 2024–Feb 2025)</option>
+            <option value={2026}>2026 (Mar 2025–Feb 2026)</option>
+            <option value={2027}>2027 (Mar 2026–Feb 2027)</option>
+          </select>
+        </label>
       </div>
 
       {/* ════════ DASHBOARD ════════ */}
@@ -709,7 +716,8 @@ export function TaxTools() {
               Individual Tax Dashboard
             </h2>
             <p className="text-sm text-slate-500">
-              Tax Year 2024/2025 — Summary of deductions and credits
+              Tax Year {assessmentYear - 1}/{assessmentYear} — Summary of
+              deductions and credits
             </p>
           </div>
           <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
@@ -1385,19 +1393,19 @@ export function TaxTools() {
                     label="Fixed Cost (annual)"
                     value={fmt(deemedFixed)}
                     colorClass="text-slate-700"
-                    sub={`${fmt(sRate.fixed)}/month`}
+                    sub={`${fmt(sRate.fixedCostAnnual)}/year`}
                   />
                   <ResultCard
                     label="Fuel Cost"
                     value={fmt(deemedFuel)}
                     colorClass="text-slate-700"
-                    sub={`R${sRate.fuel}/km x ${fmtKm(tripStats.totalKm)}`}
+                    sub={`R${sRate.fuelCostPerKm.toFixed(3)}/km x ${fmtKm(tripStats.totalKm)}`}
                   />
                   <ResultCard
                     label="Maintenance Cost"
                     value={fmt(deemedMaint)}
                     colorClass="text-slate-700"
-                    sub={`R${sRate.maint}/km x ${fmtKm(tripStats.totalKm)}`}
+                    sub={`R${sRate.maintenanceCostPerKm.toFixed(3)}/km x ${fmtKm(tripStats.totalKm)}`}
                   />
                   <ResultCard
                     label="Total Deemed Cost"
