@@ -156,5 +156,193 @@
         "priorAssessmentDebitOrCredit": 0
       }
     }
+  },
+  {
+    "id": "itax_1773657610143_976481",
+    "clientId": "golden_client_individual_001",
+    "referenceNumber": "9154/778/30/6",
+    "taxpayerName": "Anele Maseko",
+    "assessmentDate": "2026-03-16",
+    "assessmentYear": 2026,
+    "assessmentMode": "NEAR_EFILING_ESTIMATE",
+    "status": "REVIEW_REQUIRED",
+    "input": {
+      "salaryIncome": 0,
+      "localInterest": 0,
+      "travelAllowance": 0,
+      "retirementContributions": 0,
+      "travelDeduction": 0,
+      "rebates": 0,
+      "medicalTaxCredit": 0,
+      "paye": 0,
+      "priorAssessmentDebitOrCredit": 0,
+      "effectiveTaxRate": 0
+    },
+    "nearEfilingInput": {
+      "profile": {
+        "assessmentYear": 2026,
+        "dateOfBirth": "1990-01-01",
+        "maritalStatus": "SINGLE",
+        "medicalAidMembers": 1,
+        "medicalAidMonths": 12
+      },
+      "employment": {
+        "salaryIncome": 0,
+        "bonusIncome": 0,
+        "commissionIncome": 0,
+        "fringeBenefits": 0,
+        "otherTaxableEmploymentIncome": 0,
+        "payeWithheld": 0
+      },
+      "travel": {
+        "hasTravelAllowance": false,
+        "travelAllowance": 0,
+        "businessKilometres": 0,
+        "totalKilometres": 0,
+        "vehicleCost": 0,
+        "vehiclePurchaseDate": "2025-03-01"
+      },
+      "medical": {
+        "medicalSchemeContributions": 0,
+        "qualifyingOutOfPocketExpenses": 0,
+        "disabilityFlag": false
+      },
+      "interest": {
+        "localInterest": 0
+      },
+      "rental": {
+        "grossRentalIncome": 0,
+        "deductibleRentalExpenses": 0
+      },
+      "soleProprietor": {
+        "grossBusinessIncome": 0,
+        "deductibleBusinessExpenses": 0
+      },
+      "deductions": {
+        "retirementContributions": 0,
+        "donationsUnderSection18A": 0,
+        "priorAssessmentDebitOrCredit": 0
+      },
+      "capitalGains": {
+        "proceeds": 0,
+        "baseCost": 0,
+        "primaryResidenceExclusion": false
+      },
+      "otherIncome": {
+        "pensionIncome": 0,
+        "annuityIncome": 0,
+        "foreignEmploymentIncome": 0
+      },
+      "provisionalTax": {
+        "firstPayment": 0,
+        "secondPayment": 0,
+        "thirdPayment": 0
+      },
+      "homeOffice": {
+        "qualifies": false,
+        "officeArea": 0,
+        "totalHomeArea": 0,
+        "rent": 0,
+        "bondInterest": 0,
+        "ratesAndTaxes": 0,
+        "electricity": 0,
+        "cleaning": 0,
+        "repairs": 0
+      }
+    }
+  },
+  {
+    "id": "itax_1773659686108_568586",
+    "clientId": "client_1773659607366_436358",
+    "referenceNumber": "900134569",
+    "taxpayerName": "mjay",
+    "assessmentDate": "2026-03-16",
+    "assessmentYear": 2024,
+    "assessmentMode": "NEAR_EFILING_ESTIMATE",
+    "status": "REVIEW_REQUIRED",
+    "input": {
+      "salaryIncome": 0,
+      "localInterest": 0,
+      "travelAllowance": 0,
+      "retirementContributions": 0,
+      "travelDeduction": 0,
+      "rebates": 0,
+      "medicalTaxCredit": 0,
+      "paye": 0,
+      "priorAssessmentDebitOrCredit": 0,
+      "effectiveTaxRate": 0
+    },
+    "nearEfilingInput": {
+      "profile": {
+        "assessmentYear": 2024,
+        "dateOfBirth": "1990-01-01",
+        "maritalStatus": "SINGLE",
+        "medicalAidMembers": 1,
+        "medicalAidMonths": 12
+      },
+      "employment": {
+        "salaryIncome": 0,
+        "bonusIncome": 0,
+        "commissionIncome": 0,
+        "fringeBenefits": 0,
+        "otherTaxableEmploymentIncome": 0,
+        "payeWithheld": 0
+      },
+      "travel": {
+        "hasTravelAllowance": true,
+        "travelAllowance": 0,
+        "businessKilometres": 0,
+        "totalKilometres": 0,
+        "vehicleCost": 0,
+        "vehiclePurchaseDate": "2025-03-01"
+      },
+      "medical": {
+        "medicalSchemeContributions": 0,
+        "qualifyingOutOfPocketExpenses": 0,
+        "disabilityFlag": false
+      },
+      "interest": {
+        "localInterest": 0
+      },
+      "rental": {
+        "grossRentalIncome": 0,
+        "deductibleRentalExpenses": 0
+      },
+      "soleProprietor": {
+        "grossBusinessIncome": 0,
+        "deductibleBusinessExpenses": 0
+      },
+      "deductions": {
+        "retirementContributions": 0,
+        "donationsUnderSection18A": 0,
+        "priorAssessmentDebitOrCredit": 0
+      },
+      "capitalGains": {
+        "proceeds": 0,
+        "baseCost": 0,
+        "primaryResidenceExclusion": false
+      },
+      "otherIncome": {
+        "pensionIncome": 0,
+        "annuityIncome": 0,
+        "foreignEmploymentIncome": 0
+      },
+      "provisionalTax": {
+        "firstPayment": 0,
+        "secondPayment": 0,
+        "thirdPayment": 0
+      },
+      "homeOffice": {
+        "qualifies": true,
+        "officeArea": 0,
+        "totalHomeArea": 0,
+        "rent": 0,
+        "bondInterest": 0,
+        "ratesAndTaxes": 0,
+        "electricity": 0,
+        "cleaning": 0,
+        "repairs": 0
+      }
+    }
   }
 ]

@@ -1,0 +1,450 @@
+{
+  "estates": [
+    {
+      "id": "estate_1773584221533_808244",
+      "clientId": "client_1773584221532_397117",
+      "estateReference": "EST-2026-0002",
+      "deceasedName": "GINGER",
+      "idNumberOrPassport": "70011656778777",
+      "dateOfBirth": "2026-03-10",
+      "dateOfDeath": "2026-03-15",
+      "maritalRegime": "IN_COMMUNITY",
+      "taxNumber": "90001223222",
+      "estateTaxNumber": "908776655555",
+      "hasWill": true,
+      "executorName": "NCUBE",
+      "executorCapacity": "EXECUTOR_TESTAMENTARY",
+      "executorEmail": "MC@GMAIL.COM",
+      "assignedPractitionerName": "Sipho Ndlovu",
+      "currentStage": "REPORTED",
+      "status": "ACTIVE",
+      "createdAt": "2026-03-15T14:17:01.533Z",
+      "updatedAt": "2026-03-15T14:42:26.149Z"
+    },
+    {
+      "id": "estate_001",
+      "clientId": "client_003",
+      "estateReference": "EST-2026-0001",
+      "deceasedName": "Estate Late Nomsa Dube",
+      "idNumberOrPassport": "6702140234081",
+      "dateOfBirth": "1967-02-14",
+      "dateOfDeath": "2026-01-19",
+      "maritalRegime": "OUT_OF_COMMUNITY_ACCRUAL",
+      "taxNumber": "9003344556",
+      "estateTaxNumber": "9011122233",
+      "hasWill": true,
+      "executorName": "Kagiso Dlamini",
+      "executorCapacity": "EXECUTOR_TESTAMENTARY",
+      "executorEmail": "estates@ubuntutax.co.za",
+      "executorPhone": "+27 82 555 1212",
+      "assignedPractitionerName": "Sipho Ndlovu",
+      "currentStage": "ASSETS_IDENTIFIED",
+      "status": "ACTIVE",
+      "notes": "Master file opened, valuations and banking confirmations outstanding.",
+      "createdAt": "2026-03-04T09:00:00+02:00",
+      "updatedAt": "2026-03-08T15:20:00+02:00"
+    },
+    {
+      "id": "golden_estate_001",
+      "clientId": "golden_client_estate_001",
+      "estateReference": "EST-GOLD-2026-0001",
+      "deceasedName": "Estate Late Lerato Khumalo",
+      "idNumberOrPassport": "6503050489087",
+      "dateOfBirth": "1965-03-05",
+      "dateOfDeath": "2026-01-19",
+      "maritalRegime": "OUT_OF_COMMUNITY_ACCRUAL",
+      "taxNumber": "9004455667",
+      "estateTaxNumber": "9016677889",
+      "hasWill": true,
+      "executorName": "Kagiso Dlamini",
+      "executorCapacity": "EXECUTOR_TESTAMENTARY",
+      "executorEmail": "estate-demo@ubuntutax.co.za",
+      "executorPhone": "+27 82 555 0188",
+      "assignedPractitionerName": "Sipho Ndlovu",
+      "currentStage": "TAX_READINESS",
+      "status": "ACTIVE",
+      "notes": "Golden demo estate used to validate the full Phase 2 calculator and filing-pack chain.",
+      "createdAt": "2026-03-06T09:00:00+02:00",
+      "updatedAt": "2026-03-15T18:50:14.319Z"
+    }
+  ],
+  "assets": [
+    {
+      "id": "estate_asset_001",
+      "estateId": "estate_001",
+      "category": "IMMOVABLE_PROPERTY",
+      "description": "Primary residence in Randburg",
+      "dateOfDeathValue": 2350000,
+      "baseCost": 760000,
+      "acquisitionDate": "2004-05-01",
+      "valuationDateValue": 420000,
+      "isPrimaryResidence": true,
+      "isPersonalUse": false,
+      "spouseRollover": false,
+      "notes": "Awaiting signed external valuation report."
+    },
+    {
+      "id": "golden_estate_asset_business_001",
+      "estateId": "golden_estate_001",
+      "category": "BUSINESS_INTEREST",
+      "description": "Khumalo Industrial Supplies (Pty) Ltd - 80% shareholding",
+      "dateOfDeathValue": 15900000,
+      "baseCost": 1100000,
+      "acquisitionDate": "2010-04-01",
+      "valuationDateValue": 15900000,
+      "isPrimaryResidence": false,
+      "isPersonalUse": false,
+      "spouseRollover": false,
+      "notes": "Golden demo NAV business valuation linked."
+    },
+    {
+      "id": "golden_estate_asset_property_001",
+      "estateId": "golden_estate_001",
+      "category": "IMMOVABLE_PROPERTY",
+      "description": "Primary residence in Bryanston",
+      "dateOfDeathValue": 2350000,
+      "baseCost": 760000,
+      "acquisitionDate": "2004-05-01",
+      "valuationDateValue": 420000,
+      "isPrimaryResidence": true,
+      "isPersonalUse": false,
+      "spouseRollover": false,
+      "notes": "Qualified for primary residence relief in CGT run."
+    },
+    {
+      "id": "golden_estate_asset_investment_001",
+      "estateId": "golden_estate_001",
+      "category": "INVESTMENT",
+      "description": "Listed share portfolio",
+      "dateOfDeathValue": 1250000,
+      "baseCost": 680000,
+      "acquisitionDate": "2016-08-12",
+      "isPrimaryResidence": false,
+      "isPersonalUse": false,
+      "spouseRollover": false
+    },
+    {
+      "id": "golden_estate_asset_cash_001",
+      "estateId": "golden_estate_001",
+      "category": "BANK_ACCOUNT",
+      "description": "Main current account",
+      "dateOfDeathValue": 450000,
+      "baseCost": 450000,
+      "acquisitionDate": "2025-01-01",
+      "isPrimaryResidence": false,
+      "isPersonalUse": false,
+      "spouseRollover": false
+    },
+    {
+      "id": "estate_asset_1773584321478_566190",
+      "estateId": "estate_1773584221533_808244",
+      "category": "INVESTMENT",
+      "description": "WOLOLO",
+      "dateOfDeathValue": 5000000,
+      "baseCost": 7600000,
+      "acquisitionDate": "2026-03-01",
+      "isPrimaryResidence": false,
+      "isPersonalUse": true,
+      "spouseRollover": false
+    },
+    {
+      "id": "estate_asset_1773584410892_53892",
+      "estateId": "estate_1773584221533_808244",
+      "category": "BUSINESS_INTEREST",
+      "description": "PRIUUUU",
+      "dateOfDeathValue": 15900000,
+      "baseCost": 7900000000,
+      "acquisitionDate": "2026-03-02",
+      "isPrimaryResidence": false,
+      "isPersonalUse": true,
+      "spouseRollover": false,
+      "valuationDateValue": 15900000
+    }
+  ],
+  "liabilities": [
+    {
+      "id": "estate_liability_001",
+      "estateId": "estate_001",
+      "description": "Mortgage bond outstanding",
+      "creditorName": "Ubuntu Bank",
+      "amount": 485000,
+      "securedByAssetDescription": "Primary residence in Randburg",
+      "dueDate": "2026-04-15",
+      "notes": "Settlement figure requested from bank."
+    },
+    {
+      "id": "golden_estate_liability_001",
+      "estateId": "golden_estate_001",
+      "description": "Mortgage bond outstanding",
+      "creditorName": "Ubuntu Bank",
+      "amount": 485000,
+      "securedByAssetDescription": "Primary residence in Bryanston",
+      "dueDate": "2026-04-15",
+      "notes": "Settlement figure confirmed."
+    },
+    {
+      "id": "golden_estate_liability_002",
+      "estateId": "golden_estate_001",
+      "description": "Outstanding legal and conveyancing fees",
+      "creditorName": "Mahlangu Attorneys",
+      "amount": 120000,
+      "dueDate": "2026-05-31"
+    }
+  ],
+  "beneficiaries": [
+    {
+      "id": "estate_beneficiary_001",
+      "estateId": "estate_001",
+      "fullName": "Thando Dube",
+      "idNumberOrPassport": "9001010234084",
+      "relationship": "Spouse",
+      "isMinor": false,
+      "sharePercentage": 100,
+      "allocationType": "RESIDUARY",
+      "notes": "Surviving spouse."
+    },
+    {
+      "id": "golden_estate_beneficiary_001",
+      "estateId": "golden_estate_001",
+      "fullName": "Bongiwe Khumalo",
+      "idNumberOrPassport": "7001010234088",
+      "relationship": "Spouse",
+      "isMinor": false,
+      "sharePercentage": 70,
+      "allocationType": "RESIDUARY",
+      "notes": "Surviving spouse."
+    },
+    {
+      "id": "golden_estate_beneficiary_002",
+      "estateId": "golden_estate_001",
+      "fullName": "Sibusiso Khumalo",
+      "idNumberOrPassport": "9803035234081",
+      "relationship": "Child",
+      "isMinor": false,
+      "sharePercentage": 30,
+      "allocationType": "RESIDUARY"
+    }
+  ],
+  "checklistItems": [
+    {
+      "id": "estate_checklist_001",
+      "estateId": "estate_001",
+      "stage": "REPORTED",
+      "title": "Death certificate received",
+      "mandatory": true,
+      "status": "COMPLETE",
+      "notes": "Certified copy uploaded."
+    },
+    {
+      "id": "estate_checklist_002",
+      "estateId": "estate_001",
+      "stage": "EXECUTOR_APPOINTED",
+      "title": "Letters of executorship requested",
+      "mandatory": true,
+      "status": "IN_PROGRESS"
+    },
+    {
+      "id": "golden_estate_checklist_001",
+      "estateId": "golden_estate_001",
+      "stage": "REPORTED",
+      "title": "Death certificate received",
+      "mandatory": true,
+      "status": "COMPLETE",
+      "notes": "Certified copy on file."
+    },
+    {
+      "id": "golden_estate_checklist_002",
+      "estateId": "golden_estate_001",
+      "stage": "EXECUTOR_APPOINTED",
+      "title": "Letters of executorship issued",
+      "mandatory": true,
+      "status": "COMPLETE",
+      "notes": "Master reference captured."
+    },
+    {
+      "id": "golden_estate_checklist_003",
+      "estateId": "golden_estate_001",
+      "stage": "TAX_READINESS",
+      "title": "Tax engines approved for filing pack",
+      "mandatory": true,
+      "status": "COMPLETE",
+      "notes": "Golden demo approved chain ready."
+    },
+    {
+      "id": "estate_checklist_1773584221534_724058",
+      "estateId": "estate_1773584221533_808244",
+      "stage": "REPORTED",
+      "title": "Death certificate received",
+      "mandatory": true,
+      "status": "PENDING"
+    },
+    {
+      "id": "estate_checklist_1773584221534_583615",
+      "estateId": "estate_1773584221533_808244",
+      "stage": "REPORTED",
+      "title": "Deceased ID or passport copy received",
+      "mandatory": true,
+      "status": "PENDING"
+    },
+    {
+      "id": "estate_checklist_1773584221534_633744",
+      "estateId": "estate_1773584221533_808244",
+      "stage": "REPORTED",
+      "title": "Will status confirmed",
+      "mandatory": true,
+      "status": "COMPLETE",
+      "notes": "Will indicated during intake."
+    },
+    {
+      "id": "estate_checklist_1773584221534_498488",
+      "estateId": "estate_1773584221533_808244",
+      "stage": "REPORTED",
+      "title": "Marriage and marital-regime documents reviewed",
+      "mandatory": false,
+      "status": "PENDING"
+    },
+    {
+      "id": "estate_checklist_1773584221534_113560",
+      "estateId": "estate_1773584221533_808244",
+      "stage": "EXECUTOR_APPOINTED",
+      "title": "Letters of executorship or administration captured",
+      "mandatory": true,
+      "status": "PENDING"
+    },
+    {
+      "id": "estate_checklist_1773584221534_659774",
+      "estateId": "estate_1773584221533_808244",
+      "stage": "ASSETS_IDENTIFIED",
+      "title": "Asset register reviewed",
+      "mandatory": true,
+      "status": "PENDING"
+    },
+    {
+      "id": "estate_checklist_1773584221534_445970",
+      "estateId": "estate_1773584221533_808244",
+      "stage": "ASSETS_IDENTIFIED",
+      "title": "Liability schedule reviewed",
+      "mandatory": true,
+      "status": "PENDING"
+    },
+    {
+      "id": "estate_checklist_1773584221534_196651",
+      "estateId": "estate_1773584221533_808244",
+      "stage": "LD_DRAFTED",
+      "title": "Beneficiary allocations reviewed",
+      "mandatory": true,
+      "status": "PENDING"
+    }
+  ],
+  "stageEvents": [
+    {
+      "id": "estate_stage_001",
+      "estateId": "estate_001",
+      "toStage": "REPORTED",
+      "actorName": "Nandi Maseko",
+      "summary": "Opened estate matter and captured death details.",
+      "createdAt": "2026-03-04T09:05:00+02:00"
+    },
+    {
+      "id": "estate_stage_002",
+      "estateId": "estate_001",
+      "fromStage": "REPORTED",
+      "toStage": "ASSETS_IDENTIFIED",
+      "actorName": "Sipho Ndlovu",
+      "summary": "Initial asset and liability schedules compiled.",
+      "createdAt": "2026-03-08T15:20:00+02:00"
+    },
+    {
+      "id": "golden_estate_stage_001",
+      "estateId": "golden_estate_001",
+      "toStage": "REPORTED",
+      "actorName": "Nandi Maseko",
+      "summary": "Opened the estate matter and captured deceased details.",
+      "createdAt": "2026-03-06T09:05:00+02:00"
+    },
+    {
+      "id": "golden_estate_stage_002",
+      "estateId": "golden_estate_001",
+      "fromStage": "REPORTED",
+      "toStage": "ASSETS_IDENTIFIED",
+      "actorName": "Sipho Ndlovu",
+      "summary": "Captured assets, liabilities, and beneficiary profile.",
+      "createdAt": "2026-03-07T10:15:00+02:00"
+    },
+    {
+      "id": "golden_estate_stage_003",
+      "estateId": "golden_estate_001",
+      "fromStage": "ASSETS_IDENTIFIED",
+      "toStage": "TAX_READINESS",
+      "actorName": "Kagiso Dlamini",
+      "summary": "Approved valuation, tax, and filing-pack readiness.",
+      "createdAt": "2026-03-13T09:15:00+02:00"
+    },
+    {
+      "id": "estate_stage_1773584221536_677778",
+      "estateId": "estate_1773584221533_808244",
+      "toStage": "REPORTED",
+      "actorName": "Sipho Ndlovu",
+      "summary": "Opened estate matter EST-2026-0002.",
+      "createdAt": "2026-03-15T14:17:01.536Z"
+    }
+  ],
+  "liquidationEntries": [
+    {
+      "id": "golden_estate_liq_entry_001",
+      "estateId": "golden_estate_001",
+      "category": "ADMINISTRATION_COST",
+      "description": "Advertising and Master filing costs",
+      "amount": 28500,
+      "effectiveDate": "2026-03-10"
+    },
+    {
+      "id": "golden_estate_liq_entry_002",
+      "estateId": "golden_estate_001",
+      "category": "EXECUTOR_REMUNERATION",
+      "description": "Estimated executor remuneration accrual",
+      "amount": 95000,
+      "effectiveDate": "2026-03-12"
+    }
+  ],
+  "liquidationDistributions": [
+    {
+      "id": "golden_estate_distribution_001",
+      "estateId": "golden_estate_001",
+      "beneficiaryId": "golden_estate_beneficiary_001",
+      "description": "Residual estate entitlement",
+      "amount": 4200000
+    },
+    {
+      "id": "golden_estate_distribution_002",
+      "estateId": "golden_estate_001",
+      "beneficiaryId": "golden_estate_beneficiary_002",
+      "description": "Residual estate entitlement",
+      "amount": 1800000
+    }
+  ],
+  "executorAccess": [
+    {
+      "id": "estate_executor_access_001",
+      "estateId": "estate_001",
+      "accessToken": "exec_demo_nomsa_dube",
+      "recipientName": "Kagiso Dlamini",
+      "recipientEmail": "estates@ubuntutax.co.za",
+      "expiresAt": "2026-12-31",
+      "status": "ACTIVE",
+      "lastAccessedAt": "2026-03-10T16:05:00+02:00",
+      "createdAt": "2026-03-08T15:30:00+02:00"
+    },
+    {
+      "id": "golden_estate_executor_access_001",
+      "estateId": "golden_estate_001",
+      "accessToken": "golden_exec_access_lerato_khumalo",
+      "recipientName": "Kagiso Dlamini",
+      "recipientEmail": "estate-demo@ubuntutax.co.za",
+      "expiresAt": "2026-12-31",
+      "status": "ACTIVE",
+      "lastAccessedAt": "2026-03-15T18:47:16.939Z",
+      "createdAt": "2026-03-08T16:00:00+02:00"
+    }
+  ]
+}

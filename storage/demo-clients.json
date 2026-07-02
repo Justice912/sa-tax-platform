@@ -1,0 +1,90 @@
+[
+  {
+    "id": "client_001",
+    "code": "CLI-0001",
+    "firmId": "firm_ubuntu",
+    "displayName": "Thabo Mokoena",
+    "clientType": "INDIVIDUAL",
+    "status": "ACTIVE",
+    "taxReferenceNumber": "9001/123/45/6",
+    "email": "thabo@example.co.za",
+    "phone": "+27 82 000 1111",
+    "assignedStaffName": "Sipho Ndlovu",
+    "notes": "Salary + rental income"
+  },
+  {
+    "id": "client_002",
+    "code": "CLI-0002",
+    "firmId": "firm_ubuntu",
+    "displayName": "Inala Manufacturing (Pty) Ltd",
+    "clientType": "COMPANY",
+    "status": "ACTIVE",
+    "registrationNumber": "2016/124578/07",
+    "taxReferenceNumber": "9412/456/78/9",
+    "email": "finance@inala.co.za",
+    "phone": "+27 31 222 3333",
+    "assignedStaffName": "Kagiso Dlamini",
+    "notes": "VAT and PAYE active"
+  },
+  {
+    "id": "client_003",
+    "code": "CLI-0003",
+    "firmId": "firm_ubuntu",
+    "displayName": "Estate Late Nomsa Dube",
+    "clientType": "ESTATE",
+    "status": "ONBOARDING",
+    "assignedStaffName": "Sipho Ndlovu",
+    "notes": "Master file opened, valuation checklist in progress"
+  },
+  {
+    "id": "golden_client_individual_001",
+    "code": "CLI-GOLD-IND-001",
+    "firmId": "firm_ubuntu",
+    "displayName": "Anele Maseko",
+    "clientType": "INDIVIDUAL",
+    "status": "ACTIVE",
+    "taxReferenceNumber": "9154/778/30/6",
+    "email": "anele.maseko@example.co.za",
+    "phone": "+27 82 444 1001",
+    "address": "12 Jan Smuts Avenue, Rosebank, Johannesburg",
+    "assignedStaffName": "Sipho Ndlovu",
+    "notes": "Golden demo verification client for individual tax and linked workflow checks."
+  },
+  {
+    "id": "golden_client_estate_001",
+    "code": "CLI-GOLD-EST-001",
+    "firmId": "firm_ubuntu",
+    "displayName": "Estate Late Lerato Khumalo",
+    "clientType": "ESTATE",
+    "status": "ACTIVE",
+    "taxReferenceNumber": "9018/112/44/0",
+    "email": "estate-demo@ubuntutax.co.za",
+    "phone": "+27 11 555 0188",
+    "address": "45 Corlett Drive, Melrose, Johannesburg",
+    "assignedStaffName": "Sipho Ndlovu",
+    "notes": "Golden demo verification estate with a full Phase 2 calculation chain."
+  },
+  {
+    "id": "client_1773661270891_344873",
+    "code": "CLI-0006",
+    "firmId": "firm_ubuntu",
+    "displayName": "mjozi",
+    "clientType": "INDIVIDUAL",
+    "status": "ACTIVE",
+    "taxReferenceNumber": "90087665444",
+    "email": "j@gmail.com",
+    "phone": "0608694623"
+  },
+  {
+    "id": "client_1773943296783_234858",
+    "code": "CLI-0007",
+    "firmId": "firm_ubuntu",
+    "displayName": "ANAVI PTY LTD",
+    "clientType": "COMPANY",
+    "status": "ACTIVE",
+    "taxReferenceNumber": "9093371285",
+    "registrationNumber": "2024 / 375304 / 07",
+    "email": "taku@anavigroup.co.za",
+    "phone": "+27836451725"
+  }
+]

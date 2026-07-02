@@ -1,0 +1,605 @@
+{
+  "estateId": "golden_estate_001",
+  "estateReference": "EST-GOLD-2026-0001",
+  "taxYear": 2026,
+  "yearPackId": "estate_year_pack_2026_v1",
+  "yearPackVersion": 1,
+  "generatedAt": "2026-03-15T14:14:17.886Z",
+  "artifacts": [
+    {
+      "code": "BUSINESS_VALUATION_REPORT",
+      "title": "Business valuation report",
+      "jurisdiction": "SARS",
+      "outputFormat": "docx",
+      "templateVersion": "2026.1",
+      "templateStorageKey": "estates/forms/business-valuation-report/2026.1.docx",
+      "status": "READY",
+      "payload": {
+        "header": {
+          "title": "Business valuation report",
+          "taxYear": 2026,
+          "valuationDate": "2026-01-19",
+          "estateReference": "EST-GOLD-2026-0001",
+          "deceasedName": "Estate Late Lerato Khumalo",
+          "executorName": "Kagiso Dlamini"
+        },
+        "purpose": "Prepared to support SARS estate duty, CGT on death, and estate administration at date of death.",
+        "subject": {
+          "subjectDescription": "Khumalo Industrial Supplies (Pty) Ltd - 80% shareholding",
+          "subjectType": "COMPANY_SHAREHOLDING",
+          "registrationNumber": "2010/114477/07",
+          "industry": "Industrial supplies",
+          "ownershipPercentage": 80
+        },
+        "methodology": {
+          "method": "NET_ASSET_VALUE",
+          "assetValue": 6750000,
+          "nonOperatingAssets": 0,
+          "liabilities": 0
+        },
+        "summary": {
+          "subjectDescription": "Khumalo Industrial Supplies (Pty) Ltd - 80% shareholding",
+          "method": "NET_ASSET_VALUE",
+          "concludedValue": 5400000,
+          "enterpriseValue": 6750000
+        },
+        "supportChecklist": {
+          "latestAnnualFinancialStatementsOnFile": true,
+          "priorYearAnnualFinancialStatementsOnFile": true,
+          "twoYearsPriorAnnualFinancialStatementsOnFile": true,
+          "executorAuthorityOnFile": true,
+          "acquisitionDocumentsOnFile": true,
+          "rev246Required": false,
+          "rev246Included": false,
+          "patentValuationRequired": false,
+          "patentValuationIncluded": false
+        },
+        "assumptions": [
+          "Net asset value approach selected for the golden demo baseline."
+        ],
+        "notes": "Golden demo NAV valuation ready for SARS support-pack verification.",
+        "sourceReferences": [
+          "SARS valuation support checklist for unlisted shares or member interests",
+          "AME Pro Deceased Estate Module System Specification"
+        ],
+        "mandate": {
+          "engagementMandate": "The executor engaged the valuer to determine the fair market value of the deceased's 80% shareholding in Khumalo Industrial Supplies (Pty) Ltd as at 19 January 2026 for estate administration, SARS compliance, and filing-pack support.",
+          "definitionOfValue": "The standard of value applied is fair market value, being the price a willing buyer would pay a willing seller, both reasonably informed and neither under compulsion.",
+          "sourcesOfInformation": [
+            "Annual financial statements for FY2023 to FY2025",
+            "Management accounts to valuation date",
+            "Fixed asset register and inventory support schedules",
+            "Industry reports and estate working papers"
+          ],
+          "limitations": [
+            "The valuation relies on records supplied by the executor and management.",
+            "No allowance has been made for changes in legislation or trading conditions after the valuation date.",
+            "This report is prepared for estate and SARS purposes and is not a fairness opinion."
+          ]
+        },
+        "executiveSummary": {
+          "concludedValue": 5400000,
+          "weightedAverageValue": 5380000,
+          "summaryText": "Three valuation methodologies were considered and reconciled to a rounded concluded value for the deceased's 80% equity interest."
+        },
+        "businessOverview": {
+          "legalName": "Khumalo Industrial Supplies (Pty) Ltd",
+          "registrationNumber": "2010/114477/07",
+          "industry": "Industrial supplies",
+          "taxReferenceNumber": "9012345678",
+          "vatNumber": "4012345678",
+          "employeeCount": 28,
+          "narrative": "Khumalo Industrial Supplies (Pty) Ltd is an established owner-managed supplier of industrial consumables and plant support products with recurring customer relationships and identifiable earnings capacity."
+        },
+        "historicalFinancialAnalysis": {
+          "years": [
+            {
+              "label": "FY2023",
+              "revenue": 14800000,
+              "grossProfit": 4100000,
+              "ebitda": 2100000,
+              "ebit": 1850000,
+              "npat": 1280000,
+              "totalAssets": 7800000,
+              "totalLiabilities": 2350000
+            },
+            {
+              "label": "FY2024",
+              "revenue": 16250000,
+              "grossProfit": 4620000,
+              "ebitda": 2480000,
+              "ebit": 2230000,
+              "npat": 1560000,
+              "totalAssets": 8450000,
+              "totalLiabilities": 2260000
+            },
+            {
+              "label": "FY2025",
+              "revenue": 17900000,
+              "grossProfit": 5240000,
+              "ebitda": 2960000,
+              "ebit": 2670000,
+              "npat": 1885000,
+              "totalAssets": 9180000,
+              "totalLiabilities": 2110000
+            }
+          ]
+        },
+        "methodResults": {
+          "discountedCashFlow": {
+            "fcffSchedule": [
+              {
+                "label": "FY2026",
+                "revenue": 19100000,
+                "ebit": 3050000,
+                "taxOnEbit": 823500,
+                "nopat": 2226500,
+                "depreciation": 280000,
+                "capitalExpenditure": 360000,
+                "workingCapitalChange": 140000,
+                "fcff": 2006500,
+                "discountFactor": 0.8321,
+                "presentValue": 1669390
+              },
+              {
+                "label": "FY2027",
+                "revenue": 20400000,
+                "ebit": 3280000,
+                "taxOnEbit": 885600,
+                "nopat": 2394400,
+                "depreciation": 295000,
+                "capitalExpenditure": 380000,
+                "workingCapitalChange": 150000,
+                "fcff": 2159400,
+                "discountFactor": 0.6924,
+                "presentValue": 1495121
+              }
+            ],
+            "costOfEquity": 0.2148,
+            "afterTaxCostOfDebt": 0.0858,
+            "wacc": 0.2019,
+            "gordonGrowthTerminalValue": 12980000,
+            "exitMultipleTerminalValue": 13850000,
+            "adoptedTerminalValue": 13415000,
+            "enterpriseValue": 7100000,
+            "preDiscountEquityValue": 6400000,
+            "marketabilityDiscountRate": 0.08,
+            "marketabilityDiscountAmount": 512000,
+            "minorityDiscountRate": 0,
+            "minorityDiscountAmount": 0,
+            "indicatedValue": 5750000
+          },
+          "maintainableEarnings": {
+            "years": [
+              {
+                "label": "FY2023",
+                "reportedNpat": 1280000,
+                "nonRecurringAdjustments": 120000,
+                "ownerRemunerationAdjustment": -80000,
+                "normalisedNpat": 1320000,
+                "weighting": 1
+              },
+              {
+                "label": "FY2024",
+                "reportedNpat": 1560000,
+                "nonRecurringAdjustments": 0,
+                "ownerRemunerationAdjustment": -90000,
+                "normalisedNpat": 1470000,
+                "weighting": 2
+              },
+              {
+                "label": "FY2025",
+                "reportedNpat": 1885000,
+                "nonRecurringAdjustments": 60000,
+                "ownerRemunerationAdjustment": -90000,
+                "normalisedNpat": 1855000,
+                "weighting": 3
+              }
+            ],
+            "maintainableEarnings": 1670833,
+            "selectedMultiple": 4,
+            "preDiscountValue": 6683332,
+            "marketabilityDiscountRate": 0.03,
+            "marketabilityDiscountAmount": 200500,
+            "minorityDiscountRate": 0,
+            "minorityDiscountAmount": 0,
+            "indicatedValue": 5400000
+          },
+          "netAssetValue": {
+            "assets": [
+              {
+                "category": "Property and equipment",
+                "bookValue": 2650000,
+                "adjustment": 850000,
+                "fairMarketValue": 3500000
+              },
+              {
+                "category": "Inventory",
+                "bookValue": 1950000,
+                "adjustment": -150000,
+                "fairMarketValue": 1800000
+              },
+              {
+                "category": "Trade receivables",
+                "bookValue": 2050000,
+                "adjustment": -250000,
+                "fairMarketValue": 1800000
+              },
+              {
+                "category": "Cash and equivalents",
+                "bookValue": 750000,
+                "adjustment": 0,
+                "fairMarketValue": 750000
+              }
+            ],
+            "liabilities": [
+              {
+                "category": "Interest-bearing debt",
+                "bookValue": 520000,
+                "adjustment": 0,
+                "fairMarketValue": 520000
+              },
+              {
+                "category": "Trade payables",
+                "bookValue": 940000,
+                "adjustment": 0,
+                "fairMarketValue": 940000
+              },
+              {
+                "category": "Deferred tax",
+                "bookValue": 0,
+                "adjustment": 390000,
+                "fairMarketValue": 390000
+              }
+            ],
+            "adjustedAssets": 7850000,
+            "adjustedLiabilities": 1850000,
+            "indicatedValue": 4950000
+          }
+        },
+        "reconciliation": {
+          "methods": [
+            {
+              "method": "DISCOUNTED_CASH_FLOW",
+              "indicatedValue": 5750000,
+              "weight": 0.4,
+              "weightedValue": 2300000
+            },
+            {
+              "method": "MAINTAINABLE_EARNINGS",
+              "indicatedValue": 5400000,
+              "weight": 0.35,
+              "weightedValue": 1890000
+            },
+            {
+              "method": "NET_ASSET_VALUE",
+              "indicatedValue": 4950000,
+              "weight": 0.25,
+              "weightedValue": 1237500
+            }
+          ],
+          "weightedAverageValue": 5427500,
+          "concludedValue": 5400000,
+          "rationale": "The concluded value reflects a weighted reconciliation of DCF, maintainable earnings, and adjusted NAV, with the heaviest reliance placed on trading performance and cash-generation capacity."
+        },
+        "sensitivityAnalysis": {
+          "scenarios": [
+            {
+              "scenario": "Bear Case",
+              "wacc": 0.22,
+              "growthRate": 0.03,
+              "earningsMultiple": 3.6,
+              "indicatedValue": 4800000
+            },
+            {
+              "scenario": "Base Case",
+              "wacc": 0.2019,
+              "growthRate": 0.05,
+              "earningsMultiple": 4,
+              "indicatedValue": 5400000
+            },
+            {
+              "scenario": "Bull Case",
+              "wacc": 0.185,
+              "growthRate": 0.06,
+              "earningsMultiple": 4.4,
+              "indicatedValue": 6050000
+            }
+          ]
+        },
+        "taxImplications": {
+          "cgtSummary": {
+            "deemedProceeds": 5400000,
+            "taxableCapitalGain": 1828000
+          },
+          "estateDutySummary": {
+            "grossEstate": 9450000,
+            "dutiableEstate": 4295000,
+            "estateDutyPayable": 859000
+          },
+          "section9haNotes": [
+            "Where the shares accrue to a surviving spouse, Section 9HA rollover treatment should be considered alongside the section 4(q) estate-duty deduction."
+          ]
+        },
+        "economicAndIndustryContext": {
+          "macroeconomicConditions": "The valuation considers South African macroeconomic conditions at the valuation date, including the interest-rate environment and the trading outlook for industrial suppliers.",
+          "industryOverview": "The industrial supplies sector was assessed with reference to demand stability, operating-margin resilience, and the marketability limitations attaching to private-company interests.",
+          "valueDrivers": [
+            "Recurring customer relationships",
+            "Working capital support and inventory depth",
+            "Established supplier positioning"
+          ],
+          "keyRisks": [
+            "Owner-dependency risk",
+            "Margin pressure from imported products",
+            "Private-company marketability limitations"
+          ]
+        },
+        "methodologySelection": {
+          "rationale": "DCF, maintainable earnings, and adjusted NAV were selected to triangulate value using both income-based and asset-based indicators relevant to this private trading business."
+        },
+        "rolloverConsiderations": {
+          "section9haNarrative": "Where estate assets accrue to a surviving spouse, the Section 9HA rollover may defer the immediate capital-gains-tax consequence, although the valuation remains necessary for disclosure and estate-duty purposes."
+        },
+        "qualificationsAndDisclaimers": [
+          "This valuation report has been prepared solely for estate-administration and SARS-compliance purposes.",
+          "The valuer relied on information supplied by the executor and available records without conducting a full audit.",
+          "Actual realizable values may differ from this estimate depending on transaction timing and market conditions."
+        ],
+        "appendices": [
+          {
+            "title": "Appendix A: WACC Calculation Detail",
+            "detail": "Supporting assumptions and calculations used in the DCF discount-rate build-up."
+          },
+          {
+            "title": "Appendix B: Supporting Financial Information",
+            "detail": "Historical financial statements, management accounts, and support schedules referenced in the valuation."
+          }
+        ],
+        "glossary": [
+          {
+            "term": "DCF",
+            "definition": "Discounted cash flow valuation based on projected future cash flows."
+          },
+          {
+            "term": "NAV",
+            "definition": "Net asset value based on adjusted fair values of assets and liabilities."
+          },
+          {
+            "term": "WACC",
+            "definition": "Weighted Average Cost of Capital used to discount future cash flows."
+          }
+        ],
+        "signOff": {
+          "preparedByLabel": "Prepared by:",
+          "acceptedByLabel": "Accepted by (Executor):"
+        }
+      },
+      "sourceRunId": "golden_estate_engine_run_business_valuation_001",
+      "fileName": "taxops-estate-est-gold-2026-0001-business-valuation-report-2026-1.docx",
+      "contentType": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+      "storageKey": "uploads/1773584059291-taxops-estate-est-gold-2026-0001-business-valuation-report-2026-1.docx",
+      "checksum": "42c21f7f0cdecbf86c721755708238f82ac521ca285d163f920716280c1aa55c",
+      "sizeBytes": 13403,
+      "localFilePath": "C:\\Users\\HP\\sa-tax-platform\\storage\\uploads\\1773584059291-taxops-estate-est-gold-2026-0001-business-valuation-report-2026-1.docx"
+    },
+    {
+      "code": "SARS_ITR12",
+      "title": "SARS ITR12",
+      "jurisdiction": "SARS",
+      "outputFormat": "pdf",
+      "templateVersion": "2026.1",
+      "templateStorageKey": "estates/forms/sars-itr12/2026.1.json",
+      "status": "READY",
+      "payload": {
+        "title": "Pre-death ITR12 summary",
+        "estateReference": "EST-GOLD-2026-0001",
+        "deceasedName": "Estate Late Lerato Khumalo",
+        "taxpayerName": "Estate Late Lerato Khumalo",
+        "assessmentYear": 2026,
+        "dateOfDeath": "2026-01-19",
+        "deathTruncatedPeriodEnd": "2026-01-19",
+        "totalIncome": 1265400,
+        "totalDeductions": 244000,
+        "taxableIncome": 1021400,
+        "normalTax": 324950,
+        "totalCredits": 227540,
+        "netAmountPayable": 0,
+        "netAmountRefundable": 32590,
+        "disclaimer": "Professional review required before submission."
+      },
+      "sourceRunId": "golden_estate_engine_run_pre_death_001",
+      "fileName": "taxops-estate-est-gold-2026-0001-sars-itr12-2026-1.pdf",
+      "contentType": "application/pdf",
+      "storageKey": "uploads/1773584059989-taxops-estate-est-gold-2026-0001-sars-itr12-2026-1.pdf",
+      "checksum": "7b06689d9d9e1bdab4920e3bb81c877488636084d1a1fdfbd097a3e625da33c1",
+      "sizeBytes": 106219,
+      "localFilePath": "C:\\Users\\HP\\sa-tax-platform\\storage\\uploads\\1773584059989-taxops-estate-est-gold-2026-0001-sars-itr12-2026-1.pdf"
+    },
+    {
+      "code": "SARS_CGT_DEATH",
+      "title": "SARS CGT on death schedule",
+      "jurisdiction": "SARS",
+      "outputFormat": "pdf",
+      "templateVersion": "2026.1",
+      "templateStorageKey": "estates/forms/sars-cgt-death/2026.1.json",
+      "status": "READY",
+      "payload": {
+        "estateReference": "EST-GOLD-2026-0001",
+        "deceasedName": "Estate Late Lerato Khumalo",
+        "dateOfDeath": "2026-01-19",
+        "taxYear": 2026,
+        "taxableCapitalGain": 1828000,
+        "aggregateNetCapitalGain": 4870000,
+        "annualExclusionApplied": 300000,
+        "inclusionRate": 0.4,
+        "assetResults": [
+          {
+            "description": "Khumalo Industrial Supplies (Pty) Ltd - 80% shareholding",
+            "deemedProceeds": 5400000,
+            "baseCostUsed": 1100000,
+            "capitalGainBeforeRelief": 4300000,
+            "reliefApplied": {
+              "primaryResidence": 0,
+              "spouseRollover": 0
+            },
+            "netCapitalGain": 4300000
+          },
+          {
+            "description": "Primary residence in Bryanston",
+            "deemedProceeds": 2350000,
+            "baseCostUsed": 760000,
+            "capitalGainBeforeRelief": 1590000,
+            "reliefApplied": {
+              "primaryResidence": 1590000,
+              "spouseRollover": 0
+            },
+            "netCapitalGain": 0
+          },
+          {
+            "description": "Listed share portfolio",
+            "deemedProceeds": 1250000,
+            "baseCostUsed": 680000,
+            "capitalGainBeforeRelief": 570000,
+            "reliefApplied": {
+              "primaryResidence": 0,
+              "spouseRollover": 0
+            },
+            "netCapitalGain": 570000
+          },
+          {
+            "description": "Main current account",
+            "deemedProceeds": 450000,
+            "baseCostUsed": 450000,
+            "capitalGainBeforeRelief": 0,
+            "reliefApplied": {
+              "primaryResidence": 0,
+              "spouseRollover": 0
+            },
+            "netCapitalGain": 0
+          }
+        ]
+      },
+      "sourceRunId": "golden_estate_engine_run_cgt_001",
+      "fileName": "taxops-estate-est-gold-2026-0001-sars-cgt-death-2026-1.pdf",
+      "contentType": "application/pdf",
+      "storageKey": "uploads/1773584060265-taxops-estate-est-gold-2026-0001-sars-cgt-death-2026-1.pdf",
+      "checksum": "9b2c323bff8551a0d56cd4c32b27977ac8bd0f814991c4698cab5bce71c3eed0",
+      "sizeBytes": 107125,
+      "localFilePath": "C:\\Users\\HP\\sa-tax-platform\\storage\\uploads\\1773584060265-taxops-estate-est-gold-2026-0001-sars-cgt-death-2026-1.pdf"
+    },
+    {
+      "code": "SARS_REV267",
+      "title": "SARS Rev267",
+      "jurisdiction": "SARS",
+      "outputFormat": "pdf",
+      "templateVersion": "2026.1",
+      "templateStorageKey": "estates/forms/sars-rev267/2026.1.json",
+      "status": "READY",
+      "payload": {
+        "title": "SARS Rev267 estate duty summary",
+        "estateReference": "EST-GOLD-2026-0001",
+        "deceasedName": "Estate Late Lerato Khumalo",
+        "dateOfDeath": "2026-01-19",
+        "taxYear": 2026,
+        "grossEstateValue": 9450000,
+        "liabilities": 605000,
+        "section4Deductions": 150000,
+        "spouseDeduction": 900000,
+        "totalDeductions": 1655000,
+        "netEstateBeforeAbatement": 7795000,
+        "abatementApplied": 3500000,
+        "dutiableEstate": 4295000,
+        "estateDutyPayable": 859000
+      },
+      "sourceRunId": "golden_estate_engine_run_estate_duty_001",
+      "fileName": "taxops-estate-est-gold-2026-0001-sars-rev267-2026-1.pdf",
+      "contentType": "application/pdf",
+      "storageKey": "uploads/1773584060481-taxops-estate-est-gold-2026-0001-sars-rev267-2026-1.pdf",
+      "checksum": "31897120d3c250de6277abff41f171767e8ce39b12b0473c5c6daee840d4061c",
+      "sizeBytes": 93581,
+      "localFilePath": "C:\\Users\\HP\\sa-tax-platform\\storage\\uploads\\1773584060481-taxops-estate-est-gold-2026-0001-sars-rev267-2026-1.pdf"
+    },
+    {
+      "code": "SARS_IT_AE",
+      "title": "SARS IT-AE",
+      "jurisdiction": "SARS",
+      "outputFormat": "pdf",
+      "templateVersion": "2026.1",
+      "templateStorageKey": "estates/forms/sars-it-ae/2026.1.json",
+      "status": "READY",
+      "payload": {
+        "title": "Post-death IT-AE summary",
+        "estateReference": "EST-GOLD-2026-0001",
+        "deceasedName": "Estate Late Lerato Khumalo",
+        "taxYear": 2026,
+        "totalIncome": 380000,
+        "deductions": 25000,
+        "taxableIncome": 355000,
+        "appliedRate": 0.45,
+        "taxPayable": 159750
+      },
+      "sourceRunId": "golden_estate_engine_run_post_death_001",
+      "fileName": "taxops-estate-est-gold-2026-0001-sars-it-ae-2026-1.pdf",
+      "contentType": "application/pdf",
+      "storageKey": "uploads/1773584060662-taxops-estate-est-gold-2026-0001-sars-it-ae-2026-1.pdf",
+      "checksum": "9aedfc1753c316d46ed5ef698bc8ceb9571edf24d729d4401aefc977211dc2f6",
+      "sizeBytes": 83056,
+      "localFilePath": "C:\\Users\\HP\\sa-tax-platform\\storage\\uploads\\1773584060662-taxops-estate-est-gold-2026-0001-sars-it-ae-2026-1.pdf"
+    },
+    {
+      "code": "MASTER_LD_ACCOUNT",
+      "title": "Master liquidation and distribution account",
+      "jurisdiction": "MASTER",
+      "outputFormat": "pdf",
+      "templateVersion": "2026.1",
+      "templateStorageKey": "estates/forms/master-ld-account/2026.1.json",
+      "status": "READY",
+      "payload": {
+        "estateReference": "EST-GOLD-2026-0001",
+        "deceasedName": "Estate Late Lerato Khumalo",
+        "executorName": "Kagiso Dlamini",
+        "currentStage": "TAX_READINESS",
+        "grossEstateValue": 9450000,
+        "totalLiabilities": 605000,
+        "netEstateBeforeAbatement": 7795000,
+        "estateDutyPayable": 859000,
+        "beneficiaryCount": 2,
+        "distributionCount": 2,
+        "liquidationEntries": [
+          {
+            "description": "Advertising and Master filing costs",
+            "category": "ADMINISTRATION_COST",
+            "amount": 28500,
+            "effectiveDate": "2026-03-10"
+          },
+          {
+            "description": "Estimated executor remuneration accrual",
+            "category": "EXECUTOR_REMUNERATION",
+            "amount": 95000,
+            "effectiveDate": "2026-03-12"
+          }
+        ],
+        "distributions": [
+          {
+            "beneficiaryName": "Bongiwe Khumalo",
+            "description": "Residual estate entitlement",
+            "amount": 4200000
+          },
+          {
+            "beneficiaryName": "Sibusiso Khumalo",
+            "description": "Residual estate entitlement",
+            "amount": 1800000
+          }
+        ]
+      },
+      "sourceRunId": "golden_estate_engine_run_estate_duty_001",
+      "fileName": "taxops-estate-est-gold-2026-0001-master-ld-account-2026-1.pdf",
+      "contentType": "application/pdf",
+      "storageKey": "uploads/1773584060911-taxops-estate-est-gold-2026-0001-master-ld-account-2026-1.pdf",
+      "checksum": "18f09b2f21185eab64414fb476703843d4e50d160595adae02f1ec9cc563dc67",
+      "sizeBytes": 117911,
+      "localFilePath": "C:\\Users\\HP\\sa-tax-platform\\storage\\uploads\\1773584060911-taxops-estate-est-gold-2026-0001-master-ld-account-2026-1.pdf"
+    }
+  ]
+}

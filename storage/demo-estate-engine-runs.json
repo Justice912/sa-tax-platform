@@ -1,0 +1,4463 @@
+[
+  {
+    "id": "estate_engine_run_1773600713561_618591",
+    "estateId": "golden_estate_001",
+    "yearPackId": "estate_year_pack_2026_v1",
+    "engineType": "ESTATE_DUTY",
+    "inputSnapshot": {
+      "estateId": "golden_estate_001",
+      "taxYear": 2026,
+      "section4Deductions": 0,
+      "spouseDeduction": 0,
+      "dependencyStates": [
+        {
+          "engineType": "CGT_ON_DEATH",
+          "runId": "estate_engine_run_1773600690921_975667",
+          "status": "APPROVED",
+          "isStale": false,
+          "reviewedAt": "2026-03-15T18:51:35.163Z"
+        },
+        {
+          "engineType": "BUSINESS_VALUATION",
+          "runId": "estate_engine_run_1773600614323_863767",
+          "status": "APPROVED",
+          "isStale": false,
+          "reviewedAt": "2026-03-15T18:50:32.309Z"
+        }
+      ]
+    },
+    "outputSnapshot": {
+      "calculation": {
+        "summary": {
+          "actualAssetValue": 19950000,
+          "deemedPropertyTotal": 0,
+          "grossEstateValue": 19950000,
+          "liabilities": 605000,
+          "section4Deductions": 0,
+          "spouseDeduction": 0,
+          "totalDeductions": 605000,
+          "netEstateBeforeAbatement": 19345000,
+          "abatementApplied": 3500000,
+          "dutiableEstate": 15845000,
+          "estateDutyPayable": 3169000
+        }
+      }
+    },
+    "warnings": [],
+    "dependencyStates": [
+      {
+        "engineType": "CGT_ON_DEATH",
+        "runId": "estate_engine_run_1773600690921_975667",
+        "status": "APPROVED",
+        "isStale": false,
+        "reviewedAt": "2026-03-15T18:51:35.163Z"
+      },
+      {
+        "engineType": "BUSINESS_VALUATION",
+        "runId": "estate_engine_run_1773600614323_863767",
+        "status": "APPROVED",
+        "isStale": false,
+        "reviewedAt": "2026-03-15T18:50:32.309Z"
+      }
+    ],
+    "status": "APPROVED",
+    "reviewRequired": false,
+    "createdAt": "2026-03-15T18:51:53.561Z",
+    "updatedAt": "2026-03-15T18:51:57.765Z",
+    "approvedAt": "2026-03-15T18:51:57.765Z",
+    "approvedByName": "Nandi Maseko"
+  },
+  {
+    "id": "estate_engine_run_1773600705448_357623",
+    "estateId": "golden_estate_001",
+    "yearPackId": "estate_year_pack_2026_v1",
+    "engineType": "ESTATE_DUTY",
+    "inputSnapshot": {
+      "estateId": "golden_estate_001",
+      "taxYear": 2026,
+      "section4Deductions": 0,
+      "spouseDeduction": 0,
+      "dependencyStates": [
+        {
+          "engineType": "CGT_ON_DEATH",
+          "runId": "estate_engine_run_1773600690921_975667",
+          "status": "APPROVED",
+          "isStale": false,
+          "reviewedAt": "2026-03-15T18:51:35.163Z"
+        },
+        {
+          "engineType": "BUSINESS_VALUATION",
+          "runId": "estate_engine_run_1773600614323_863767",
+          "status": "APPROVED",
+          "isStale": false,
+          "reviewedAt": "2026-03-15T18:50:32.309Z"
+        }
+      ]
+    },
+    "outputSnapshot": {
+      "calculation": {
+        "summary": {
+          "actualAssetValue": 19950000,
+          "deemedPropertyTotal": 0,
+          "grossEstateValue": 19950000,
+          "liabilities": 605000,
+          "section4Deductions": 0,
+          "spouseDeduction": 0,
+          "totalDeductions": 605000,
+          "netEstateBeforeAbatement": 19345000,
+          "abatementApplied": 3500000,
+          "dutiableEstate": 15845000,
+          "estateDutyPayable": 3169000
+        }
+      }
+    },
+    "warnings": [],
+    "dependencyStates": [
+      {
+        "engineType": "CGT_ON_DEATH",
+        "runId": "estate_engine_run_1773600690921_975667",
+        "status": "APPROVED",
+        "isStale": false,
+        "reviewedAt": "2026-03-15T18:51:35.163Z"
+      },
+      {
+        "engineType": "BUSINESS_VALUATION",
+        "runId": "estate_engine_run_1773600614323_863767",
+        "status": "APPROVED",
+        "isStale": false,
+        "reviewedAt": "2026-03-15T18:50:32.309Z"
+      }
+    ],
+    "status": "REVIEW_REQUIRED",
+    "reviewRequired": true,
+    "createdAt": "2026-03-15T18:51:45.448Z",
+    "updatedAt": "2026-03-15T18:51:45.448Z"
+  },
+  {
+    "id": "estate_engine_run_1773600690921_975667",
+    "estateId": "golden_estate_001",
+    "yearPackId": "estate_year_pack_2026_v1",
+    "engineType": "CGT_ON_DEATH",
+    "inputSnapshot": {
+      "taxYear": 2026,
+      "assets": [
+        {
+          "id": "golden_estate_asset_business_001",
+          "estateId": "golden_estate_001",
+          "category": "BUSINESS_INTEREST",
+          "description": "Khumalo Industrial Supplies (Pty) Ltd - 80% shareholding",
+          "dateOfDeathValue": 15900000,
+          "baseCost": 1100000,
+          "acquisitionDate": "2010-04-01",
+          "valuationDateValue": 15900000,
+          "isPrimaryResidence": false,
+          "isPersonalUse": false,
+          "spouseRollover": false,
+          "notes": "Golden demo NAV business valuation linked."
+        },
+        {
+          "id": "golden_estate_asset_property_001",
+          "estateId": "golden_estate_001",
+          "category": "IMMOVABLE_PROPERTY",
+          "description": "Primary residence in Bryanston",
+          "dateOfDeathValue": 2350000,
+          "baseCost": 760000,
+          "acquisitionDate": "2004-05-01",
+          "valuationDateValue": 420000,
+          "isPrimaryResidence": true,
+          "isPersonalUse": false,
+          "spouseRollover": false,
+          "notes": "Qualified for primary residence relief in CGT run."
+        },
+        {
+          "id": "golden_estate_asset_investment_001",
+          "estateId": "golden_estate_001",
+          "category": "INVESTMENT",
+          "description": "Listed share portfolio",
+          "dateOfDeathValue": 1250000,
+          "baseCost": 680000,
+          "acquisitionDate": "2016-08-12",
+          "isPrimaryResidence": false,
+          "isPersonalUse": false,
+          "spouseRollover": false
+        },
+        {
+          "id": "golden_estate_asset_cash_001",
+          "estateId": "golden_estate_001",
+          "category": "BANK_ACCOUNT",
+          "description": "Main current account",
+          "dateOfDeathValue": 450000,
+          "baseCost": 450000,
+          "acquisitionDate": "2025-01-01",
+          "isPrimaryResidence": false,
+          "isPersonalUse": false,
+          "spouseRollover": false
+        }
+      ]
+    },
+    "outputSnapshot": {
+      "calculation": {
+        "assetResults": [
+          {
+            "description": "Khumalo Industrial Supplies (Pty) Ltd - 80% shareholding",
+            "deemedProceeds": 15900000,
+            "baseCostUsed": 1100000,
+            "capitalGainBeforeRelief": 14800000,
+            "reliefApplied": {
+              "primaryResidence": 0,
+              "spouseRollover": 0,
+              "smallBusiness": 1800000
+            },
+            "netCapitalGain": 13000000
+          },
+          {
+            "description": "Primary residence in Bryanston",
+            "deemedProceeds": 2350000,
+            "baseCostUsed": 760000,
+            "capitalGainBeforeRelief": 1590000,
+            "reliefApplied": {
+              "primaryResidence": 1590000,
+              "spouseRollover": 0,
+              "smallBusiness": 0
+            },
+            "netCapitalGain": 0
+          },
+          {
+            "description": "Listed share portfolio",
+            "deemedProceeds": 1250000,
+            "baseCostUsed": 680000,
+            "capitalGainBeforeRelief": 570000,
+            "reliefApplied": {
+              "primaryResidence": 0,
+              "spouseRollover": 0,
+              "smallBusiness": 0
+            },
+            "netCapitalGain": 570000
+          },
+          {
+            "description": "Main current account",
+            "deemedProceeds": 450000,
+            "baseCostUsed": 450000,
+            "capitalGainBeforeRelief": 0,
+            "reliefApplied": {
+              "primaryResidence": 0,
+              "spouseRollover": 0,
+              "smallBusiness": 0
+            },
+            "netCapitalGain": 0
+          }
+        ],
+        "warnings": [],
+        "summary": {
+          "aggregateNetCapitalGain": 13570000,
+          "smallBusinessExclusionApplied": 1800000,
+          "annualExclusionApplied": 300000,
+          "inclusionRate": 0.4,
+          "taxableCapitalGain": 5308000
+        }
+      }
+    },
+    "warnings": [],
+    "dependencyStates": [],
+    "status": "APPROVED",
+    "reviewRequired": false,
+    "createdAt": "2026-03-15T18:51:30.921Z",
+    "updatedAt": "2026-03-15T18:51:35.163Z",
+    "approvedAt": "2026-03-15T18:51:35.163Z",
+    "approvedByName": "Nandi Maseko"
+  },
+  {
+    "id": "estate_engine_run_1773600650925_424112",
+    "estateId": "golden_estate_001",
+    "yearPackId": "estate_year_pack_2026_v1",
+    "engineType": "PRE_DEATH_ITR12",
+    "inputSnapshot": {
+      "estateId": "golden_estate_001",
+      "taxYear": 2026,
+      "incomePeriodStart": "2025-03-01",
+      "incomePeriodEnd": "2026-01-19",
+      "medicalAidMembers": 1,
+      "medicalAidMonths": 11,
+      "employment": {
+        "salaryIncome": 0,
+        "bonusIncome": 0,
+        "commissionIncome": 0,
+        "fringeBenefits": 0,
+        "otherTaxableEmploymentIncome": 0,
+        "payeWithheld": 0
+      },
+      "travel": {
+        "hasTravelAllowance": false,
+        "travelAllowance": 0,
+        "businessKilometres": 0,
+        "totalKilometres": 0,
+        "vehicleCost": 0,
+        "vehiclePurchaseDate": "2025-03-01"
+      },
+      "medical": {
+        "medicalSchemeContributions": 0,
+        "qualifyingOutOfPocketExpenses": 0,
+        "disabilityFlag": false
+      },
+      "interest": {
+        "localInterest": 0
+      },
+      "rental": {
+        "grossRentalIncome": 0,
+        "deductibleRentalExpenses": 0
+      },
+      "soleProprietor": {
+        "grossBusinessIncome": 0,
+        "deductibleBusinessExpenses": 0
+      },
+      "deductions": {
+        "retirementContributions": 0,
+        "donationsUnderSection18A": 0,
+        "priorAssessmentDebitOrCredit": 0
+      }
+    },
+    "outputSnapshot": {
+      "transformedInput": {
+        "profile": {
+          "assessmentYear": 2026,
+          "dateOfBirth": "1965-03-05",
+          "maritalStatus": "MARRIED_OUT_OF_COMMUNITY",
+          "medicalAidMembers": 1,
+          "medicalAidMonths": 11
+        },
+        "employment": {
+          "salaryIncome": 0,
+          "bonusIncome": 0,
+          "commissionIncome": 0,
+          "fringeBenefits": 0,
+          "otherTaxableEmploymentIncome": 0,
+          "payeWithheld": 0
+        },
+        "travel": {
+          "hasTravelAllowance": false,
+          "travelAllowance": 0,
+          "businessKilometres": 0,
+          "totalKilometres": 0,
+          "vehicleCost": 0,
+          "vehiclePurchaseDate": "2025-03-01"
+        },
+        "medical": {
+          "medicalSchemeContributions": 0,
+          "qualifyingOutOfPocketExpenses": 0,
+          "disabilityFlag": false
+        },
+        "interest": {
+          "localInterest": 0
+        },
+        "rental": {
+          "grossRentalIncome": 0,
+          "deductibleRentalExpenses": 0
+        },
+        "soleProprietor": {
+          "grossBusinessIncome": 0,
+          "deductibleBusinessExpenses": 0
+        },
+        "deductions": {
+          "retirementContributions": 0,
+          "donationsUnderSection18A": 0,
+          "priorAssessmentDebitOrCredit": 0
+        },
+        "taxpayerName": "Estate Late Lerato Khumalo",
+        "estateId": "golden_estate_001",
+        "yearPackId": "estate_year_pack_2026_v1",
+        "dateOfDeath": "2026-01-19",
+        "deathTruncatedPeriodEnd": "2026-01-19"
+      },
+      "calculation": {
+        "assessmentYear": 2026,
+        "incomeLines": [
+          {
+            "code": "3601",
+            "description": "Salary income",
+            "computations": "Employment schedule",
+            "amountAssessed": 0,
+            "reviewRequired": true,
+            "sourceReference": "SARS Rates of Tax for Individuals and Medical Tax Credit Rates for the 2026 tax year."
+          },
+          {
+            "code": "3605",
+            "description": "Bonus income",
+            "computations": "Employment schedule",
+            "amountAssessed": 0,
+            "reviewRequired": true,
+            "sourceReference": "SARS Rates of Tax for Individuals and Medical Tax Credit Rates for the 2026 tax year."
+          },
+          {
+            "code": "3606",
+            "description": "Commission income",
+            "computations": "Employment schedule",
+            "amountAssessed": 0,
+            "reviewRequired": true,
+            "sourceReference": "SARS Rates of Tax for Individuals and Medical Tax Credit Rates for the 2026 tax year."
+          },
+          {
+            "code": "3810",
+            "description": "Fringe benefits",
+            "computations": "Employment schedule",
+            "amountAssessed": 0,
+            "reviewRequired": true,
+            "sourceReference": "SARS Rates of Tax for Individuals and Medical Tax Credit Rates for the 2026 tax year."
+          },
+          {
+            "code": "3900",
+            "description": "Other taxable employment income",
+            "computations": "Employment schedule",
+            "amountAssessed": 0,
+            "reviewRequired": true,
+            "sourceReference": "SARS Rates of Tax for Individuals and Medical Tax Credit Rates for the 2026 tax year."
+          },
+          {
+            "code": "4102",
+            "description": "PAYE withheld",
+            "computations": "Employment schedule",
+            "amountAssessed": 0,
+            "reviewRequired": true,
+            "sourceReference": "SARS Rates of Tax for Individuals and Medical Tax Credit Rates for the 2026 tax year."
+          },
+          {
+            "code": "4201",
+            "description": "Local interest income",
+            "computations": "Interest schedule",
+            "amountAssessed": 0,
+            "reviewRequired": true,
+            "sourceReference": "SARS Rates of Tax for Individuals and Medical Tax Credit Rates for the 2026 tax year."
+          },
+          {
+            "code": "4218",
+            "description": "Interest exemption",
+            "computations": "Interest schedule",
+            "amountAssessed": 23800,
+            "reviewRequired": true,
+            "sourceReference": "SARS Rates of Tax for Individuals and Medical Tax Credit Rates for the 2026 tax year."
+          },
+          {
+            "code": "4210",
+            "description": "Gross rental income",
+            "computations": "Rental schedule",
+            "amountAssessed": 0,
+            "reviewRequired": true,
+            "sourceReference": "SARS Rates of Tax for Individuals and Medical Tax Credit Rates for the 2026 tax year."
+          },
+          {
+            "code": "4211",
+            "description": "Deductible rental expenses",
+            "computations": "Rental schedule",
+            "amountAssessed": 0,
+            "reviewRequired": true,
+            "sourceReference": "SARS Rates of Tax for Individuals and Medical Tax Credit Rates for the 2026 tax year."
+          },
+          {
+            "code": "IRP6_BUS_INC",
+            "description": "Gross sole proprietor income",
+            "computations": "Business schedule",
+            "amountAssessed": 0,
+            "reviewRequired": true,
+            "sourceReference": "SARS Rates of Tax for Individuals and Medical Tax Credit Rates for the 2026 tax year."
+          },
+          {
+            "code": "IRP6_BUS_EXP",
+            "description": "Deductible sole proprietor expenses",
+            "computations": "Business schedule",
+            "amountAssessed": 0,
+            "reviewRequired": true,
+            "sourceReference": "SARS Rates of Tax for Individuals and Medical Tax Credit Rates for the 2026 tax year."
+          }
+        ],
+        "deductionLines": [
+          {
+            "code": "4029",
+            "description": "Retirement fund contributions",
+            "computations": "Retirement contribution deduction limited by SARS annual and percentage caps",
+            "amountAssessed": 0,
+            "reviewRequired": true,
+            "sourceReference": "SARS Rates of Tax for Individuals and Medical Tax Credit Rates for the 2026 tax year."
+          },
+          {
+            "code": "4013",
+            "description": "Section 18A donations",
+            "computations": "Donations deduction captured for estimate purposes",
+            "amountAssessed": 0,
+            "reviewRequired": true,
+            "sourceReference": "SARS Rates of Tax for Individuals and Medical Tax Credit Rates for the 2026 tax year."
+          }
+        ],
+        "taxCalculationLines": [
+          {
+            "code": "NORMAL_TAX",
+            "description": "Normal tax",
+            "computations": "Calculated from year-based SARS tax brackets",
+            "amountAssessed": 0,
+            "reviewRequired": true,
+            "sourceReference": "SARS Rates of Tax for Individuals and Medical Tax Credit Rates for the 2026 tax year."
+          },
+          {
+            "code": "REBATES",
+            "description": "Rebates",
+            "computations": "Age-based primary, secondary, and tertiary rebates",
+            "amountAssessed": -17235,
+            "reviewRequired": true,
+            "sourceReference": "SARS Rates of Tax for Individuals and Medical Tax Credit Rates for the 2026 tax year."
+          },
+          {
+            "code": "MEDICAL_CREDIT",
+            "description": "Medical Scheme Fees Tax Credit",
+            "computations": "Medical scheme fees tax credit and additional medical expenses tax credit",
+            "amountAssessed": -4004,
+            "reviewRequired": true,
+            "sourceReference": "SARS Rates of Tax for Individuals and Medical Tax Credit Rates for the 2026 tax year."
+          },
+          {
+            "code": "4102",
+            "description": "PAYE",
+            "computations": "Employees' tax withheld",
+            "amountAssessed": 0,
+            "reviewRequired": true,
+            "sourceReference": "SARS Rates of Tax for Individuals and Medical Tax Credit Rates for the 2026 tax year."
+          },
+          {
+            "code": "PREV_ASSESSMENT",
+            "description": "Previous assessment result",
+            "computations": "Brought-forward debit/credit",
+            "amountAssessed": 0,
+            "reviewRequired": true,
+            "sourceReference": "SARS Rates of Tax for Individuals and Medical Tax Credit Rates for the 2026 tax year."
+          },
+          {
+            "code": "NET_RESULT",
+            "description": "Estimated net amount under this assessment",
+            "computations": "Estimated tax after rebates and credits less PAYE and prior assessment result",
+            "amountAssessed": -4004,
+            "reviewRequired": true,
+            "sourceReference": "SARS Rates of Tax for Individuals and Medical Tax Credit Rates for the 2026 tax year."
+          }
+        ],
+        "summary": {
+          "totalIncome": 0,
+          "totalDeductions": 0,
+          "taxableIncome": 0,
+          "normalTax": 0,
+          "totalCredits": 4004,
+          "netAmountPayable": 0,
+          "netAmountRefundable": 4004
+        },
+        "reviewRequired": false,
+        "disclaimer": "Outputs are generated for workflow assistance only and remain subject to professional review and legal verification before any SARS filing.",
+        "warnings": []
+      }
+    },
+    "warnings": [
+      "No CGT on death included. Run the CGT engine first for a complete ITR12."
+    ],
+    "dependencyStates": [],
+    "status": "APPROVED",
+    "reviewRequired": false,
+    "createdAt": "2026-03-15T18:50:50.925Z",
+    "updatedAt": "2026-03-15T18:50:57.673Z",
+    "approvedAt": "2026-03-15T18:50:57.673Z",
+    "approvedByName": "Nandi Maseko"
+  },
+  {
+    "id": "estate_engine_run_1773600614323_863767",
+    "estateId": "golden_estate_001",
+    "yearPackId": "estate_year_pack_2026_v1",
+    "engineType": "BUSINESS_VALUATION",
+    "inputSnapshot": {
+      "estateId": "golden_estate_001",
+      "assetId": "golden_estate_asset_business_001",
+      "taxYear": 2026,
+      "valuationDate": "2026-01-19",
+      "subjectType": "COMPANY_SHAREHOLDING",
+      "subjectDescription": "Khumalo Industrial Supplies (Pty) Ltd - 80% shareholding",
+      "method": "DISCOUNTED_CASH_FLOW",
+      "enabledMethods": [
+        "DISCOUNTED_CASH_FLOW",
+        "MAINTAINABLE_EARNINGS",
+        "NET_ASSET_VALUE"
+      ],
+      "shareholdingPercentage": 100,
+      "legalName": "Khumalo Industrial Supplies (Pty) Ltd - 80% shareholding",
+      "preparedBy": "Nandi Maseko",
+      "reportDate": "2026-03-15",
+      "effectiveValuationDate": "2026-01-19",
+      "sourcesOfInformation": [
+        "Annual financial statements for FY2023 to FY2025",
+        "Management accounts to valuation date",
+        "Fixed asset register",
+        "Debtor and creditor age analysis",
+        "Industry reports and market data"
+      ],
+      "latestAnnualFinancialStatementsOnFile": true,
+      "priorYearAnnualFinancialStatementsOnFile": true,
+      "twoYearsPriorAnnualFinancialStatementsOnFile": true,
+      "executorAuthorityOnFile": true,
+      "acquisitionDocumentsOnFile": true,
+      "rev246Required": false,
+      "rev246Included": false,
+      "patentValuationRequired": false,
+      "patentValuationIncluded": false,
+      "reportNotes": "Prepared for EST-GOLD-2026-0001 to support the estate file.",
+      "assumptions": [
+        "Management representations and estate records provided.",
+        "Business assumed to continue as a going concern.",
+        "No post-valuation-date legislative changes reflected."
+      ],
+      "historicalFinancialAnalysis": {
+        "years": [
+          {
+            "label": "FY2023",
+            "revenue": 18450000,
+            "ebitda": 3500000,
+            "ebit": 3050000,
+            "npat": 2022000
+          },
+          {
+            "label": "FY2024",
+            "revenue": 21200000,
+            "ebitda": 4350000,
+            "ebit": 3850000,
+            "npat": 2635000
+          },
+          {
+            "label": "FY2025",
+            "revenue": 24600000,
+            "ebitda": 5300000,
+            "ebit": 4750000,
+            "npat": 3321000
+          }
+        ]
+      },
+      "discountedCashFlow": {
+        "forecastYears": [
+          {
+            "label": "FY2026",
+            "revenue": 26500000,
+            "ebit": 5000000,
+            "depreciation": 600000,
+            "capitalExpenditure": 800000,
+            "workingCapitalChange": 250000
+          },
+          {
+            "label": "FY2027",
+            "revenue": 28600000,
+            "ebit": 5450000,
+            "depreciation": 650000,
+            "capitalExpenditure": 850000,
+            "workingCapitalChange": 200000
+          },
+          {
+            "label": "FY2028",
+            "revenue": 30600000,
+            "ebit": 5900000,
+            "depreciation": 700000,
+            "capitalExpenditure": 900000,
+            "workingCapitalChange": 180000
+          },
+          {
+            "label": "FY2029",
+            "revenue": 32400000,
+            "ebit": 6250000,
+            "depreciation": 750000,
+            "capitalExpenditure": 950000,
+            "workingCapitalChange": 160000
+          },
+          {
+            "label": "FY2030",
+            "revenue": 34000000,
+            "ebit": 6600000,
+            "depreciation": 800000,
+            "capitalExpenditure": 1000000,
+            "workingCapitalChange": 140000
+          }
+        ],
+        "taxRate": 0.27,
+        "riskFreeRate": 0.105,
+        "equityRiskPremium": 0.065,
+        "beta": 0.92,
+        "smallCompanyPremium": 0.03,
+        "keyPersonPremium": 0.02,
+        "costOfDebt": 0.1175,
+        "debtWeight": 0.1,
+        "equityWeight": 0.9,
+        "perpetualGrowthRate": 0.05,
+        "terminalExitMultiple": 4.5,
+        "cashAndEquivalents": 2200000,
+        "interestBearingDebt": 650000,
+        "directorLoan": 850000,
+        "marketabilityDiscountRate": 0.15,
+        "minorityDiscountRate": 0
+      },
+      "maintainableEarningsMethod": {
+        "historicalYears": [
+          {
+            "label": "FY2023",
+            "reportedNpat": 2022000,
+            "nonRecurringAdjustments": 205000,
+            "ownerRemunerationAdjustment": -200000,
+            "weighting": 1
+          },
+          {
+            "label": "FY2024",
+            "reportedNpat": 2635000,
+            "nonRecurringAdjustments": -180000,
+            "ownerRemunerationAdjustment": -200000,
+            "weighting": 2
+          },
+          {
+            "label": "FY2025",
+            "reportedNpat": 3321000,
+            "nonRecurringAdjustments": 0,
+            "ownerRemunerationAdjustment": -200000,
+            "weighting": 3
+          }
+        ],
+        "selectedMultiple": 4.8,
+        "marketabilityDiscountRate": 0,
+        "minorityDiscountRate": 0
+      },
+      "netAssetValueMethod": {
+        "assets": [
+          {
+            "category": "Property",
+            "bookValue": 3200000,
+            "adjustment": 2800000
+          },
+          {
+            "category": "Plant & equipment",
+            "bookValue": 1600000,
+            "adjustment": 400000
+          },
+          {
+            "category": "Inventory",
+            "bookValue": 2400000,
+            "adjustment": -200000
+          },
+          {
+            "category": "Trade receivables",
+            "bookValue": 3500000,
+            "adjustment": -350000
+          },
+          {
+            "category": "Cash and equivalents",
+            "bookValue": 2200000,
+            "adjustment": 0
+          }
+        ],
+        "liabilities": [
+          {
+            "category": "Long-term borrowings",
+            "bookValue": 400000,
+            "adjustment": 0
+          },
+          {
+            "category": "Short-term borrowings",
+            "bookValue": 250000,
+            "adjustment": 0
+          },
+          {
+            "category": "Trade payables",
+            "bookValue": 1150000,
+            "adjustment": 0
+          },
+          {
+            "category": "Director's loan",
+            "bookValue": 850000,
+            "adjustment": 0
+          },
+          {
+            "category": "Deferred tax",
+            "bookValue": 0,
+            "adjustment": 750000
+          }
+        ]
+      },
+      "reconciliation": {
+        "methodWeights": {
+          "DISCOUNTED_CASH_FLOW": 0.4,
+          "MAINTAINABLE_EARNINGS": 0.35,
+          "NET_ASSET_VALUE": 0.25
+        },
+        "conclusionRounding": 50000,
+        "rationale": "The concluded value reflects a weighted reconciliation of DCF, maintainable earnings, and adjusted NAV based on their relevance and reliability."
+      }
+    },
+    "outputSnapshot": {
+      "calculation": {
+        "valuationDate": "2026-01-19",
+        "subjectType": "COMPANY_SHAREHOLDING",
+        "subjectDescription": "Khumalo Industrial Supplies (Pty) Ltd - 80% shareholding",
+        "method": "DISCOUNTED_CASH_FLOW",
+        "enabledMethods": [
+          "DISCOUNTED_CASH_FLOW",
+          "MAINTAINABLE_EARNINGS",
+          "NET_ASSET_VALUE"
+        ],
+        "assumptions": [
+          "Management representations and estate records provided.",
+          "Business assumed to continue as a going concern.",
+          "No post-valuation-date legislative changes reflected."
+        ],
+        "concludedValue": 15900000,
+        "warnings": [],
+        "summary": {
+          "enterpriseValue": 24010457.75,
+          "netAdjustments": 12150000,
+          "shareholdingPercentage": 100,
+          "weightedAverageValue": 15891055.64
+        },
+        "historicalFinancialAnalysis": {
+          "years": [
+            {
+              "label": "FY2023",
+              "revenue": 18450000,
+              "ebitda": 3500000,
+              "ebit": 3050000,
+              "npat": 2022000
+            },
+            {
+              "label": "FY2024",
+              "revenue": 21200000,
+              "ebitda": 4350000,
+              "ebit": 3850000,
+              "npat": 2635000
+            },
+            {
+              "label": "FY2025",
+              "revenue": 24600000,
+              "ebitda": 5300000,
+              "ebit": 4750000,
+              "npat": 3321000
+            }
+          ]
+        },
+        "methodResults": {
+          "discountedCashFlow": {
+            "fcffSchedule": [
+              {
+                "label": "FY2026",
+                "revenue": 26500000,
+                "ebit": 5000000,
+                "taxOnEbit": 1350000,
+                "nopat": 3650000,
+                "depreciation": 600000,
+                "capitalExpenditure": 800000,
+                "workingCapitalChange": 250000,
+                "fcff": 3200000,
+                "discountFactor": 0.832018,
+                "presentValue": 2662456.66
+              },
+              {
+                "label": "FY2027",
+                "revenue": 28600000,
+                "ebit": 5450000,
+                "taxOnEbit": 1471500,
+                "nopat": 3978500,
+                "depreciation": 650000,
+                "capitalExpenditure": 850000,
+                "workingCapitalChange": 200000,
+                "fcff": 3578500,
+                "discountFactor": 0.692253,
+                "presentValue": 2477229.01
+              },
+              {
+                "label": "FY2028",
+                "revenue": 30600000,
+                "ebit": 5900000,
+                "taxOnEbit": 1593000,
+                "nopat": 4307000,
+                "depreciation": 700000,
+                "capitalExpenditure": 900000,
+                "workingCapitalChange": 180000,
+                "fcff": 3927000,
+                "discountFactor": 0.575967,
+                "presentValue": 2261822.95
+              },
+              {
+                "label": "FY2029",
+                "revenue": 32400000,
+                "ebit": 6250000,
+                "taxOnEbit": 1687500,
+                "nopat": 4562500,
+                "depreciation": 750000,
+                "capitalExpenditure": 950000,
+                "workingCapitalChange": 160000,
+                "fcff": 4202500,
+                "discountFactor": 0.479215,
+                "presentValue": 2013900.43
+              },
+              {
+                "label": "FY2030",
+                "revenue": 34000000,
+                "ebit": 6600000,
+                "taxOnEbit": 1782000,
+                "nopat": 4818000,
+                "depreciation": 800000,
+                "capitalExpenditure": 1000000,
+                "workingCapitalChange": 140000,
+                "fcff": 4478000,
+                "discountFactor": 0.398715,
+                "presentValue": 1785446.87
+              }
+            ],
+            "costOfEquity": 0.21,
+            "afterTaxCostOfDebt": 0.09,
+            "wacc": 0.2,
+            "gordonGrowthTerminalValue": 30954426.5,
+            "exitMultipleTerminalValue": 33300000,
+            "adoptedTerminalValue": 32127213.25,
+            "enterpriseValue": 24010457.75,
+            "preDiscountEquityValue": 24710457.75,
+            "marketabilityDiscountRate": 0.15,
+            "marketabilityDiscountAmount": 3706568.66,
+            "minorityDiscountRate": 0,
+            "minorityDiscountAmount": 0,
+            "indicatedValue": 21003889.09
+          },
+          "maintainableEarnings": {
+            "years": [
+              {
+                "label": "FY2023",
+                "reportedNpat": 2022000,
+                "nonRecurringAdjustments": 205000,
+                "ownerRemunerationAdjustment": -200000,
+                "normalisedNpat": 2027000,
+                "weighting": 1
+              },
+              {
+                "label": "FY2024",
+                "reportedNpat": 2635000,
+                "nonRecurringAdjustments": -180000,
+                "ownerRemunerationAdjustment": -200000,
+                "normalisedNpat": 2255000,
+                "weighting": 2
+              },
+              {
+                "label": "FY2025",
+                "reportedNpat": 3321000,
+                "nonRecurringAdjustments": 0,
+                "ownerRemunerationAdjustment": -200000,
+                "normalisedNpat": 3121000,
+                "weighting": 3
+              }
+            ],
+            "maintainableEarnings": 2650000,
+            "selectedMultiple": 4.8,
+            "preDiscountValue": 12720000,
+            "marketabilityDiscountRate": 0,
+            "marketabilityDiscountAmount": 0,
+            "minorityDiscountRate": 0,
+            "minorityDiscountAmount": 0,
+            "indicatedValue": 12720000
+          },
+          "netAssetValue": {
+            "assets": [
+              {
+                "category": "Property",
+                "bookValue": 3200000,
+                "adjustment": 2800000,
+                "fairMarketValue": 6000000
+              },
+              {
+                "category": "Plant & equipment",
+                "bookValue": 1600000,
+                "adjustment": 400000,
+                "fairMarketValue": 2000000
+              },
+              {
+                "category": "Inventory",
+                "bookValue": 2400000,
+                "adjustment": -200000,
+                "fairMarketValue": 2200000
+              },
+              {
+                "category": "Trade receivables",
+                "bookValue": 3500000,
+                "adjustment": -350000,
+                "fairMarketValue": 3150000
+              },
+              {
+                "category": "Cash and equivalents",
+                "bookValue": 2200000,
+                "adjustment": 0,
+                "fairMarketValue": 2200000
+              }
+            ],
+            "liabilities": [
+              {
+                "category": "Long-term borrowings",
+                "bookValue": 400000,
+                "adjustment": 0,
+                "fairMarketValue": 400000
+              },
+              {
+                "category": "Short-term borrowings",
+                "bookValue": 250000,
+                "adjustment": 0,
+                "fairMarketValue": 250000
+              },
+              {
+                "category": "Trade payables",
+                "bookValue": 1150000,
+                "adjustment": 0,
+                "fairMarketValue": 1150000
+              },
+              {
+                "category": "Director's loan",
+                "bookValue": 850000,
+                "adjustment": 0,
+                "fairMarketValue": 850000
+              },
+              {
+                "category": "Deferred tax",
+                "bookValue": 0,
+                "adjustment": 750000,
+                "fairMarketValue": 750000
+              }
+            ],
+            "adjustedAssets": 15550000,
+            "adjustedLiabilities": 3400000,
+            "indicatedValue": 12150000
+          }
+        },
+        "reconciliation": {
+          "methods": [
+            {
+              "method": "DISCOUNTED_CASH_FLOW",
+              "indicatedValue": 21003889.09,
+              "weight": 0.4,
+              "weightedValue": 8401555.64
+            },
+            {
+              "method": "MAINTAINABLE_EARNINGS",
+              "indicatedValue": 12720000,
+              "weight": 0.35,
+              "weightedValue": 4452000
+            },
+            {
+              "method": "NET_ASSET_VALUE",
+              "indicatedValue": 12150000,
+              "weight": 0.25,
+              "weightedValue": 3037500
+            }
+          ],
+          "weightedAverageValue": 15891055.64,
+          "concludedValue": 15900000,
+          "rationale": "The concluded value reflects a weighted reconciliation of DCF, maintainable earnings, and adjusted NAV based on their relevance and reliability.",
+          "conclusionRounding": 50000
+        },
+        "sensitivityAnalysis": {
+          "scenarios": [
+            {
+              "scenario": "Bear case",
+              "wacc": 0.22,
+              "growthRate": 0.030000000000000002,
+              "earningsMultiple": 4.3,
+              "indicatedValue": 13515000
+            },
+            {
+              "scenario": "Base case",
+              "wacc": 0.2,
+              "growthRate": 0.05,
+              "earningsMultiple": 4.8,
+              "indicatedValue": 15900000
+            },
+            {
+              "scenario": "Bull case",
+              "wacc": 0.19,
+              "growthRate": 0.06,
+              "earningsMultiple": 5.3,
+              "indicatedValue": 18285000
+            }
+          ]
+        },
+        "taxImplicationsPreview": {
+          "cgtSummary": {
+            "deemedProceeds": 15900000,
+            "deathExclusion": 300000,
+            "capitalGain": 15600000,
+            "inclusionRate": 0.4,
+            "taxableCapitalGain": 6240000
+          },
+          "estateDutySummary": {
+            "grossEstate": 15900000,
+            "dutiableEstate": 12400000,
+            "estateDutyPayable": 2480000
+          },
+          "section9haNotes": [
+            "Section 9HA rollover may defer the immediate CGT charge where the asset accrues to a surviving spouse.",
+            "For a company shareholding, the valuation supports the deceased's final ITR12, CGT disclosure, estate duty, and L&D account evidence."
+          ]
+        },
+        "downstreamCgtInput": {
+          "assetDescription": "Khumalo Industrial Supplies (Pty) Ltd - 80% shareholding",
+          "marketValueAtDeath": 15900000,
+          "valuationDate": "2026-01-19",
+          "valuationMethod": "DISCOUNTED_CASH_FLOW"
+        }
+      },
+      "report": {
+        "header": {
+          "title": "Business valuation report",
+          "taxYear": 2026,
+          "valuationDate": "2026-01-19",
+          "estateReference": "EST-GOLD-2026-0001",
+          "deceasedName": "Estate Late Lerato Khumalo",
+          "executorName": "Kagiso Dlamini"
+        },
+        "purpose": "Prepared to support SARS estate duty, CGT on death, the deceased's final ITR12, and estate administration for a business shareholding at date of death.",
+        "subject": {
+          "subjectDescription": "Khumalo Industrial Supplies (Pty) Ltd - 80% shareholding",
+          "subjectType": "COMPANY_SHAREHOLDING",
+          "ownershipPercentage": 100
+        },
+        "methodology": {
+          "method": "DISCOUNTED_CASH_FLOW",
+          "maintainableEarnings": 2650000,
+          "earningsMultiple": 4.8,
+          "nonOperatingAssets": 0,
+          "liabilities": 0
+        },
+        "summary": {
+          "subjectDescription": "Khumalo Industrial Supplies (Pty) Ltd - 80% shareholding",
+          "method": "DISCOUNTED_CASH_FLOW",
+          "concludedValue": 15900000,
+          "enterpriseValue": 24010457.75
+        },
+        "supportChecklist": {
+          "latestAnnualFinancialStatementsOnFile": true,
+          "priorYearAnnualFinancialStatementsOnFile": true,
+          "twoYearsPriorAnnualFinancialStatementsOnFile": true,
+          "executorAuthorityOnFile": true,
+          "acquisitionDocumentsOnFile": true,
+          "rev246Required": false,
+          "rev246Included": false,
+          "patentValuationRequired": false,
+          "patentValuationIncluded": false
+        },
+        "assumptions": [
+          "Management representations and estate records provided.",
+          "Business assumed to continue as a going concern.",
+          "No post-valuation-date legislative changes reflected."
+        ],
+        "notes": "Prepared for EST-GOLD-2026-0001 to support the estate file.",
+        "sourceReferences": [
+          "Annual financial statements for FY2023 to FY2025",
+          "Management accounts to valuation date",
+          "Fixed asset register",
+          "Debtor and creditor age analysis",
+          "Industry reports and market data",
+          "SARS valuation support checklist for unlisted shares or member interests",
+          "International Valuation Standards (IVS) framework",
+          "AME Pro Deceased Estate Module System Specification"
+        ],
+        "mandate": {
+          "engagementMandate": "The executor engaged the valuer to determine the fair market value of the deceased's interest in Khumalo Industrial Supplies (Pty) Ltd - 80% shareholding as at 2026-01-19 for estate administration, SARS income-tax disclosure, CGT-on-death support, and estate-duty reporting.",
+          "definitionOfValue": "The standard of value applied is fair market value, being the price a willing buyer would pay a willing seller, both reasonably informed and neither under compulsion.",
+          "sourcesOfInformation": [
+            "Annual financial statements for FY2023 to FY2025",
+            "Management accounts to valuation date",
+            "Fixed asset register",
+            "Debtor and creditor age analysis",
+            "Industry reports and market data"
+          ],
+          "limitations": [
+            "The valuation relies on information supplied by the executor, management, and available estate records.",
+            "No allowance has been made for changes in legislation, market conditions, or trading performance after the valuation date unless specifically noted.",
+            "This report is not a fairness opinion or due diligence engagement."
+          ]
+        },
+        "executiveSummary": {
+          "concludedValue": 15900000,
+          "weightedAverageValue": 15891055.64,
+          "summaryText": "The concluded value reflects a weighted reconciliation of DCF, maintainable earnings, and adjusted NAV based on their relevance and reliability."
+        },
+        "businessOverview": {
+          "legalName": "Khumalo Industrial Supplies (Pty) Ltd - 80% shareholding",
+          "narrative": "Khumalo Industrial Supplies (Pty) Ltd - 80% shareholding has been assessed as a private company interest. The valuation considers enterprise value, equity bridge adjustments, and the shareholding interest held by the deceased at the effective valuation date."
+        },
+        "historicalFinancialAnalysis": {
+          "years": [
+            {
+              "label": "FY2023",
+              "revenue": 18450000,
+              "ebitda": 3500000,
+              "ebit": 3050000,
+              "npat": 2022000
+            },
+            {
+              "label": "FY2024",
+              "revenue": 21200000,
+              "ebitda": 4350000,
+              "ebit": 3850000,
+              "npat": 2635000
+            },
+            {
+              "label": "FY2025",
+              "revenue": 24600000,
+              "ebitda": 5300000,
+              "ebit": 4750000,
+              "npat": 3321000
+            }
+          ]
+        },
+        "methodResults": {
+          "discountedCashFlow": {
+            "fcffSchedule": [
+              {
+                "label": "FY2026",
+                "revenue": 26500000,
+                "ebit": 5000000,
+                "taxOnEbit": 1350000,
+                "nopat": 3650000,
+                "depreciation": 600000,
+                "capitalExpenditure": 800000,
+                "workingCapitalChange": 250000,
+                "fcff": 3200000,
+                "discountFactor": 0.832018,
+                "presentValue": 2662456.66
+              },
+              {
+                "label": "FY2027",
+                "revenue": 28600000,
+                "ebit": 5450000,
+                "taxOnEbit": 1471500,
+                "nopat": 3978500,
+                "depreciation": 650000,
+                "capitalExpenditure": 850000,
+                "workingCapitalChange": 200000,
+                "fcff": 3578500,
+                "discountFactor": 0.692253,
+                "presentValue": 2477229.01
+              },
+              {
+                "label": "FY2028",
+                "revenue": 30600000,
+                "ebit": 5900000,
+                "taxOnEbit": 1593000,
+                "nopat": 4307000,
+                "depreciation": 700000,
+                "capitalExpenditure": 900000,
+                "workingCapitalChange": 180000,
+                "fcff": 3927000,
+                "discountFactor": 0.575967,
+                "presentValue": 2261822.95
+              },
+              {
+                "label": "FY2029",
+                "revenue": 32400000,
+                "ebit": 6250000,
+                "taxOnEbit": 1687500,
+                "nopat": 4562500,
+                "depreciation": 750000,
+                "capitalExpenditure": 950000,
+                "workingCapitalChange": 160000,
+                "fcff": 4202500,
+                "discountFactor": 0.479215,
+                "presentValue": 2013900.43
+              },
+              {
+                "label": "FY2030",
+                "revenue": 34000000,
+                "ebit": 6600000,
+                "taxOnEbit": 1782000,
+                "nopat": 4818000,
+                "depreciation": 800000,
+                "capitalExpenditure": 1000000,
+                "workingCapitalChange": 140000,
+                "fcff": 4478000,
+                "discountFactor": 0.398715,
+                "presentValue": 1785446.87
+              }
+            ],
+            "costOfEquity": 0.21,
+            "afterTaxCostOfDebt": 0.09,
+            "wacc": 0.2,
+            "gordonGrowthTerminalValue": 30954426.5,
+            "exitMultipleTerminalValue": 33300000,
+            "adoptedTerminalValue": 32127213.25,
+            "enterpriseValue": 24010457.75,
+            "preDiscountEquityValue": 24710457.75,
+            "marketabilityDiscountRate": 0.15,
+            "marketabilityDiscountAmount": 3706568.66,
+            "minorityDiscountRate": 0,
+            "minorityDiscountAmount": 0,
+            "indicatedValue": 21003889.09
+          },
+          "maintainableEarnings": {
+            "years": [
+              {
+                "label": "FY2023",
+                "reportedNpat": 2022000,
+                "nonRecurringAdjustments": 205000,
+                "ownerRemunerationAdjustment": -200000,
+                "normalisedNpat": 2027000,
+                "weighting": 1
+              },
+              {
+                "label": "FY2024",
+                "reportedNpat": 2635000,
+                "nonRecurringAdjustments": -180000,
+                "ownerRemunerationAdjustment": -200000,
+                "normalisedNpat": 2255000,
+                "weighting": 2
+              },
+              {
+                "label": "FY2025",
+                "reportedNpat": 3321000,
+                "nonRecurringAdjustments": 0,
+                "ownerRemunerationAdjustment": -200000,
+                "normalisedNpat": 3121000,
+                "weighting": 3
+              }
+            ],
+            "maintainableEarnings": 2650000,
+            "selectedMultiple": 4.8,
+            "preDiscountValue": 12720000,
+            "marketabilityDiscountRate": 0,
+            "marketabilityDiscountAmount": 0,
+            "minorityDiscountRate": 0,
+            "minorityDiscountAmount": 0,
+            "indicatedValue": 12720000
+          },
+          "netAssetValue": {
+            "assets": [
+              {
+                "category": "Property",
+                "bookValue": 3200000,
+                "adjustment": 2800000,
+                "fairMarketValue": 6000000
+              },
+              {
+                "category": "Plant & equipment",
+                "bookValue": 1600000,
+                "adjustment": 400000,
+                "fairMarketValue": 2000000
+              },
+              {
+                "category": "Inventory",
+                "bookValue": 2400000,
+                "adjustment": -200000,
+                "fairMarketValue": 2200000
+              },
+              {
+                "category": "Trade receivables",
+                "bookValue": 3500000,
+                "adjustment": -350000,
+                "fairMarketValue": 3150000
+              },
+              {
+                "category": "Cash and equivalents",
+                "bookValue": 2200000,
+                "adjustment": 0,
+                "fairMarketValue": 2200000
+              }
+            ],
+            "liabilities": [
+              {
+                "category": "Long-term borrowings",
+                "bookValue": 400000,
+                "adjustment": 0,
+                "fairMarketValue": 400000
+              },
+              {
+                "category": "Short-term borrowings",
+                "bookValue": 250000,
+                "adjustment": 0,
+                "fairMarketValue": 250000
+              },
+              {
+                "category": "Trade payables",
+                "bookValue": 1150000,
+                "adjustment": 0,
+                "fairMarketValue": 1150000
+              },
+              {
+                "category": "Director's loan",
+                "bookValue": 850000,
+                "adjustment": 0,
+                "fairMarketValue": 850000
+              },
+              {
+                "category": "Deferred tax",
+                "bookValue": 0,
+                "adjustment": 750000,
+                "fairMarketValue": 750000
+              }
+            ],
+            "adjustedAssets": 15550000,
+            "adjustedLiabilities": 3400000,
+            "indicatedValue": 12150000
+          }
+        },
+        "reconciliation": {
+          "methods": [
+            {
+              "method": "DISCOUNTED_CASH_FLOW",
+              "indicatedValue": 21003889.09,
+              "weight": 0.4,
+              "weightedValue": 8401555.64
+            },
+            {
+              "method": "MAINTAINABLE_EARNINGS",
+              "indicatedValue": 12720000,
+              "weight": 0.35,
+              "weightedValue": 4452000
+            },
+            {
+              "method": "NET_ASSET_VALUE",
+              "indicatedValue": 12150000,
+              "weight": 0.25,
+              "weightedValue": 3037500
+            }
+          ],
+          "weightedAverageValue": 15891055.64,
+          "concludedValue": 15900000,
+          "rationale": "The concluded value reflects a weighted reconciliation of DCF, maintainable earnings, and adjusted NAV based on their relevance and reliability."
+        },
+        "sensitivityAnalysis": {
+          "scenarios": [
+            {
+              "scenario": "Bear case",
+              "wacc": 0.22,
+              "growthRate": 0.030000000000000002,
+              "earningsMultiple": 4.3,
+              "indicatedValue": 13515000
+            },
+            {
+              "scenario": "Base case",
+              "wacc": 0.2,
+              "growthRate": 0.05,
+              "earningsMultiple": 4.8,
+              "indicatedValue": 15900000
+            },
+            {
+              "scenario": "Bull case",
+              "wacc": 0.19,
+              "growthRate": 0.06,
+              "earningsMultiple": 5.3,
+              "indicatedValue": 18285000
+            }
+          ]
+        },
+        "taxImplications": {
+          "cgtSummary": {
+            "deemedProceeds": 15900000,
+            "deathExclusion": 300000,
+            "capitalGain": 15600000,
+            "inclusionRate": 0.4,
+            "taxableCapitalGain": 6240000
+          },
+          "estateDutySummary": {
+            "grossEstate": 15900000,
+            "dutiableEstate": 12400000,
+            "estateDutyPayable": 2480000
+          },
+          "section9haNotes": [
+            "Section 9HA rollover may defer the immediate CGT charge where the asset accrues to a surviving spouse.",
+            "For a company shareholding, the valuation supports the deceased's final ITR12, CGT disclosure, estate duty, and L&D account evidence."
+          ]
+        },
+        "economicAndIndustryContext": {
+          "macroeconomicConditions": "The valuation considers South African macroeconomic conditions at the valuation date, including the interest-rate environment, inflation expectations, and the trading outlook relevant to the subject business.",
+          "industryOverview": "The subject industry was assessed with reference to sector demand, operating risks, competitive dynamics, and available market evidence relevant to private-business valuation in South Africa.",
+          "valueDrivers": [
+            "Established trading history and identifiable earnings capacity",
+            "Asset backing and working-capital support",
+            "Existing customer relationships and operational capability"
+          ],
+          "keyRisks": [
+            "Key-person dependency and succession execution risk",
+            "Marketability limitations associated with private-business interests",
+            "Macroeconomic volatility and sector-specific operating cost pressure"
+          ]
+        },
+        "methodologySelection": {
+          "rationale": "The valuation applies the selected methodologies (discounted cash flow, maintainable earnings, net asset value) to triangulate a defensible fair market value using income-based and asset-based indicators relevant to the subject business."
+        },
+        "rolloverConsiderations": {
+          "section9haNarrative": "Section 9HA rollover may defer the immediate CGT charge where the asset accrues to a surviving spouse. For a company shareholding, the valuation supports the deceased's final ITR12, CGT disclosure, estate duty, and L&D account evidence."
+        },
+        "qualificationsAndDisclaimers": [
+          "This valuation report has been prepared solely for the estate-administration and SARS-compliance purposes stated in the report.",
+          "The valuer has relied on information supplied by the executor and available records without performing a full audit of that information.",
+          "Actual realizable values may differ from this estimate depending on transaction timing, negotiation dynamics, and post-valuation-date events.",
+          "SARS may challenge the valuation and substitute its own determination of market value."
+        ],
+        "appendices": [
+          {
+            "title": "Appendix A: WACC Calculation Detail",
+            "detail": "Supporting assumptions and calculations used in the DCF discount-rate build-up."
+          },
+          {
+            "title": "Appendix B: Supporting Financial Information",
+            "detail": "Historical financial statements, management accounts, and supporting schedules referenced in the valuation."
+          },
+          {
+            "title": "Appendix C: Asset and Liability Support",
+            "detail": "Asset-register extracts, external valuations, and relevant working papers for NAV adjustments."
+          }
+        ],
+        "glossary": [
+          {
+            "term": "DCF",
+            "definition": "Discounted cash flow valuation based on projected future cash flows."
+          },
+          {
+            "term": "NAV",
+            "definition": "Net asset value based on adjusted fair values of assets and liabilities."
+          },
+          {
+            "term": "WACC",
+            "definition": "Weighted Average Cost of Capital used to discount future cash flows."
+          },
+          {
+            "term": "CGT",
+            "definition": "Capital Gains Tax under the Eighth Schedule to the Income Tax Act."
+          },
+          {
+            "term": "Section 9HA",
+            "definition": "Income-tax rollover provision applicable on death in qualifying cases."
+          }
+        ],
+        "signOff": {
+          "preparedByLabel": "Prepared by:",
+          "acceptedByLabel": "Accepted by (Executor):"
+        }
+      }
+    },
+    "warnings": [],
+    "dependencyStates": [],
+    "status": "APPROVED",
+    "reviewRequired": false,
+    "createdAt": "2026-03-15T18:50:14.323Z",
+    "updatedAt": "2026-03-15T18:50:32.309Z",
+    "approvedAt": "2026-03-15T18:50:32.309Z",
+    "approvedByName": "Nandi Maseko"
+  },
+  {
+    "id": "estate_engine_run_1773585746151_759600",
+    "estateId": "estate_1773584221533_808244",
+    "yearPackId": "estate_year_pack_2027_v1",
+    "engineType": "BUSINESS_VALUATION",
+    "inputSnapshot": {
+      "estateId": "estate_1773584221533_808244",
+      "assetId": "estate_asset_1773584410892_53892",
+      "taxYear": 2027,
+      "valuationDate": "2026-03-15",
+      "subjectType": "COMPANY_SHAREHOLDING",
+      "subjectDescription": "PRIUUUU",
+      "method": "DISCOUNTED_CASH_FLOW",
+      "enabledMethods": [
+        "DISCOUNTED_CASH_FLOW",
+        "MAINTAINABLE_EARNINGS",
+        "NET_ASSET_VALUE"
+      ],
+      "shareholdingPercentage": 100,
+      "legalName": "PRIUUUU",
+      "preparedBy": "Nandi Maseko",
+      "reportDate": "2026-03-15",
+      "effectiveValuationDate": "2026-03-15",
+      "sourcesOfInformation": [
+        "Annual financial statements for FY2023 to FY2025",
+        "Management accounts to valuation date",
+        "Fixed asset register",
+        "Debtor and creditor age analysis",
+        "Industry reports and market data"
+      ],
+      "latestAnnualFinancialStatementsOnFile": true,
+      "priorYearAnnualFinancialStatementsOnFile": true,
+      "twoYearsPriorAnnualFinancialStatementsOnFile": true,
+      "executorAuthorityOnFile": true,
+      "acquisitionDocumentsOnFile": true,
+      "rev246Required": false,
+      "rev246Included": false,
+      "patentValuationRequired": false,
+      "patentValuationIncluded": false,
+      "reportNotes": "Prepared for EST-2026-0002 to support the estate file.",
+      "assumptions": [
+        "Management representations and estate records provided.",
+        "Business assumed to continue as a going concern.",
+        "No post-valuation-date legislative changes reflected."
+      ],
+      "historicalFinancialAnalysis": {
+        "years": [
+          {
+            "label": "FY2023",
+            "revenue": 18450000,
+            "ebitda": 3500000,
+            "ebit": 3050000,
+            "npat": 2022000
+          },
+          {
+            "label": "FY2024",
+            "revenue": 21200000,
+            "ebitda": 4350000,
+            "ebit": 3850000,
+            "npat": 2635000
+          },
+          {
+            "label": "FY2025",
+            "revenue": 24600000,
+            "ebitda": 5300000,
+            "ebit": 4750000,
+            "npat": 3321000
+          }
+        ]
+      },
+      "discountedCashFlow": {
+        "forecastYears": [
+          {
+            "label": "FY2026",
+            "revenue": 26500000,
+            "ebit": 5000000,
+            "depreciation": 600000,
+            "capitalExpenditure": 800000,
+            "workingCapitalChange": 250000
+          },
+          {
+            "label": "FY2027",
+            "revenue": 28600000,
+            "ebit": 5450000,
+            "depreciation": 650000,
+            "capitalExpenditure": 850000,
+            "workingCapitalChange": 200000
+          },
+          {
+            "label": "FY2028",
+            "revenue": 30600000,
+            "ebit": 5900000,
+            "depreciation": 700000,
+            "capitalExpenditure": 900000,
+            "workingCapitalChange": 180000
+          },
+          {
+            "label": "FY2029",
+            "revenue": 32400000,
+            "ebit": 6250000,
+            "depreciation": 750000,
+            "capitalExpenditure": 950000,
+            "workingCapitalChange": 160000
+          },
+          {
+            "label": "FY2030",
+            "revenue": 34000000,
+            "ebit": 6600000,
+            "depreciation": 800000,
+            "capitalExpenditure": 1000000,
+            "workingCapitalChange": 140000
+          }
+        ],
+        "taxRate": 0.27,
+        "riskFreeRate": 0.105,
+        "equityRiskPremium": 0.065,
+        "beta": 0.92,
+        "smallCompanyPremium": 0.03,
+        "keyPersonPremium": 0.02,
+        "costOfDebt": 0.1175,
+        "debtWeight": 0.1,
+        "equityWeight": 0.9,
+        "perpetualGrowthRate": 0.05,
+        "terminalExitMultiple": 4.5,
+        "cashAndEquivalents": 2200000,
+        "interestBearingDebt": 650000,
+        "directorLoan": 850000,
+        "marketabilityDiscountRate": 0.15,
+        "minorityDiscountRate": 0
+      },
+      "maintainableEarningsMethod": {
+        "historicalYears": [
+          {
+            "label": "FY2023",
+            "reportedNpat": 2022000,
+            "nonRecurringAdjustments": 205000,
+            "ownerRemunerationAdjustment": -200000,
+            "weighting": 1
+          },
+          {
+            "label": "FY2024",
+            "reportedNpat": 2635000,
+            "nonRecurringAdjustments": -180000,
+            "ownerRemunerationAdjustment": -200000,
+            "weighting": 2
+          },
+          {
+            "label": "FY2025",
+            "reportedNpat": 3321000,
+            "nonRecurringAdjustments": 0,
+            "ownerRemunerationAdjustment": -200000,
+            "weighting": 3
+          }
+        ],
+        "selectedMultiple": 4.8,
+        "marketabilityDiscountRate": 0,
+        "minorityDiscountRate": 0
+      },
+      "netAssetValueMethod": {
+        "assets": [
+          {
+            "category": "Property",
+            "bookValue": 3200000,
+            "adjustment": 2800000
+          },
+          {
+            "category": "Plant & equipment",
+            "bookValue": 1600000,
+            "adjustment": 400000
+          },
+          {
+            "category": "Inventory",
+            "bookValue": 2400000,
+            "adjustment": -200000
+          },
+          {
+            "category": "Trade receivables",
+            "bookValue": 3500000,
+            "adjustment": -350000
+          },
+          {
+            "category": "Cash and equivalents",
+            "bookValue": 2200000,
+            "adjustment": 0
+          }
+        ],
+        "liabilities": [
+          {
+            "category": "Long-term borrowings",
+            "bookValue": 400000,
+            "adjustment": 0
+          },
+          {
+            "category": "Short-term borrowings",
+            "bookValue": 250000,
+            "adjustment": 0
+          },
+          {
+            "category": "Trade payables",
+            "bookValue": 1150000,
+            "adjustment": 0
+          },
+          {
+            "category": "Director's loan",
+            "bookValue": 850000,
+            "adjustment": 0
+          },
+          {
+            "category": "Deferred tax",
+            "bookValue": 0,
+            "adjustment": 750000
+          }
+        ]
+      },
+      "reconciliation": {
+        "methodWeights": {
+          "DISCOUNTED_CASH_FLOW": 0.4,
+          "MAINTAINABLE_EARNINGS": 0.35,
+          "NET_ASSET_VALUE": 0.25
+        },
+        "conclusionRounding": 50000,
+        "rationale": "The concluded value reflects a weighted reconciliation of DCF, maintainable earnings, and adjusted NAV based on their relevance and reliability."
+      }
+    },
+    "outputSnapshot": {
+      "calculation": {
+        "valuationDate": "2026-03-15",
+        "subjectType": "COMPANY_SHAREHOLDING",
+        "subjectDescription": "PRIUUUU",
+        "method": "DISCOUNTED_CASH_FLOW",
+        "enabledMethods": [
+          "DISCOUNTED_CASH_FLOW",
+          "MAINTAINABLE_EARNINGS",
+          "NET_ASSET_VALUE"
+        ],
+        "assumptions": [
+          "Management representations and estate records provided.",
+          "Business assumed to continue as a going concern.",
+          "No post-valuation-date legislative changes reflected."
+        ],
+        "concludedValue": 15900000,
+        "warnings": [],
+        "summary": {
+          "enterpriseValue": 24010457.75,
+          "netAdjustments": 12150000,
+          "shareholdingPercentage": 100,
+          "weightedAverageValue": 15891055.64
+        },
+        "historicalFinancialAnalysis": {
+          "years": [
+            {
+              "label": "FY2023",
+              "revenue": 18450000,
+              "ebitda": 3500000,
+              "ebit": 3050000,
+              "npat": 2022000
+            },
+            {
+              "label": "FY2024",
+              "revenue": 21200000,
+              "ebitda": 4350000,
+              "ebit": 3850000,
+              "npat": 2635000
+            },
+            {
+              "label": "FY2025",
+              "revenue": 24600000,
+              "ebitda": 5300000,
+              "ebit": 4750000,
+              "npat": 3321000
+            }
+          ]
+        },
+        "methodResults": {
+          "discountedCashFlow": {
+            "fcffSchedule": [
+              {
+                "label": "FY2026",
+                "revenue": 26500000,
+                "ebit": 5000000,
+                "taxOnEbit": 1350000,
+                "nopat": 3650000,
+                "depreciation": 600000,
+                "capitalExpenditure": 800000,
+                "workingCapitalChange": 250000,
+                "fcff": 3200000,
+                "discountFactor": 0.832018,
+                "presentValue": 2662456.66
+              },
+              {
+                "label": "FY2027",
+                "revenue": 28600000,
+                "ebit": 5450000,
+                "taxOnEbit": 1471500,
+                "nopat": 3978500,
+                "depreciation": 650000,
+                "capitalExpenditure": 850000,
+                "workingCapitalChange": 200000,
+                "fcff": 3578500,
+                "discountFactor": 0.692253,
+                "presentValue": 2477229.01
+              },
+              {
+                "label": "FY2028",
+                "revenue": 30600000,
+                "ebit": 5900000,
+                "taxOnEbit": 1593000,
+                "nopat": 4307000,
+                "depreciation": 700000,
+                "capitalExpenditure": 900000,
+                "workingCapitalChange": 180000,
+                "fcff": 3927000,
+                "discountFactor": 0.575967,
+                "presentValue": 2261822.95
+              },
+              {
+                "label": "FY2029",
+                "revenue": 32400000,
+                "ebit": 6250000,
+                "taxOnEbit": 1687500,
+                "nopat": 4562500,
+                "depreciation": 750000,
+                "capitalExpenditure": 950000,
+                "workingCapitalChange": 160000,
+                "fcff": 4202500,
+                "discountFactor": 0.479215,
+                "presentValue": 2013900.43
+              },
+              {
+                "label": "FY2030",
+                "revenue": 34000000,
+                "ebit": 6600000,
+                "taxOnEbit": 1782000,
+                "nopat": 4818000,
+                "depreciation": 800000,
+                "capitalExpenditure": 1000000,
+                "workingCapitalChange": 140000,
+                "fcff": 4478000,
+                "discountFactor": 0.398715,
+                "presentValue": 1785446.87
+              }
+            ],
+            "costOfEquity": 0.21,
+            "afterTaxCostOfDebt": 0.09,
+            "wacc": 0.2,
+            "gordonGrowthTerminalValue": 30954426.5,
+            "exitMultipleTerminalValue": 33300000,
+            "adoptedTerminalValue": 32127213.25,
+            "enterpriseValue": 24010457.75,
+            "preDiscountEquityValue": 24710457.75,
+            "marketabilityDiscountRate": 0.15,
+            "marketabilityDiscountAmount": 3706568.66,
+            "minorityDiscountRate": 0,
+            "minorityDiscountAmount": 0,
+            "indicatedValue": 21003889.09
+          },
+          "maintainableEarnings": {
+            "years": [
+              {
+                "label": "FY2023",
+                "reportedNpat": 2022000,
+                "nonRecurringAdjustments": 205000,
+                "ownerRemunerationAdjustment": -200000,
+                "normalisedNpat": 2027000,
+                "weighting": 1
+              },
+              {
+                "label": "FY2024",
+                "reportedNpat": 2635000,
+                "nonRecurringAdjustments": -180000,
+                "ownerRemunerationAdjustment": -200000,
+                "normalisedNpat": 2255000,
+                "weighting": 2
+              },
+              {
+                "label": "FY2025",
+                "reportedNpat": 3321000,
+                "nonRecurringAdjustments": 0,
+                "ownerRemunerationAdjustment": -200000,
+                "normalisedNpat": 3121000,
+                "weighting": 3
+              }
+            ],
+            "maintainableEarnings": 2650000,
+            "selectedMultiple": 4.8,
+            "preDiscountValue": 12720000,
+            "marketabilityDiscountRate": 0,
+            "marketabilityDiscountAmount": 0,
+            "minorityDiscountRate": 0,
+            "minorityDiscountAmount": 0,
+            "indicatedValue": 12720000
+          },
+          "netAssetValue": {
+            "assets": [
+              {
+                "category": "Property",
+                "bookValue": 3200000,
+                "adjustment": 2800000,
+                "fairMarketValue": 6000000
+              },
+              {
+                "category": "Plant & equipment",
+                "bookValue": 1600000,
+                "adjustment": 400000,
+                "fairMarketValue": 2000000
+              },
+              {
+                "category": "Inventory",
+                "bookValue": 2400000,
+                "adjustment": -200000,
+                "fairMarketValue": 2200000
+              },
+              {
+                "category": "Trade receivables",
+                "bookValue": 3500000,
+                "adjustment": -350000,
+                "fairMarketValue": 3150000
+              },
+              {
+                "category": "Cash and equivalents",
+                "bookValue": 2200000,
+                "adjustment": 0,
+                "fairMarketValue": 2200000
+              }
+            ],
+            "liabilities": [
+              {
+                "category": "Long-term borrowings",
+                "bookValue": 400000,
+                "adjustment": 0,
+                "fairMarketValue": 400000
+              },
+              {
+                "category": "Short-term borrowings",
+                "bookValue": 250000,
+                "adjustment": 0,
+                "fairMarketValue": 250000
+              },
+              {
+                "category": "Trade payables",
+                "bookValue": 1150000,
+                "adjustment": 0,
+                "fairMarketValue": 1150000
+              },
+              {
+                "category": "Director's loan",
+                "bookValue": 850000,
+                "adjustment": 0,
+                "fairMarketValue": 850000
+              },
+              {
+                "category": "Deferred tax",
+                "bookValue": 0,
+                "adjustment": 750000,
+                "fairMarketValue": 750000
+              }
+            ],
+            "adjustedAssets": 15550000,
+            "adjustedLiabilities": 3400000,
+            "indicatedValue": 12150000
+          }
+        },
+        "reconciliation": {
+          "methods": [
+            {
+              "method": "DISCOUNTED_CASH_FLOW",
+              "indicatedValue": 21003889.09,
+              "weight": 0.4,
+              "weightedValue": 8401555.64
+            },
+            {
+              "method": "MAINTAINABLE_EARNINGS",
+              "indicatedValue": 12720000,
+              "weight": 0.35,
+              "weightedValue": 4452000
+            },
+            {
+              "method": "NET_ASSET_VALUE",
+              "indicatedValue": 12150000,
+              "weight": 0.25,
+              "weightedValue": 3037500
+            }
+          ],
+          "weightedAverageValue": 15891055.64,
+          "concludedValue": 15900000,
+          "rationale": "The concluded value reflects a weighted reconciliation of DCF, maintainable earnings, and adjusted NAV based on their relevance and reliability.",
+          "conclusionRounding": 50000
+        },
+        "sensitivityAnalysis": {
+          "scenarios": [
+            {
+              "scenario": "Bear case",
+              "wacc": 0.22,
+              "growthRate": 0.030000000000000002,
+              "earningsMultiple": 4.3,
+              "indicatedValue": 13515000
+            },
+            {
+              "scenario": "Base case",
+              "wacc": 0.2,
+              "growthRate": 0.05,
+              "earningsMultiple": 4.8,
+              "indicatedValue": 15900000
+            },
+            {
+              "scenario": "Bull case",
+              "wacc": 0.19,
+              "growthRate": 0.06,
+              "earningsMultiple": 5.3,
+              "indicatedValue": 18285000
+            }
+          ]
+        },
+        "taxImplicationsPreview": {
+          "cgtSummary": {
+            "deemedProceeds": 15900000,
+            "deathExclusion": 300000,
+            "capitalGain": 15600000,
+            "inclusionRate": 0.4,
+            "taxableCapitalGain": 6240000
+          },
+          "estateDutySummary": {
+            "grossEstate": 15900000,
+            "dutiableEstate": 12400000,
+            "estateDutyPayable": 2480000
+          },
+          "section9haNotes": [
+            "Section 9HA rollover may defer the immediate CGT charge where the asset accrues to a surviving spouse.",
+            "For a company shareholding, the valuation supports the deceased's final ITR12, CGT disclosure, estate duty, and L&D account evidence."
+          ]
+        },
+        "downstreamCgtInput": {
+          "assetDescription": "PRIUUUU",
+          "marketValueAtDeath": 15900000,
+          "valuationDate": "2026-03-15",
+          "valuationMethod": "DISCOUNTED_CASH_FLOW"
+        }
+      },
+      "report": {
+        "header": {
+          "title": "Business valuation report",
+          "taxYear": 2027,
+          "valuationDate": "2026-03-15",
+          "estateReference": "EST-2026-0002",
+          "deceasedName": "GINGER",
+          "executorName": "NCUBE"
+        },
+        "purpose": "Prepared to support SARS estate duty, CGT on death, the deceased's final ITR12, and estate administration for a business shareholding at date of death.",
+        "subject": {
+          "subjectDescription": "PRIUUUU",
+          "subjectType": "COMPANY_SHAREHOLDING",
+          "ownershipPercentage": 100
+        },
+        "methodology": {
+          "method": "DISCOUNTED_CASH_FLOW",
+          "maintainableEarnings": 2650000,
+          "earningsMultiple": 4.8,
+          "nonOperatingAssets": 0,
+          "liabilities": 0
+        },
+        "summary": {
+          "subjectDescription": "PRIUUUU",
+          "method": "DISCOUNTED_CASH_FLOW",
+          "concludedValue": 15900000,
+          "enterpriseValue": 24010457.75
+        },
+        "supportChecklist": {
+          "latestAnnualFinancialStatementsOnFile": true,
+          "priorYearAnnualFinancialStatementsOnFile": true,
+          "twoYearsPriorAnnualFinancialStatementsOnFile": true,
+          "executorAuthorityOnFile": true,
+          "acquisitionDocumentsOnFile": true,
+          "rev246Required": false,
+          "rev246Included": false,
+          "patentValuationRequired": false,
+          "patentValuationIncluded": false
+        },
+        "assumptions": [
+          "Management representations and estate records provided.",
+          "Business assumed to continue as a going concern.",
+          "No post-valuation-date legislative changes reflected."
+        ],
+        "notes": "Prepared for EST-2026-0002 to support the estate file.",
+        "sourceReferences": [
+          "Annual financial statements for FY2023 to FY2025",
+          "Management accounts to valuation date",
+          "Fixed asset register",
+          "Debtor and creditor age analysis",
+          "Industry reports and market data",
+          "SARS valuation support checklist for unlisted shares or member interests",
+          "International Valuation Standards (IVS) framework",
+          "AME Pro Deceased Estate Module System Specification"
+        ],
+        "mandate": {
+          "engagementMandate": "The executor engaged the valuer to determine the fair market value of the deceased's interest in PRIUUUU as at 2026-03-15 for estate administration, SARS income-tax disclosure, CGT-on-death support, and estate-duty reporting.",
+          "definitionOfValue": "The standard of value applied is fair market value, being the price a willing buyer would pay a willing seller, both reasonably informed and neither under compulsion.",
+          "sourcesOfInformation": [
+            "Annual financial statements for FY2023 to FY2025",
+            "Management accounts to valuation date",
+            "Fixed asset register",
+            "Debtor and creditor age analysis",
+            "Industry reports and market data"
+          ],
+          "limitations": [
+            "The valuation relies on information supplied by the executor, management, and available estate records.",
+            "No allowance has been made for changes in legislation, market conditions, or trading performance after the valuation date unless specifically noted.",
+            "This report is not a fairness opinion or due diligence engagement."
+          ]
+        },
+        "executiveSummary": {
+          "concludedValue": 15900000,
+          "weightedAverageValue": 15891055.64,
+          "summaryText": "The concluded value reflects a weighted reconciliation of DCF, maintainable earnings, and adjusted NAV based on their relevance and reliability."
+        },
+        "businessOverview": {
+          "legalName": "PRIUUUU",
+          "narrative": "PRIUUUU has been assessed as a private company interest. The valuation considers enterprise value, equity bridge adjustments, and the shareholding interest held by the deceased at the effective valuation date."
+        },
+        "historicalFinancialAnalysis": {
+          "years": [
+            {
+              "label": "FY2023",
+              "revenue": 18450000,
+              "ebitda": 3500000,
+              "ebit": 3050000,
+              "npat": 2022000
+            },
+            {
+              "label": "FY2024",
+              "revenue": 21200000,
+              "ebitda": 4350000,
+              "ebit": 3850000,
+              "npat": 2635000
+            },
+            {
+              "label": "FY2025",
+              "revenue": 24600000,
+              "ebitda": 5300000,
+              "ebit": 4750000,
+              "npat": 3321000
+            }
+          ]
+        },
+        "methodResults": {
+          "discountedCashFlow": {
+            "fcffSchedule": [
+              {
+                "label": "FY2026",
+                "revenue": 26500000,
+                "ebit": 5000000,
+                "taxOnEbit": 1350000,
+                "nopat": 3650000,
+                "depreciation": 600000,
+                "capitalExpenditure": 800000,
+                "workingCapitalChange": 250000,
+                "fcff": 3200000,
+                "discountFactor": 0.832018,
+                "presentValue": 2662456.66
+              },
+              {
+                "label": "FY2027",
+                "revenue": 28600000,
+                "ebit": 5450000,
+                "taxOnEbit": 1471500,
+                "nopat": 3978500,
+                "depreciation": 650000,
+                "capitalExpenditure": 850000,
+                "workingCapitalChange": 200000,
+                "fcff": 3578500,
+                "discountFactor": 0.692253,
+                "presentValue": 2477229.01
+              },
+              {
+                "label": "FY2028",
+                "revenue": 30600000,
+                "ebit": 5900000,
+                "taxOnEbit": 1593000,
+                "nopat": 4307000,
+                "depreciation": 700000,
+                "capitalExpenditure": 900000,
+                "workingCapitalChange": 180000,
+                "fcff": 3927000,
+                "discountFactor": 0.575967,
+                "presentValue": 2261822.95
+              },
+              {
+                "label": "FY2029",
+                "revenue": 32400000,
+                "ebit": 6250000,
+                "taxOnEbit": 1687500,
+                "nopat": 4562500,
+                "depreciation": 750000,
+                "capitalExpenditure": 950000,
+                "workingCapitalChange": 160000,
+                "fcff": 4202500,
+                "discountFactor": 0.479215,
+                "presentValue": 2013900.43
+              },
+              {
+                "label": "FY2030",
+                "revenue": 34000000,
+                "ebit": 6600000,
+                "taxOnEbit": 1782000,
+                "nopat": 4818000,
+                "depreciation": 800000,
+                "capitalExpenditure": 1000000,
+                "workingCapitalChange": 140000,
+                "fcff": 4478000,
+                "discountFactor": 0.398715,
+                "presentValue": 1785446.87
+              }
+            ],
+            "costOfEquity": 0.21,
+            "afterTaxCostOfDebt": 0.09,
+            "wacc": 0.2,
+            "gordonGrowthTerminalValue": 30954426.5,
+            "exitMultipleTerminalValue": 33300000,
+            "adoptedTerminalValue": 32127213.25,
+            "enterpriseValue": 24010457.75,
+            "preDiscountEquityValue": 24710457.75,
+            "marketabilityDiscountRate": 0.15,
+            "marketabilityDiscountAmount": 3706568.66,
+            "minorityDiscountRate": 0,
+            "minorityDiscountAmount": 0,
+            "indicatedValue": 21003889.09
+          },
+          "maintainableEarnings": {
+            "years": [
+              {
+                "label": "FY2023",
+                "reportedNpat": 2022000,
+                "nonRecurringAdjustments": 205000,
+                "ownerRemunerationAdjustment": -200000,
+                "normalisedNpat": 2027000,
+                "weighting": 1
+              },
+              {
+                "label": "FY2024",
+                "reportedNpat": 2635000,
+                "nonRecurringAdjustments": -180000,
+                "ownerRemunerationAdjustment": -200000,
+                "normalisedNpat": 2255000,
+                "weighting": 2
+              },
+              {
+                "label": "FY2025",
+                "reportedNpat": 3321000,
+                "nonRecurringAdjustments": 0,
+                "ownerRemunerationAdjustment": -200000,
+                "normalisedNpat": 3121000,
+                "weighting": 3
+              }
+            ],
+            "maintainableEarnings": 2650000,
+            "selectedMultiple": 4.8,
+            "preDiscountValue": 12720000,
+            "marketabilityDiscountRate": 0,
+            "marketabilityDiscountAmount": 0,
+            "minorityDiscountRate": 0,
+            "minorityDiscountAmount": 0,
+            "indicatedValue": 12720000
+          },
+          "netAssetValue": {
+            "assets": [
+              {
+                "category": "Property",
+                "bookValue": 3200000,
+                "adjustment": 2800000,
+                "fairMarketValue": 6000000
+              },
+              {
+                "category": "Plant & equipment",
+                "bookValue": 1600000,
+                "adjustment": 400000,
+                "fairMarketValue": 2000000
+              },
+              {
+                "category": "Inventory",
+                "bookValue": 2400000,
+                "adjustment": -200000,
+                "fairMarketValue": 2200000
+              },
+              {
+                "category": "Trade receivables",
+                "bookValue": 3500000,
+                "adjustment": -350000,
+                "fairMarketValue": 3150000
+              },
+              {
+                "category": "Cash and equivalents",
+                "bookValue": 2200000,
+                "adjustment": 0,
+                "fairMarketValue": 2200000
+              }
+            ],
+            "liabilities": [
+              {
+                "category": "Long-term borrowings",
+                "bookValue": 400000,
+                "adjustment": 0,
+                "fairMarketValue": 400000
+              },
+              {
+                "category": "Short-term borrowings",
+                "bookValue": 250000,
+                "adjustment": 0,
+                "fairMarketValue": 250000
+              },
+              {
+                "category": "Trade payables",
+                "bookValue": 1150000,
+                "adjustment": 0,
+                "fairMarketValue": 1150000
+              },
+              {
+                "category": "Director's loan",
+                "bookValue": 850000,
+                "adjustment": 0,
+                "fairMarketValue": 850000
+              },
+              {
+                "category": "Deferred tax",
+                "bookValue": 0,
+                "adjustment": 750000,
+                "fairMarketValue": 750000
+              }
+            ],
+            "adjustedAssets": 15550000,
+            "adjustedLiabilities": 3400000,
+            "indicatedValue": 12150000
+          }
+        },
+        "reconciliation": {
+          "methods": [
+            {
+              "method": "DISCOUNTED_CASH_FLOW",
+              "indicatedValue": 21003889.09,
+              "weight": 0.4,
+              "weightedValue": 8401555.64
+            },
+            {
+              "method": "MAINTAINABLE_EARNINGS",
+              "indicatedValue": 12720000,
+              "weight": 0.35,
+              "weightedValue": 4452000
+            },
+            {
+              "method": "NET_ASSET_VALUE",
+              "indicatedValue": 12150000,
+              "weight": 0.25,
+              "weightedValue": 3037500
+            }
+          ],
+          "weightedAverageValue": 15891055.64,
+          "concludedValue": 15900000,
+          "rationale": "The concluded value reflects a weighted reconciliation of DCF, maintainable earnings, and adjusted NAV based on their relevance and reliability."
+        },
+        "sensitivityAnalysis": {
+          "scenarios": [
+            {
+              "scenario": "Bear case",
+              "wacc": 0.22,
+              "growthRate": 0.030000000000000002,
+              "earningsMultiple": 4.3,
+              "indicatedValue": 13515000
+            },
+            {
+              "scenario": "Base case",
+              "wacc": 0.2,
+              "growthRate": 0.05,
+              "earningsMultiple": 4.8,
+              "indicatedValue": 15900000
+            },
+            {
+              "scenario": "Bull case",
+              "wacc": 0.19,
+              "growthRate": 0.06,
+              "earningsMultiple": 5.3,
+              "indicatedValue": 18285000
+            }
+          ]
+        },
+        "taxImplications": {
+          "cgtSummary": {
+            "deemedProceeds": 15900000,
+            "deathExclusion": 300000,
+            "capitalGain": 15600000,
+            "inclusionRate": 0.4,
+            "taxableCapitalGain": 6240000
+          },
+          "estateDutySummary": {
+            "grossEstate": 15900000,
+            "dutiableEstate": 12400000,
+            "estateDutyPayable": 2480000
+          },
+          "section9haNotes": [
+            "Section 9HA rollover may defer the immediate CGT charge where the asset accrues to a surviving spouse.",
+            "For a company shareholding, the valuation supports the deceased's final ITR12, CGT disclosure, estate duty, and L&D account evidence."
+          ]
+        },
+        "economicAndIndustryContext": {
+          "macroeconomicConditions": "The valuation considers South African macroeconomic conditions at the valuation date, including the interest-rate environment, inflation expectations, and the trading outlook relevant to the subject business.",
+          "industryOverview": "The subject industry was assessed with reference to sector demand, operating risks, competitive dynamics, and available market evidence relevant to private-business valuation in South Africa.",
+          "valueDrivers": [
+            "Established trading history and identifiable earnings capacity",
+            "Asset backing and working-capital support",
+            "Existing customer relationships and operational capability"
+          ],
+          "keyRisks": [
+            "Key-person dependency and succession execution risk",
+            "Marketability limitations associated with private-business interests",
+            "Macroeconomic volatility and sector-specific operating cost pressure"
+          ]
+        },
+        "methodologySelection": {
+          "rationale": "The valuation applies the selected methodologies (discounted cash flow, maintainable earnings, net asset value) to triangulate a defensible fair market value using income-based and asset-based indicators relevant to the subject business."
+        },
+        "rolloverConsiderations": {
+          "section9haNarrative": "Section 9HA rollover may defer the immediate CGT charge where the asset accrues to a surviving spouse. For a company shareholding, the valuation supports the deceased's final ITR12, CGT disclosure, estate duty, and L&D account evidence."
+        },
+        "qualificationsAndDisclaimers": [
+          "This valuation report has been prepared solely for the estate-administration and SARS-compliance purposes stated in the report.",
+          "The valuer has relied on information supplied by the executor and available records without performing a full audit of that information.",
+          "Actual realizable values may differ from this estimate depending on transaction timing, negotiation dynamics, and post-valuation-date events.",
+          "SARS may challenge the valuation and substitute its own determination of market value."
+        ],
+        "appendices": [
+          {
+            "title": "Appendix A: WACC Calculation Detail",
+            "detail": "Supporting assumptions and calculations used in the DCF discount-rate build-up."
+          },
+          {
+            "title": "Appendix B: Supporting Financial Information",
+            "detail": "Historical financial statements, management accounts, and supporting schedules referenced in the valuation."
+          },
+          {
+            "title": "Appendix C: Asset and Liability Support",
+            "detail": "Asset-register extracts, external valuations, and relevant working papers for NAV adjustments."
+          }
+        ],
+        "glossary": [
+          {
+            "term": "DCF",
+            "definition": "Discounted cash flow valuation based on projected future cash flows."
+          },
+          {
+            "term": "NAV",
+            "definition": "Net asset value based on adjusted fair values of assets and liabilities."
+          },
+          {
+            "term": "WACC",
+            "definition": "Weighted Average Cost of Capital used to discount future cash flows."
+          },
+          {
+            "term": "CGT",
+            "definition": "Capital Gains Tax under the Eighth Schedule to the Income Tax Act."
+          },
+          {
+            "term": "Section 9HA",
+            "definition": "Income-tax rollover provision applicable on death in qualifying cases."
+          }
+        ],
+        "signOff": {
+          "preparedByLabel": "Prepared by:",
+          "acceptedByLabel": "Accepted by (Executor):"
+        }
+      }
+    },
+    "warnings": [],
+    "dependencyStates": [],
+    "status": "APPROVED",
+    "reviewRequired": false,
+    "createdAt": "2026-03-15T14:42:26.151Z",
+    "updatedAt": "2026-03-15T14:42:57.351Z",
+    "approvedAt": "2026-03-15T14:42:57.351Z",
+    "approvedByName": "Nandi Maseko"
+  },
+  {
+    "id": "estate_engine_run_1773585722052_755970",
+    "estateId": "estate_1773584221533_808244",
+    "yearPackId": "estate_year_pack_2027_v1",
+    "engineType": "PRE_DEATH_ITR12",
+    "inputSnapshot": {
+      "estateId": "estate_1773584221533_808244",
+      "taxYear": 2027,
+      "incomePeriodStart": "2026-03-01",
+      "incomePeriodEnd": "2026-03-15",
+      "medicalAidMembers": 1,
+      "medicalAidMonths": 1,
+      "employment": {
+        "salaryIncome": 0,
+        "bonusIncome": 0,
+        "commissionIncome": 0,
+        "fringeBenefits": 0,
+        "otherTaxableEmploymentIncome": 0,
+        "payeWithheld": 0
+      },
+      "travel": {
+        "hasTravelAllowance": false,
+        "travelAllowance": 0,
+        "businessKilometres": 0,
+        "totalKilometres": 0,
+        "vehicleCost": 0,
+        "vehiclePurchaseDate": "2026-03-01"
+      },
+      "medical": {
+        "medicalSchemeContributions": 0,
+        "qualifyingOutOfPocketExpenses": 0,
+        "disabilityFlag": false
+      },
+      "interest": {
+        "localInterest": 0
+      },
+      "rental": {
+        "grossRentalIncome": 0,
+        "deductibleRentalExpenses": 0
+      },
+      "soleProprietor": {
+        "grossBusinessIncome": 0,
+        "deductibleBusinessExpenses": 0
+      },
+      "deductions": {
+        "retirementContributions": 0,
+        "donationsUnderSection18A": 0,
+        "priorAssessmentDebitOrCredit": 0
+      }
+    },
+    "outputSnapshot": {
+      "transformedInput": {
+        "profile": {
+          "assessmentYear": 2027,
+          "dateOfBirth": "2026-03-10",
+          "maritalStatus": "MARRIED_IN_COMMUNITY",
+          "medicalAidMembers": 1,
+          "medicalAidMonths": 1
+        },
+        "employment": {
+          "salaryIncome": 0,
+          "bonusIncome": 0,
+          "commissionIncome": 0,
+          "fringeBenefits": 0,
+          "otherTaxableEmploymentIncome": 0,
+          "payeWithheld": 0
+        },
+        "travel": {
+          "hasTravelAllowance": false,
+          "travelAllowance": 0,
+          "businessKilometres": 0,
+          "totalKilometres": 0,
+          "vehicleCost": 0,
+          "vehiclePurchaseDate": "2026-03-01"
+        },
+        "medical": {
+          "medicalSchemeContributions": 0,
+          "qualifyingOutOfPocketExpenses": 0,
+          "disabilityFlag": false
+        },
+        "interest": {
+          "localInterest": 0
+        },
+        "rental": {
+          "grossRentalIncome": 0,
+          "deductibleRentalExpenses": 0
+        },
+        "soleProprietor": {
+          "grossBusinessIncome": 0,
+          "deductibleBusinessExpenses": 0
+        },
+        "deductions": {
+          "retirementContributions": 0,
+          "donationsUnderSection18A": 0,
+          "priorAssessmentDebitOrCredit": 0
+        },
+        "taxpayerName": "GINGER",
+        "estateId": "estate_1773584221533_808244",
+        "yearPackId": "estate_year_pack_2027_v1",
+        "dateOfDeath": "2026-03-15",
+        "deathTruncatedPeriodEnd": "2026-03-15"
+      },
+      "calculation": {
+        "assessmentYear": 2027,
+        "incomeLines": [
+          {
+            "code": "3601",
+            "description": "Salary income",
+            "computations": "Employment schedule",
+            "amountAssessed": 0,
+            "reviewRequired": true,
+            "sourceReference": "SARS 2027 rates of tax for individuals and SARS Budget Tax Guide 2026 medical tax credits."
+          },
+          {
+            "code": "3605",
+            "description": "Bonus income",
+            "computations": "Employment schedule",
+            "amountAssessed": 0,
+            "reviewRequired": true,
+            "sourceReference": "SARS 2027 rates of tax for individuals and SARS Budget Tax Guide 2026 medical tax credits."
+          },
+          {
+            "code": "3606",
+            "description": "Commission income",
+            "computations": "Employment schedule",
+            "amountAssessed": 0,
+            "reviewRequired": true,
+            "sourceReference": "SARS 2027 rates of tax for individuals and SARS Budget Tax Guide 2026 medical tax credits."
+          },
+          {
+            "code": "3810",
+            "description": "Fringe benefits",
+            "computations": "Employment schedule",
+            "amountAssessed": 0,
+            "reviewRequired": true,
+            "sourceReference": "SARS 2027 rates of tax for individuals and SARS Budget Tax Guide 2026 medical tax credits."
+          },
+          {
+            "code": "3900",
+            "description": "Other taxable employment income",
+            "computations": "Employment schedule",
+            "amountAssessed": 0,
+            "reviewRequired": true,
+            "sourceReference": "SARS 2027 rates of tax for individuals and SARS Budget Tax Guide 2026 medical tax credits."
+          },
+          {
+            "code": "4102",
+            "description": "PAYE withheld",
+            "computations": "Employment schedule",
+            "amountAssessed": 0,
+            "reviewRequired": true,
+            "sourceReference": "SARS 2027 rates of tax for individuals and SARS Budget Tax Guide 2026 medical tax credits."
+          },
+          {
+            "code": "4201",
+            "description": "Local interest income",
+            "computations": "Interest schedule",
+            "amountAssessed": 0,
+            "reviewRequired": true,
+            "sourceReference": "SARS 2027 rates of tax for individuals and SARS Budget Tax Guide 2026 medical tax credits."
+          },
+          {
+            "code": "4218",
+            "description": "Interest exemption",
+            "computations": "Interest schedule",
+            "amountAssessed": 23800,
+            "reviewRequired": true,
+            "sourceReference": "SARS 2027 rates of tax for individuals and SARS Budget Tax Guide 2026 medical tax credits."
+          },
+          {
+            "code": "4210",
+            "description": "Gross rental income",
+            "computations": "Rental schedule",
+            "amountAssessed": 0,
+            "reviewRequired": true,
+            "sourceReference": "SARS 2027 rates of tax for individuals and SARS Budget Tax Guide 2026 medical tax credits."
+          },
+          {
+            "code": "4211",
+            "description": "Deductible rental expenses",
+            "computations": "Rental schedule",
+            "amountAssessed": 0,
+            "reviewRequired": true,
+            "sourceReference": "SARS 2027 rates of tax for individuals and SARS Budget Tax Guide 2026 medical tax credits."
+          },
+          {
+            "code": "IRP6_BUS_INC",
+            "description": "Gross sole proprietor income",
+            "computations": "Business schedule",
+            "amountAssessed": 0,
+            "reviewRequired": true,
+            "sourceReference": "SARS 2027 rates of tax for individuals and SARS Budget Tax Guide 2026 medical tax credits."
+          },
+          {
+            "code": "IRP6_BUS_EXP",
+            "description": "Deductible sole proprietor expenses",
+            "computations": "Business schedule",
+            "amountAssessed": 0,
+            "reviewRequired": true,
+            "sourceReference": "SARS 2027 rates of tax for individuals and SARS Budget Tax Guide 2026 medical tax credits."
+          }
+        ],
+        "deductionLines": [
+          {
+            "code": "4029",
+            "description": "Retirement fund contributions",
+            "computations": "Retirement contribution deduction limited by SARS annual and percentage caps",
+            "amountAssessed": 0,
+            "reviewRequired": true,
+            "sourceReference": "SARS 2027 rates of tax for individuals and SARS Budget Tax Guide 2026 medical tax credits."
+          },
+          {
+            "code": "4013",
+            "description": "Section 18A donations",
+            "computations": "Donations deduction captured for estimate purposes",
+            "amountAssessed": 0,
+            "reviewRequired": true,
+            "sourceReference": "SARS 2027 rates of tax for individuals and SARS Budget Tax Guide 2026 medical tax credits."
+          }
+        ],
+        "taxCalculationLines": [
+          {
+            "code": "NORMAL_TAX",
+            "description": "Normal tax",
+            "computations": "Calculated from year-based SARS tax brackets",
+            "amountAssessed": 0,
+            "reviewRequired": true,
+            "sourceReference": "SARS 2027 rates of tax for individuals and SARS Budget Tax Guide 2026 medical tax credits."
+          },
+          {
+            "code": "REBATES",
+            "description": "Rebates",
+            "computations": "Age-based primary, secondary, and tertiary rebates",
+            "amountAssessed": -18395,
+            "reviewRequired": true,
+            "sourceReference": "SARS 2027 rates of tax for individuals and SARS Budget Tax Guide 2026 medical tax credits."
+          },
+          {
+            "code": "MEDICAL_CREDIT",
+            "description": "Medical Scheme Fees Tax Credit",
+            "computations": "Medical scheme fees tax credit and additional medical expenses tax credit",
+            "amountAssessed": -376,
+            "reviewRequired": true,
+            "sourceReference": "SARS 2027 rates of tax for individuals and SARS Budget Tax Guide 2026 medical tax credits."
+          },
+          {
+            "code": "4102",
+            "description": "PAYE",
+            "computations": "Employees' tax withheld",
+            "amountAssessed": 0,
+            "reviewRequired": true,
+            "sourceReference": "SARS 2027 rates of tax for individuals and SARS Budget Tax Guide 2026 medical tax credits."
+          },
+          {
+            "code": "PREV_ASSESSMENT",
+            "description": "Previous assessment result",
+            "computations": "Brought-forward debit/credit",
+            "amountAssessed": 0,
+            "reviewRequired": true,
+            "sourceReference": "SARS 2027 rates of tax for individuals and SARS Budget Tax Guide 2026 medical tax credits."
+          },
+          {
+            "code": "NET_RESULT",
+            "description": "Estimated net amount under this assessment",
+            "computations": "Estimated tax after rebates and credits less PAYE and prior assessment result",
+            "amountAssessed": -376,
+            "reviewRequired": true,
+            "sourceReference": "SARS 2027 rates of tax for individuals and SARS Budget Tax Guide 2026 medical tax credits."
+          }
+        ],
+        "summary": {
+          "totalIncome": 0,
+          "totalDeductions": 0,
+          "taxableIncome": 0,
+          "normalTax": 0,
+          "totalCredits": 376,
+          "netAmountPayable": 0,
+          "netAmountRefundable": 376
+        },
+        "reviewRequired": false,
+        "disclaimer": "Outputs are generated for workflow assistance only and remain subject to professional review and legal verification before any SARS filing.",
+        "warnings": []
+      }
+    },
+    "warnings": [
+      "No CGT on death included. Run the CGT engine first for a complete ITR12."
+    ],
+    "dependencyStates": [],
+    "status": "APPROVED",
+    "reviewRequired": false,
+    "createdAt": "2026-03-15T14:42:02.052Z",
+    "updatedAt": "2026-03-15T14:42:13.076Z",
+    "approvedAt": "2026-03-15T14:42:13.076Z",
+    "approvedByName": "Nandi Maseko"
+  },
+  {
+    "id": "estate_engine_run_1773585629216_891710",
+    "estateId": "estate_1773584221533_808244",
+    "yearPackId": "estate_year_pack_2027_v1",
+    "engineType": "BUSINESS_VALUATION",
+    "inputSnapshot": {
+      "estateId": "estate_1773584221533_808244",
+      "assetId": "estate_asset_1773584410892_53892",
+      "taxYear": 2027,
+      "valuationDate": "2026-03-15",
+      "subjectType": "COMPANY_SHAREHOLDING",
+      "subjectDescription": "PRIUUUU",
+      "method": "DISCOUNTED_CASH_FLOW",
+      "enabledMethods": [
+        "DISCOUNTED_CASH_FLOW"
+      ],
+      "shareholdingPercentage": 100,
+      "legalName": "PRIUUUU",
+      "preparedBy": "Nandi Maseko",
+      "reportDate": "2026-03-15",
+      "effectiveValuationDate": "2026-03-15",
+      "sourcesOfInformation": [
+        "Annual financial statements for FY2023 to FY2025",
+        "Management accounts to valuation date",
+        "Fixed asset register",
+        "Debtor and creditor age analysis",
+        "Industry reports and market data"
+      ],
+      "latestAnnualFinancialStatementsOnFile": true,
+      "priorYearAnnualFinancialStatementsOnFile": true,
+      "twoYearsPriorAnnualFinancialStatementsOnFile": true,
+      "executorAuthorityOnFile": true,
+      "acquisitionDocumentsOnFile": true,
+      "rev246Required": false,
+      "rev246Included": false,
+      "patentValuationRequired": false,
+      "patentValuationIncluded": false,
+      "reportNotes": "Prepared for EST-2026-0002 to support the estate file.",
+      "assumptions": [
+        "Management representations and estate records provided.",
+        "Business assumed to continue as a going concern.",
+        "No post-valuation-date legislative changes reflected."
+      ],
+      "historicalFinancialAnalysis": {
+        "years": [
+          {
+            "label": "FY2023",
+            "revenue": 18450000,
+            "ebitda": 3500000,
+            "ebit": 3050000,
+            "npat": 2022000
+          },
+          {
+            "label": "FY2024",
+            "revenue": 21200000,
+            "ebitda": 4350000,
+            "ebit": 3850000,
+            "npat": 2635000
+          },
+          {
+            "label": "FY2025",
+            "revenue": 24600000,
+            "ebitda": 5300000,
+            "ebit": 4750000,
+            "npat": 3321000
+          }
+        ]
+      },
+      "discountedCashFlow": {
+        "forecastYears": [
+          {
+            "label": "FY2026",
+            "revenue": 26500000,
+            "ebit": 5000000,
+            "depreciation": 600000,
+            "capitalExpenditure": 800000,
+            "workingCapitalChange": 250000
+          },
+          {
+            "label": "FY2027",
+            "revenue": 28600000,
+            "ebit": 5450000,
+            "depreciation": 650000,
+            "capitalExpenditure": 850000,
+            "workingCapitalChange": 200000
+          },
+          {
+            "label": "FY2028",
+            "revenue": 30600000,
+            "ebit": 5900000,
+            "depreciation": 700000,
+            "capitalExpenditure": 900000,
+            "workingCapitalChange": 180000
+          },
+          {
+            "label": "FY2029",
+            "revenue": 32400000,
+            "ebit": 6250000,
+            "depreciation": 750000,
+            "capitalExpenditure": 950000,
+            "workingCapitalChange": 160000
+          },
+          {
+            "label": "FY2030",
+            "revenue": 34000000,
+            "ebit": 6600000,
+            "depreciation": 800000,
+            "capitalExpenditure": 1000000,
+            "workingCapitalChange": 140000
+          }
+        ],
+        "taxRate": 0.27,
+        "riskFreeRate": 0.105,
+        "equityRiskPremium": 0.065,
+        "beta": 0.92,
+        "smallCompanyPremium": 0.03,
+        "keyPersonPremium": 0.02,
+        "costOfDebt": 0.1175,
+        "debtWeight": 0.1,
+        "equityWeight": 0.9,
+        "perpetualGrowthRate": 0.05,
+        "terminalExitMultiple": 4.5,
+        "cashAndEquivalents": 2200000,
+        "interestBearingDebt": 650000,
+        "directorLoan": 850000,
+        "marketabilityDiscountRate": 0.15,
+        "minorityDiscountRate": 0
+      },
+      "maintainableEarningsMethod": {
+        "historicalYears": [
+          {
+            "label": "FY2023",
+            "reportedNpat": 2022000,
+            "nonRecurringAdjustments": 205000,
+            "ownerRemunerationAdjustment": -200000,
+            "weighting": 1
+          },
+          {
+            "label": "FY2024",
+            "reportedNpat": 2635000,
+            "nonRecurringAdjustments": -180000,
+            "ownerRemunerationAdjustment": -200000,
+            "weighting": 2
+          },
+          {
+            "label": "FY2025",
+            "reportedNpat": 3321000,
+            "nonRecurringAdjustments": 0,
+            "ownerRemunerationAdjustment": -200000,
+            "weighting": 3
+          }
+        ],
+        "selectedMultiple": 4.8,
+        "marketabilityDiscountRate": 0,
+        "minorityDiscountRate": 0
+      },
+      "netAssetValueMethod": {
+        "assets": [
+          {
+            "category": "Property",
+            "bookValue": 3200000,
+            "adjustment": 2800000
+          },
+          {
+            "category": "Plant & equipment",
+            "bookValue": 1600000,
+            "adjustment": 400000
+          },
+          {
+            "category": "Inventory",
+            "bookValue": 2400000,
+            "adjustment": -200000
+          },
+          {
+            "category": "Trade receivables",
+            "bookValue": 3500000,
+            "adjustment": -350000
+          },
+          {
+            "category": "Cash and equivalents",
+            "bookValue": 2200000,
+            "adjustment": 0
+          }
+        ],
+        "liabilities": [
+          {
+            "category": "Long-term borrowings",
+            "bookValue": 400000,
+            "adjustment": 0
+          },
+          {
+            "category": "Short-term borrowings",
+            "bookValue": 250000,
+            "adjustment": 0
+          },
+          {
+            "category": "Trade payables",
+            "bookValue": 1150000,
+            "adjustment": 0
+          },
+          {
+            "category": "Director's loan",
+            "bookValue": 850000,
+            "adjustment": 0
+          },
+          {
+            "category": "Deferred tax",
+            "bookValue": 0,
+            "adjustment": 750000
+          }
+        ]
+      },
+      "reconciliation": {
+        "methodWeights": {
+          "DISCOUNTED_CASH_FLOW": 0.4,
+          "MAINTAINABLE_EARNINGS": 0.35,
+          "NET_ASSET_VALUE": 0.25
+        },
+        "conclusionRounding": 50000,
+        "rationale": "The concluded value reflects a weighted reconciliation of DCF, maintainable earnings, and adjusted NAV based on their relevance and reliability."
+      }
+    },
+    "outputSnapshot": {
+      "calculation": {
+        "valuationDate": "2026-03-15",
+        "subjectType": "COMPANY_SHAREHOLDING",
+        "subjectDescription": "PRIUUUU",
+        "method": "DISCOUNTED_CASH_FLOW",
+        "enabledMethods": [
+          "DISCOUNTED_CASH_FLOW"
+        ],
+        "assumptions": [
+          "Management representations and estate records provided.",
+          "Business assumed to continue as a going concern.",
+          "No post-valuation-date legislative changes reflected."
+        ],
+        "concludedValue": 8400000,
+        "warnings": [],
+        "summary": {
+          "enterpriseValue": 24010457.75,
+          "netAdjustments": 0,
+          "shareholdingPercentage": 100,
+          "weightedAverageValue": 8401555.64
+        },
+        "historicalFinancialAnalysis": {
+          "years": [
+            {
+              "label": "FY2023",
+              "revenue": 18450000,
+              "ebitda": 3500000,
+              "ebit": 3050000,
+              "npat": 2022000
+            },
+            {
+              "label": "FY2024",
+              "revenue": 21200000,
+              "ebitda": 4350000,
+              "ebit": 3850000,
+              "npat": 2635000
+            },
+            {
+              "label": "FY2025",
+              "revenue": 24600000,
+              "ebitda": 5300000,
+              "ebit": 4750000,
+              "npat": 3321000
+            }
+          ]
+        },
+        "methodResults": {
+          "discountedCashFlow": {
+            "fcffSchedule": [
+              {
+                "label": "FY2026",
+                "revenue": 26500000,
+                "ebit": 5000000,
+                "taxOnEbit": 1350000,
+                "nopat": 3650000,
+                "depreciation": 600000,
+                "capitalExpenditure": 800000,
+                "workingCapitalChange": 250000,
+                "fcff": 3200000,
+                "discountFactor": 0.832018,
+                "presentValue": 2662456.66
+              },
+              {
+                "label": "FY2027",
+                "revenue": 28600000,
+                "ebit": 5450000,
+                "taxOnEbit": 1471500,
+                "nopat": 3978500,
+                "depreciation": 650000,
+                "capitalExpenditure": 850000,
+                "workingCapitalChange": 200000,
+                "fcff": 3578500,
+                "discountFactor": 0.692253,
+                "presentValue": 2477229.01
+              },
+              {
+                "label": "FY2028",
+                "revenue": 30600000,
+                "ebit": 5900000,
+                "taxOnEbit": 1593000,
+                "nopat": 4307000,
+                "depreciation": 700000,
+                "capitalExpenditure": 900000,
+                "workingCapitalChange": 180000,
+                "fcff": 3927000,
+                "discountFactor": 0.575967,
+                "presentValue": 2261822.95
+              },
+              {
+                "label": "FY2029",
+                "revenue": 32400000,
+                "ebit": 6250000,
+                "taxOnEbit": 1687500,
+                "nopat": 4562500,
+                "depreciation": 750000,
+                "capitalExpenditure": 950000,
+                "workingCapitalChange": 160000,
+                "fcff": 4202500,
+                "discountFactor": 0.479215,
+                "presentValue": 2013900.43
+              },
+              {
+                "label": "FY2030",
+                "revenue": 34000000,
+                "ebit": 6600000,
+                "taxOnEbit": 1782000,
+                "nopat": 4818000,
+                "depreciation": 800000,
+                "capitalExpenditure": 1000000,
+                "workingCapitalChange": 140000,
+                "fcff": 4478000,
+                "discountFactor": 0.398715,
+                "presentValue": 1785446.87
+              }
+            ],
+            "costOfEquity": 0.21,
+            "afterTaxCostOfDebt": 0.09,
+            "wacc": 0.2,
+            "gordonGrowthTerminalValue": 30954426.5,
+            "exitMultipleTerminalValue": 33300000,
+            "adoptedTerminalValue": 32127213.25,
+            "enterpriseValue": 24010457.75,
+            "preDiscountEquityValue": 24710457.75,
+            "marketabilityDiscountRate": 0.15,
+            "marketabilityDiscountAmount": 3706568.66,
+            "minorityDiscountRate": 0,
+            "minorityDiscountAmount": 0,
+            "indicatedValue": 21003889.09
+          }
+        },
+        "reconciliation": {
+          "methods": [
+            {
+              "method": "DISCOUNTED_CASH_FLOW",
+              "indicatedValue": 21003889.09,
+              "weight": 0.4,
+              "weightedValue": 8401555.64
+            }
+          ],
+          "weightedAverageValue": 8401555.64,
+          "concludedValue": 8400000,
+          "rationale": "The concluded value reflects a weighted reconciliation of DCF, maintainable earnings, and adjusted NAV based on their relevance and reliability.",
+          "conclusionRounding": 50000
+        },
+        "sensitivityAnalysis": {
+          "scenarios": [
+            {
+              "scenario": "Bear case",
+              "wacc": 0.22,
+              "growthRate": 0.030000000000000002,
+              "earningsMultiple": 4.3,
+              "indicatedValue": 7140000
+            },
+            {
+              "scenario": "Base case",
+              "wacc": 0.2,
+              "growthRate": 0.05,
+              "earningsMultiple": 4.8,
+              "indicatedValue": 8400000
+            },
+            {
+              "scenario": "Bull case",
+              "wacc": 0.19,
+              "growthRate": 0.06,
+              "earningsMultiple": 5.3,
+              "indicatedValue": 9660000
+            }
+          ]
+        },
+        "taxImplicationsPreview": {
+          "cgtSummary": {
+            "deemedProceeds": 8400000,
+            "deathExclusion": 300000,
+            "capitalGain": 8100000,
+            "inclusionRate": 0.4,
+            "taxableCapitalGain": 3240000
+          },
+          "estateDutySummary": {
+            "grossEstate": 8400000,
+            "dutiableEstate": 4900000,
+            "estateDutyPayable": 980000
+          },
+          "section9haNotes": [
+            "Section 9HA rollover may defer the immediate CGT charge where the asset accrues to a surviving spouse.",
+            "For a company shareholding, the valuation supports the deceased's final ITR12, CGT disclosure, estate duty, and L&D account evidence."
+          ]
+        },
+        "downstreamCgtInput": {
+          "assetDescription": "PRIUUUU",
+          "marketValueAtDeath": 8400000,
+          "valuationDate": "2026-03-15",
+          "valuationMethod": "DISCOUNTED_CASH_FLOW"
+        }
+      },
+      "report": {
+        "header": {
+          "title": "Business valuation report",
+          "taxYear": 2027,
+          "valuationDate": "2026-03-15",
+          "estateReference": "EST-2026-0002",
+          "deceasedName": "GINGER",
+          "executorName": "NCUBE"
+        },
+        "purpose": "Prepared to support SARS estate duty, CGT on death, the deceased's final ITR12, and estate administration for a business shareholding at date of death.",
+        "subject": {
+          "subjectDescription": "PRIUUUU",
+          "subjectType": "COMPANY_SHAREHOLDING",
+          "ownershipPercentage": 100
+        },
+        "methodology": {
+          "method": "DISCOUNTED_CASH_FLOW",
+          "nonOperatingAssets": 0,
+          "liabilities": 0
+        },
+        "summary": {
+          "subjectDescription": "PRIUUUU",
+          "method": "DISCOUNTED_CASH_FLOW",
+          "concludedValue": 8400000,
+          "enterpriseValue": 24010457.75
+        },
+        "supportChecklist": {
+          "latestAnnualFinancialStatementsOnFile": true,
+          "priorYearAnnualFinancialStatementsOnFile": true,
+          "twoYearsPriorAnnualFinancialStatementsOnFile": true,
+          "executorAuthorityOnFile": true,
+          "acquisitionDocumentsOnFile": true,
+          "rev246Required": false,
+          "rev246Included": false,
+          "patentValuationRequired": false,
+          "patentValuationIncluded": false
+        },
+        "assumptions": [
+          "Management representations and estate records provided.",
+          "Business assumed to continue as a going concern.",
+          "No post-valuation-date legislative changes reflected."
+        ],
+        "notes": "Prepared for EST-2026-0002 to support the estate file.",
+        "sourceReferences": [
+          "Annual financial statements for FY2023 to FY2025",
+          "Management accounts to valuation date",
+          "Fixed asset register",
+          "Debtor and creditor age analysis",
+          "Industry reports and market data",
+          "SARS valuation support checklist for unlisted shares or member interests",
+          "International Valuation Standards (IVS) framework",
+          "AME Pro Deceased Estate Module System Specification"
+        ],
+        "mandate": {
+          "engagementMandate": "The executor engaged the valuer to determine the fair market value of the deceased's interest in PRIUUUU as at 2026-03-15 for estate administration, SARS income-tax disclosure, CGT-on-death support, and estate-duty reporting.",
+          "definitionOfValue": "The standard of value applied is fair market value, being the price a willing buyer would pay a willing seller, both reasonably informed and neither under compulsion.",
+          "sourcesOfInformation": [
+            "Annual financial statements for FY2023 to FY2025",
+            "Management accounts to valuation date",
+            "Fixed asset register",
+            "Debtor and creditor age analysis",
+            "Industry reports and market data"
+          ],
+          "limitations": [
+            "The valuation relies on information supplied by the executor, management, and available estate records.",
+            "No allowance has been made for changes in legislation, market conditions, or trading performance after the valuation date unless specifically noted.",
+            "This report is not a fairness opinion or due diligence engagement."
+          ]
+        },
+        "executiveSummary": {
+          "concludedValue": 8400000,
+          "weightedAverageValue": 8401555.64,
+          "summaryText": "The concluded value reflects a weighted reconciliation of DCF, maintainable earnings, and adjusted NAV based on their relevance and reliability."
+        },
+        "businessOverview": {
+          "legalName": "PRIUUUU",
+          "narrative": "PRIUUUU has been assessed as a private company interest. The valuation considers enterprise value, equity bridge adjustments, and the shareholding interest held by the deceased at the effective valuation date."
+        },
+        "historicalFinancialAnalysis": {
+          "years": [
+            {
+              "label": "FY2023",
+              "revenue": 18450000,
+              "ebitda": 3500000,
+              "ebit": 3050000,
+              "npat": 2022000
+            },
+            {
+              "label": "FY2024",
+              "revenue": 21200000,
+              "ebitda": 4350000,
+              "ebit": 3850000,
+              "npat": 2635000
+            },
+            {
+              "label": "FY2025",
+              "revenue": 24600000,
+              "ebitda": 5300000,
+              "ebit": 4750000,
+              "npat": 3321000
+            }
+          ]
+        },
+        "methodResults": {
+          "discountedCashFlow": {
+            "fcffSchedule": [
+              {
+                "label": "FY2026",
+                "revenue": 26500000,
+                "ebit": 5000000,
+                "taxOnEbit": 1350000,
+                "nopat": 3650000,
+                "depreciation": 600000,
+                "capitalExpenditure": 800000,
+                "workingCapitalChange": 250000,
+                "fcff": 3200000,
+                "discountFactor": 0.832018,
+                "presentValue": 2662456.66
+              },
+              {
+                "label": "FY2027",
+                "revenue": 28600000,
+                "ebit": 5450000,
+                "taxOnEbit": 1471500,
+                "nopat": 3978500,
+                "depreciation": 650000,
+                "capitalExpenditure": 850000,
+                "workingCapitalChange": 200000,
+                "fcff": 3578500,
+                "discountFactor": 0.692253,
+                "presentValue": 2477229.01
+              },
+              {
+                "label": "FY2028",
+                "revenue": 30600000,
+                "ebit": 5900000,
+                "taxOnEbit": 1593000,
+                "nopat": 4307000,
+                "depreciation": 700000,
+                "capitalExpenditure": 900000,
+                "workingCapitalChange": 180000,
+                "fcff": 3927000,
+                "discountFactor": 0.575967,
+                "presentValue": 2261822.95
+              },
+              {
+                "label": "FY2029",
+                "revenue": 32400000,
+                "ebit": 6250000,
+                "taxOnEbit": 1687500,
+                "nopat": 4562500,
+                "depreciation": 750000,
+                "capitalExpenditure": 950000,
+                "workingCapitalChange": 160000,
+                "fcff": 4202500,
+                "discountFactor": 0.479215,
+                "presentValue": 2013900.43
+              },
+              {
+                "label": "FY2030",
+                "revenue": 34000000,
+                "ebit": 6600000,
+                "taxOnEbit": 1782000,
+                "nopat": 4818000,
+                "depreciation": 800000,
+                "capitalExpenditure": 1000000,
+                "workingCapitalChange": 140000,
+                "fcff": 4478000,
+                "discountFactor": 0.398715,
+                "presentValue": 1785446.87
+              }
+            ],
+            "costOfEquity": 0.21,
+            "afterTaxCostOfDebt": 0.09,
+            "wacc": 0.2,
+            "gordonGrowthTerminalValue": 30954426.5,
+            "exitMultipleTerminalValue": 33300000,
+            "adoptedTerminalValue": 32127213.25,
+            "enterpriseValue": 24010457.75,
+            "preDiscountEquityValue": 24710457.75,
+            "marketabilityDiscountRate": 0.15,
+            "marketabilityDiscountAmount": 3706568.66,
+            "minorityDiscountRate": 0,
+            "minorityDiscountAmount": 0,
+            "indicatedValue": 21003889.09
+          }
+        },
+        "reconciliation": {
+          "methods": [
+            {
+              "method": "DISCOUNTED_CASH_FLOW",
+              "indicatedValue": 21003889.09,
+              "weight": 0.4,
+              "weightedValue": 8401555.64
+            }
+          ],
+          "weightedAverageValue": 8401555.64,
+          "concludedValue": 8400000,
+          "rationale": "The concluded value reflects a weighted reconciliation of DCF, maintainable earnings, and adjusted NAV based on their relevance and reliability."
+        },
+        "sensitivityAnalysis": {
+          "scenarios": [
+            {
+              "scenario": "Bear case",
+              "wacc": 0.22,
+              "growthRate": 0.030000000000000002,
+              "earningsMultiple": 4.3,
+              "indicatedValue": 7140000
+            },
+            {
+              "scenario": "Base case",
+              "wacc": 0.2,
+              "growthRate": 0.05,
+              "earningsMultiple": 4.8,
+              "indicatedValue": 8400000
+            },
+            {
+              "scenario": "Bull case",
+              "wacc": 0.19,
+              "growthRate": 0.06,
+              "earningsMultiple": 5.3,
+              "indicatedValue": 9660000
+            }
+          ]
+        },
+        "taxImplications": {
+          "cgtSummary": {
+            "deemedProceeds": 8400000,
+            "deathExclusion": 300000,
+            "capitalGain": 8100000,
+            "inclusionRate": 0.4,
+            "taxableCapitalGain": 3240000
+          },
+          "estateDutySummary": {
+            "grossEstate": 8400000,
+            "dutiableEstate": 4900000,
+            "estateDutyPayable": 980000
+          },
+          "section9haNotes": [
+            "Section 9HA rollover may defer the immediate CGT charge where the asset accrues to a surviving spouse.",
+            "For a company shareholding, the valuation supports the deceased's final ITR12, CGT disclosure, estate duty, and L&D account evidence."
+          ]
+        },
+        "economicAndIndustryContext": {
+          "macroeconomicConditions": "The valuation considers South African macroeconomic conditions at the valuation date, including the interest-rate environment, inflation expectations, and the trading outlook relevant to the subject business.",
+          "industryOverview": "The subject industry was assessed with reference to sector demand, operating risks, competitive dynamics, and available market evidence relevant to private-business valuation in South Africa.",
+          "valueDrivers": [
+            "Established trading history and identifiable earnings capacity",
+            "Asset backing and working-capital support",
+            "Existing customer relationships and operational capability"
+          ],
+          "keyRisks": [
+            "Key-person dependency and succession execution risk",
+            "Marketability limitations associated with private-business interests",
+            "Macroeconomic volatility and sector-specific operating cost pressure"
+          ]
+        },
+        "methodologySelection": {
+          "rationale": "The valuation applies the selected methodologies (discounted cash flow) to triangulate a defensible fair market value using income-based and asset-based indicators relevant to the subject business."
+        },
+        "rolloverConsiderations": {
+          "section9haNarrative": "Section 9HA rollover may defer the immediate CGT charge where the asset accrues to a surviving spouse. For a company shareholding, the valuation supports the deceased's final ITR12, CGT disclosure, estate duty, and L&D account evidence."
+        },
+        "qualificationsAndDisclaimers": [
+          "This valuation report has been prepared solely for the estate-administration and SARS-compliance purposes stated in the report.",
+          "The valuer has relied on information supplied by the executor and available records without performing a full audit of that information.",
+          "Actual realizable values may differ from this estimate depending on transaction timing, negotiation dynamics, and post-valuation-date events.",
+          "SARS may challenge the valuation and substitute its own determination of market value."
+        ],
+        "appendices": [
+          {
+            "title": "Appendix A: WACC Calculation Detail",
+            "detail": "Supporting assumptions and calculations used in the DCF discount-rate build-up."
+          },
+          {
+            "title": "Appendix B: Supporting Financial Information",
+            "detail": "Historical financial statements, management accounts, and supporting schedules referenced in the valuation."
+          },
+          {
+            "title": "Appendix C: Asset and Liability Support",
+            "detail": "Asset-register extracts, external valuations, and relevant working papers for NAV adjustments."
+          }
+        ],
+        "glossary": [
+          {
+            "term": "DCF",
+            "definition": "Discounted cash flow valuation based on projected future cash flows."
+          },
+          {
+            "term": "NAV",
+            "definition": "Net asset value based on adjusted fair values of assets and liabilities."
+          },
+          {
+            "term": "WACC",
+            "definition": "Weighted Average Cost of Capital used to discount future cash flows."
+          },
+          {
+            "term": "CGT",
+            "definition": "Capital Gains Tax under the Eighth Schedule to the Income Tax Act."
+          },
+          {
+            "term": "Section 9HA",
+            "definition": "Income-tax rollover provision applicable on death in qualifying cases."
+          }
+        ],
+        "signOff": {
+          "preparedByLabel": "Prepared by:",
+          "acceptedByLabel": "Accepted by (Executor):"
+        }
+      }
+    },
+    "warnings": [],
+    "dependencyStates": [],
+    "status": "REVIEW_REQUIRED",
+    "reviewRequired": true,
+    "createdAt": "2026-03-15T14:40:29.216Z",
+    "updatedAt": "2026-03-15T14:40:29.216Z"
+  },
+  {
+    "id": "estate_engine_run_1773585525785_488823",
+    "estateId": "estate_1773584221533_808244",
+    "yearPackId": "estate_year_pack_2027_v1",
+    "engineType": "PRE_DEATH_ITR12",
+    "inputSnapshot": {
+      "estateId": "estate_1773584221533_808244",
+      "taxYear": 2027,
+      "incomePeriodStart": "2026-03-01",
+      "incomePeriodEnd": "2026-03-15",
+      "medicalAidMembers": 1,
+      "medicalAidMonths": 1,
+      "employment": {
+        "salaryIncome": 0,
+        "bonusIncome": 0,
+        "commissionIncome": 0,
+        "fringeBenefits": 0,
+        "otherTaxableEmploymentIncome": 0,
+        "payeWithheld": 0
+      },
+      "travel": {
+        "hasTravelAllowance": false,
+        "travelAllowance": 0,
+        "businessKilometres": 0,
+        "totalKilometres": 0,
+        "vehicleCost": 0,
+        "vehiclePurchaseDate": "2026-03-01"
+      },
+      "medical": {
+        "medicalSchemeContributions": 0,
+        "qualifyingOutOfPocketExpenses": 0,
+        "disabilityFlag": false
+      },
+      "interest": {
+        "localInterest": 0
+      },
+      "rental": {
+        "grossRentalIncome": 0,
+        "deductibleRentalExpenses": 0
+      },
+      "soleProprietor": {
+        "grossBusinessIncome": 0,
+        "deductibleBusinessExpenses": 0
+      },
+      "deductions": {
+        "retirementContributions": 0,
+        "donationsUnderSection18A": 0,
+        "priorAssessmentDebitOrCredit": 0
+      }
+    },
+    "outputSnapshot": {
+      "transformedInput": {
+        "profile": {
+          "assessmentYear": 2027,
+          "dateOfBirth": "2026-03-10",
+          "maritalStatus": "MARRIED_IN_COMMUNITY",
+          "medicalAidMembers": 1,
+          "medicalAidMonths": 1
+        },
+        "employment": {
+          "salaryIncome": 0,
+          "bonusIncome": 0,
+          "commissionIncome": 0,
+          "fringeBenefits": 0,
+          "otherTaxableEmploymentIncome": 0,
+          "payeWithheld": 0
+        },
+        "travel": {
+          "hasTravelAllowance": false,
+          "travelAllowance": 0,
+          "businessKilometres": 0,
+          "totalKilometres": 0,
+          "vehicleCost": 0,
+          "vehiclePurchaseDate": "2026-03-01"
+        },
+        "medical": {
+          "medicalSchemeContributions": 0,
+          "qualifyingOutOfPocketExpenses": 0,
+          "disabilityFlag": false
+        },
+        "interest": {
+          "localInterest": 0
+        },
+        "rental": {
+          "grossRentalIncome": 0,
+          "deductibleRentalExpenses": 0
+        },
+        "soleProprietor": {
+          "grossBusinessIncome": 0,
+          "deductibleBusinessExpenses": 0
+        },
+        "deductions": {
+          "retirementContributions": 0,
+          "donationsUnderSection18A": 0,
+          "priorAssessmentDebitOrCredit": 0
+        },
+        "taxpayerName": "GINGER",
+        "estateId": "estate_1773584221533_808244",
+        "yearPackId": "estate_year_pack_2027_v1",
+        "dateOfDeath": "2026-03-15",
+        "deathTruncatedPeriodEnd": "2026-03-15"
+      },
+      "calculation": {
+        "assessmentYear": 2027,
+        "incomeLines": [
+          {
+            "code": "3601",
+            "description": "Salary income",
+            "computations": "Employment schedule",
+            "amountAssessed": 0,
+            "reviewRequired": true,
+            "sourceReference": "SARS 2027 rates of tax for individuals and SARS Budget Tax Guide 2026 medical tax credits."
+          },
+          {
+            "code": "3605",
+            "description": "Bonus income",
+            "computations": "Employment schedule",
+            "amountAssessed": 0,
+            "reviewRequired": true,
+            "sourceReference": "SARS 2027 rates of tax for individuals and SARS Budget Tax Guide 2026 medical tax credits."
+          },
+          {
+            "code": "3606",
+            "description": "Commission income",
+            "computations": "Employment schedule",
+            "amountAssessed": 0,
+            "reviewRequired": true,
+            "sourceReference": "SARS 2027 rates of tax for individuals and SARS Budget Tax Guide 2026 medical tax credits."
+          },
+          {
+            "code": "3810",
+            "description": "Fringe benefits",
+            "computations": "Employment schedule",
+            "amountAssessed": 0,
+            "reviewRequired": true,
+            "sourceReference": "SARS 2027 rates of tax for individuals and SARS Budget Tax Guide 2026 medical tax credits."
+          },
+          {
+            "code": "3900",
+            "description": "Other taxable employment income",
+            "computations": "Employment schedule",
+            "amountAssessed": 0,
+            "reviewRequired": true,
+            "sourceReference": "SARS 2027 rates of tax for individuals and SARS Budget Tax Guide 2026 medical tax credits."
+          },
+          {
+            "code": "4102",
+            "description": "PAYE withheld",
+            "computations": "Employment schedule",
+            "amountAssessed": 0,
+            "reviewRequired": true,
+            "sourceReference": "SARS 2027 rates of tax for individuals and SARS Budget Tax Guide 2026 medical tax credits."
+          },
+          {
+            "code": "4201",
+            "description": "Local interest income",
+            "computations": "Interest schedule",
+            "amountAssessed": 0,
+            "reviewRequired": true,
+            "sourceReference": "SARS 2027 rates of tax for individuals and SARS Budget Tax Guide 2026 medical tax credits."
+          },
+          {
+            "code": "4218",
+            "description": "Interest exemption",
+            "computations": "Interest schedule",
+            "amountAssessed": 23800,
+            "reviewRequired": true,
+            "sourceReference": "SARS 2027 rates of tax for individuals and SARS Budget Tax Guide 2026 medical tax credits."
+          },
+          {
+            "code": "4210",
+            "description": "Gross rental income",
+            "computations": "Rental schedule",
+            "amountAssessed": 0,
+            "reviewRequired": true,
+            "sourceReference": "SARS 2027 rates of tax for individuals and SARS Budget Tax Guide 2026 medical tax credits."
+          },
+          {
+            "code": "4211",
+            "description": "Deductible rental expenses",
+            "computations": "Rental schedule",
+            "amountAssessed": 0,
+            "reviewRequired": true,
+            "sourceReference": "SARS 2027 rates of tax for individuals and SARS Budget Tax Guide 2026 medical tax credits."
+          },
+          {
+            "code": "IRP6_BUS_INC",
+            "description": "Gross sole proprietor income",
+            "computations": "Business schedule",
+            "amountAssessed": 0,
+            "reviewRequired": true,
+            "sourceReference": "SARS 2027 rates of tax for individuals and SARS Budget Tax Guide 2026 medical tax credits."
+          },
+          {
+            "code": "IRP6_BUS_EXP",
+            "description": "Deductible sole proprietor expenses",
+            "computations": "Business schedule",
+            "amountAssessed": 0,
+            "reviewRequired": true,
+            "sourceReference": "SARS 2027 rates of tax for individuals and SARS Budget Tax Guide 2026 medical tax credits."
+          }
+        ],
+        "deductionLines": [
+          {
+            "code": "4029",
+            "description": "Retirement fund contributions",
+            "computations": "Retirement contribution deduction limited by SARS annual and percentage caps",
+            "amountAssessed": 0,
+            "reviewRequired": true,
+            "sourceReference": "SARS 2027 rates of tax for individuals and SARS Budget Tax Guide 2026 medical tax credits."
+          },
+          {
+            "code": "4013",
+            "description": "Section 18A donations",
+            "computations": "Donations deduction captured for estimate purposes",
+            "amountAssessed": 0,
+            "reviewRequired": true,
+            "sourceReference": "SARS 2027 rates of tax for individuals and SARS Budget Tax Guide 2026 medical tax credits."
+          }
+        ],
+        "taxCalculationLines": [
+          {
+            "code": "NORMAL_TAX",
+            "description": "Normal tax",
+            "computations": "Calculated from year-based SARS tax brackets",
+            "amountAssessed": 0,
+            "reviewRequired": true,
+            "sourceReference": "SARS 2027 rates of tax for individuals and SARS Budget Tax Guide 2026 medical tax credits."
+          },
+          {
+            "code": "REBATES",
+            "description": "Rebates",
+            "computations": "Age-based primary, secondary, and tertiary rebates",
+            "amountAssessed": -18395,
+            "reviewRequired": true,
+            "sourceReference": "SARS 2027 rates of tax for individuals and SARS Budget Tax Guide 2026 medical tax credits."
+          },
+          {
+            "code": "MEDICAL_CREDIT",
+            "description": "Medical Scheme Fees Tax Credit",
+            "computations": "Medical scheme fees tax credit and additional medical expenses tax credit",
+            "amountAssessed": -376,
+            "reviewRequired": true,
+            "sourceReference": "SARS 2027 rates of tax for individuals and SARS Budget Tax Guide 2026 medical tax credits."
+          },
+          {
+            "code": "4102",
+            "description": "PAYE",
+            "computations": "Employees' tax withheld",
+            "amountAssessed": 0,
+            "reviewRequired": true,
+            "sourceReference": "SARS 2027 rates of tax for individuals and SARS Budget Tax Guide 2026 medical tax credits."
+          },
+          {
+            "code": "PREV_ASSESSMENT",
+            "description": "Previous assessment result",
+            "computations": "Brought-forward debit/credit",
+            "amountAssessed": 0,
+            "reviewRequired": true,
+            "sourceReference": "SARS 2027 rates of tax for individuals and SARS Budget Tax Guide 2026 medical tax credits."
+          },
+          {
+            "code": "NET_RESULT",
+            "description": "Estimated net amount under this assessment",
+            "computations": "Estimated tax after rebates and credits less PAYE and prior assessment result",
+            "amountAssessed": -376,
+            "reviewRequired": true,
+            "sourceReference": "SARS 2027 rates of tax for individuals and SARS Budget Tax Guide 2026 medical tax credits."
+          }
+        ],
+        "summary": {
+          "totalIncome": 0,
+          "totalDeductions": 0,
+          "taxableIncome": 0,
+          "normalTax": 0,
+          "totalCredits": 376,
+          "netAmountPayable": 0,
+          "netAmountRefundable": 376
+        },
+        "reviewRequired": false,
+        "disclaimer": "Outputs are generated for workflow assistance only and remain subject to professional review and legal verification before any SARS filing.",
+        "warnings": []
+      }
+    },
+    "warnings": [
+      "No CGT on death included. Run the CGT engine first for a complete ITR12."
+    ],
+    "dependencyStates": [],
+    "status": "APPROVED",
+    "reviewRequired": false,
+    "createdAt": "2026-03-15T14:38:45.785Z",
+    "updatedAt": "2026-03-15T14:39:00.194Z",
+    "approvedAt": "2026-03-15T14:39:00.194Z",
+    "approvedByName": "Nandi Maseko"
+  },
+  {
+    "id": "golden_estate_engine_run_business_valuation_001",
+    "estateId": "golden_estate_001",
+    "yearPackId": "estate_year_pack_2026_v1",
+    "engineType": "BUSINESS_VALUATION",
+    "status": "APPROVED",
+    "reviewRequired": false,
+    "inputSnapshot": {
+      "estateId": "golden_estate_001",
+      "assetId": "golden_estate_asset_business_001",
+      "taxYear": 2026,
+      "valuationDate": "2026-01-19",
+      "subjectType": "COMPANY_SHAREHOLDING",
+      "subjectDescription": "Khumalo Industrial Supplies (Pty) Ltd - 80% shareholding",
+      "method": "NET_ASSET_VALUE",
+      "assetValue": 6750000,
+      "shareholdingPercentage": 80,
+      "registrationNumber": "2010/114477/07",
+      "industry": "Industrial supplies",
+      "latestAnnualFinancialStatementsOnFile": true,
+      "priorYearAnnualFinancialStatementsOnFile": true,
+      "twoYearsPriorAnnualFinancialStatementsOnFile": true,
+      "executorAuthorityOnFile": true,
+      "acquisitionDocumentsOnFile": true,
+      "rev246Required": false,
+      "rev246Included": false,
+      "patentValuationRequired": false,
+      "patentValuationIncluded": false,
+      "reportNotes": "Golden demo NAV valuation ready for SARS support-pack verification.",
+      "assumptions": [
+        "Net asset value approach selected for the golden demo baseline."
+      ]
+    },
+    "outputSnapshot": {
+      "calculation": {
+        "valuationDate": "2026-01-19",
+        "subjectType": "COMPANY_SHAREHOLDING",
+        "subjectDescription": "Khumalo Industrial Supplies (Pty) Ltd - 80% shareholding",
+        "method": "NET_ASSET_VALUE",
+        "assumptions": [
+          "Net asset value approach selected for the golden demo baseline."
+        ],
+        "concludedValue": 5400000,
+        "warnings": [],
+        "summary": {
+          "enterpriseValue": 6750000,
+          "netAdjustments": 0,
+          "shareholdingPercentage": 80
+        },
+        "downstreamCgtInput": {
+          "assetDescription": "Khumalo Industrial Supplies (Pty) Ltd - 80% shareholding",
+          "marketValueAtDeath": 5400000,
+          "valuationDate": "2026-01-19",
+          "valuationMethod": "NET_ASSET_VALUE"
+        }
+      },
+      "report": {
+        "header": {
+          "title": "Business valuation report",
+          "taxYear": 2026,
+          "valuationDate": "2026-01-19",
+          "estateReference": "EST-GOLD-2026-0001",
+          "deceasedName": "Estate Late Lerato Khumalo",
+          "executorName": "Kagiso Dlamini"
+        },
+        "purpose": "Prepared to support SARS estate duty, CGT on death, and estate administration at date of death.",
+        "subject": {
+          "subjectDescription": "Khumalo Industrial Supplies (Pty) Ltd - 80% shareholding",
+          "subjectType": "COMPANY_SHAREHOLDING",
+          "registrationNumber": "2010/114477/07",
+          "industry": "Industrial supplies",
+          "ownershipPercentage": 80
+        },
+        "methodology": {
+          "method": "NET_ASSET_VALUE",
+          "assetValue": 6750000,
+          "nonOperatingAssets": 0,
+          "liabilities": 0
+        },
+        "summary": {
+          "subjectDescription": "Khumalo Industrial Supplies (Pty) Ltd - 80% shareholding",
+          "method": "NET_ASSET_VALUE",
+          "concludedValue": 5400000,
+          "enterpriseValue": 6750000
+        },
+        "supportChecklist": {
+          "latestAnnualFinancialStatementsOnFile": true,
+          "priorYearAnnualFinancialStatementsOnFile": true,
+          "twoYearsPriorAnnualFinancialStatementsOnFile": true,
+          "executorAuthorityOnFile": true,
+          "acquisitionDocumentsOnFile": true,
+          "rev246Required": false,
+          "rev246Included": false,
+          "patentValuationRequired": false,
+          "patentValuationIncluded": false
+        },
+        "assumptions": [
+          "Net asset value approach selected for the golden demo baseline."
+        ],
+        "notes": "Golden demo NAV valuation ready for SARS support-pack verification.",
+        "sourceReferences": [
+          "SARS valuation support checklist for unlisted shares or member interests",
+          "AME Pro Deceased Estate Module System Specification"
+        ],
+        "mandate": {
+          "engagementMandate": "The executor engaged the valuer to determine the fair market value of the deceased's 80% shareholding in Khumalo Industrial Supplies (Pty) Ltd as at 19 January 2026 for estate administration, SARS compliance, and filing-pack support.",
+          "definitionOfValue": "The standard of value applied is fair market value, being the price a willing buyer would pay a willing seller, both reasonably informed and neither under compulsion.",
+          "sourcesOfInformation": [
+            "Annual financial statements for FY2023 to FY2025",
+            "Management accounts to valuation date",
+            "Fixed asset register and inventory support schedules",
+            "Industry reports and estate working papers"
+          ],
+          "limitations": [
+            "The valuation relies on records supplied by the executor and management.",
+            "No allowance has been made for changes in legislation or trading conditions after the valuation date.",
+            "This report is prepared for estate and SARS purposes and is not a fairness opinion."
+          ]
+        },
+        "executiveSummary": {
+          "concludedValue": 5400000,
+          "weightedAverageValue": 5380000,
+          "summaryText": "Three valuation methodologies were considered and reconciled to a rounded concluded value for the deceased's 80% equity interest."
+        },
+        "businessOverview": {
+          "legalName": "Khumalo Industrial Supplies (Pty) Ltd",
+          "registrationNumber": "2010/114477/07",
+          "industry": "Industrial supplies",
+          "taxReferenceNumber": "9012345678",
+          "vatNumber": "4012345678",
+          "employeeCount": 28,
+          "narrative": "Khumalo Industrial Supplies (Pty) Ltd is an established owner-managed supplier of industrial consumables and plant support products with recurring customer relationships and identifiable earnings capacity."
+        },
+        "historicalFinancialAnalysis": {
+          "years": [
+            {
+              "label": "FY2023",
+              "revenue": 14800000,
+              "grossProfit": 4100000,
+              "ebitda": 2100000,
+              "ebit": 1850000,
+              "npat": 1280000,
+              "totalAssets": 7800000,
+              "totalLiabilities": 2350000
+            },
+            {
+              "label": "FY2024",
+              "revenue": 16250000,
+              "grossProfit": 4620000,
+              "ebitda": 2480000,
+              "ebit": 2230000,
+              "npat": 1560000,
+              "totalAssets": 8450000,
+              "totalLiabilities": 2260000
+            },
+            {
+              "label": "FY2025",
+              "revenue": 17900000,
+              "grossProfit": 5240000,
+              "ebitda": 2960000,
+              "ebit": 2670000,
+              "npat": 1885000,
+              "totalAssets": 9180000,
+              "totalLiabilities": 2110000
+            }
+          ]
+        },
+        "methodResults": {
+          "discountedCashFlow": {
+            "fcffSchedule": [
+              {
+                "label": "FY2026",
+                "revenue": 19100000,
+                "ebit": 3050000,
+                "taxOnEbit": 823500,
+                "nopat": 2226500,
+                "depreciation": 280000,
+                "capitalExpenditure": 360000,
+                "workingCapitalChange": 140000,
+                "fcff": 2006500,
+                "discountFactor": 0.8321,
+                "presentValue": 1669390
+              },
+              {
+                "label": "FY2027",
+                "revenue": 20400000,
+                "ebit": 3280000,
+                "taxOnEbit": 885600,
+                "nopat": 2394400,
+                "depreciation": 295000,
+                "capitalExpenditure": 380000,
+                "workingCapitalChange": 150000,
+                "fcff": 2159400,
+                "discountFactor": 0.6924,
+                "presentValue": 1495121
+              }
+            ],
+            "costOfEquity": 0.2148,
+            "afterTaxCostOfDebt": 0.0858,
+            "wacc": 0.2019,
+            "gordonGrowthTerminalValue": 12980000,
+            "exitMultipleTerminalValue": 13850000,
+            "adoptedTerminalValue": 13415000,
+            "enterpriseValue": 7100000,
+            "preDiscountEquityValue": 6400000,
+            "marketabilityDiscountRate": 0.08,
+            "marketabilityDiscountAmount": 512000,
+            "minorityDiscountRate": 0,
+            "minorityDiscountAmount": 0,
+            "indicatedValue": 5750000
+          },
+          "maintainableEarnings": {
+            "years": [
+              {
+                "label": "FY2023",
+                "reportedNpat": 1280000,
+                "nonRecurringAdjustments": 120000,
+                "ownerRemunerationAdjustment": -80000,
+                "normalisedNpat": 1320000,
+                "weighting": 1
+              },
+              {
+                "label": "FY2024",
+                "reportedNpat": 1560000,
+                "nonRecurringAdjustments": 0,
+                "ownerRemunerationAdjustment": -90000,
+                "normalisedNpat": 1470000,
+                "weighting": 2
+              },
+              {
+                "label": "FY2025",
+                "reportedNpat": 1885000,
+                "nonRecurringAdjustments": 60000,
+                "ownerRemunerationAdjustment": -90000,
+                "normalisedNpat": 1855000,
+                "weighting": 3
+              }
+            ],
+            "maintainableEarnings": 1670833,
+            "selectedMultiple": 4,
+            "preDiscountValue": 6683332,
+            "marketabilityDiscountRate": 0.03,
+            "marketabilityDiscountAmount": 200500,
+            "minorityDiscountRate": 0,
+            "minorityDiscountAmount": 0,
+            "indicatedValue": 5400000
+          },
+          "netAssetValue": {
+            "assets": [
+              {
+                "category": "Property and equipment",
+                "bookValue": 2650000,
+                "adjustment": 850000,
+                "fairMarketValue": 3500000
+              },
+              {
+                "category": "Inventory",
+                "bookValue": 1950000,
+                "adjustment": -150000,
+                "fairMarketValue": 1800000
+              },
+              {
+                "category": "Trade receivables",
+                "bookValue": 2050000,
+                "adjustment": -250000,
+                "fairMarketValue": 1800000
+              },
+              {
+                "category": "Cash and equivalents",
+                "bookValue": 750000,
+                "adjustment": 0,
+                "fairMarketValue": 750000
+              }
+            ],
+            "liabilities": [
+              {
+                "category": "Interest-bearing debt",
+                "bookValue": 520000,
+                "adjustment": 0,
+                "fairMarketValue": 520000
+              },
+              {
+                "category": "Trade payables",
+                "bookValue": 940000,
+                "adjustment": 0,
+                "fairMarketValue": 940000
+              },
+              {
+                "category": "Deferred tax",
+                "bookValue": 0,
+                "adjustment": 390000,
+                "fairMarketValue": 390000
+              }
+            ],
+            "adjustedAssets": 7850000,
+            "adjustedLiabilities": 1850000,
+            "indicatedValue": 4950000
+          }
+        },
+        "reconciliation": {
+          "methods": [
+            {
+              "method": "DISCOUNTED_CASH_FLOW",
+              "indicatedValue": 5750000,
+              "weight": 0.4,
+              "weightedValue": 2300000
+            },
+            {
+              "method": "MAINTAINABLE_EARNINGS",
+              "indicatedValue": 5400000,
+              "weight": 0.35,
+              "weightedValue": 1890000
+            },
+            {
+              "method": "NET_ASSET_VALUE",
+              "indicatedValue": 4950000,
+              "weight": 0.25,
+              "weightedValue": 1237500
+            }
+          ],
+          "weightedAverageValue": 5427500,
+          "concludedValue": 5400000,
+          "rationale": "The concluded value reflects a weighted reconciliation of DCF, maintainable earnings, and adjusted NAV, with the heaviest reliance placed on trading performance and cash-generation capacity."
+        },
+        "sensitivityAnalysis": {
+          "scenarios": [
+            {
+              "scenario": "Bear Case",
+              "wacc": 0.22,
+              "growthRate": 0.03,
+              "earningsMultiple": 3.6,
+              "indicatedValue": 4800000
+            },
+            {
+              "scenario": "Base Case",
+              "wacc": 0.2019,
+              "growthRate": 0.05,
+              "earningsMultiple": 4,
+              "indicatedValue": 5400000
+            },
+            {
+              "scenario": "Bull Case",
+              "wacc": 0.185,
+              "growthRate": 0.06,
+              "earningsMultiple": 4.4,
+              "indicatedValue": 6050000
+            }
+          ]
+        },
+        "taxImplications": {
+          "cgtSummary": {
+            "deemedProceeds": 5400000,
+            "taxableCapitalGain": 1828000
+          },
+          "estateDutySummary": {
+            "grossEstate": 9450000,
+            "dutiableEstate": 4295000,
+            "estateDutyPayable": 859000
+          },
+          "section9haNotes": [
+            "Where the shares accrue to a surviving spouse, Section 9HA rollover treatment should be considered alongside the section 4(q) estate-duty deduction."
+          ]
+        },
+        "economicAndIndustryContext": {
+          "macroeconomicConditions": "The valuation considers South African macroeconomic conditions at the valuation date, including the interest-rate environment and the trading outlook for industrial suppliers.",
+          "industryOverview": "The industrial supplies sector was assessed with reference to demand stability, operating-margin resilience, and the marketability limitations attaching to private-company interests.",
+          "valueDrivers": [
+            "Recurring customer relationships",
+            "Working capital support and inventory depth",
+            "Established supplier positioning"
+          ],
+          "keyRisks": [
+            "Owner-dependency risk",
+            "Margin pressure from imported products",
+            "Private-company marketability limitations"
+          ]
+        },
+        "methodologySelection": {
+          "rationale": "DCF, maintainable earnings, and adjusted NAV were selected to triangulate value using both income-based and asset-based indicators relevant to this private trading business."
+        },
+        "rolloverConsiderations": {
+          "section9haNarrative": "Where estate assets accrue to a surviving spouse, the Section 9HA rollover may defer the immediate capital-gains-tax consequence, although the valuation remains necessary for disclosure and estate-duty purposes."
+        },
+        "qualificationsAndDisclaimers": [
+          "This valuation report has been prepared solely for estate-administration and SARS-compliance purposes.",
+          "The valuer relied on information supplied by the executor and available records without conducting a full audit.",
+          "Actual realizable values may differ from this estimate depending on transaction timing and market conditions."
+        ],
+        "appendices": [
+          {
+            "title": "Appendix A: WACC Calculation Detail",
+            "detail": "Supporting assumptions and calculations used in the DCF discount-rate build-up."
+          },
+          {
+            "title": "Appendix B: Supporting Financial Information",
+            "detail": "Historical financial statements, management accounts, and support schedules referenced in the valuation."
+          }
+        ],
+        "glossary": [
+          {
+            "term": "DCF",
+            "definition": "Discounted cash flow valuation based on projected future cash flows."
+          },
+          {
+            "term": "NAV",
+            "definition": "Net asset value based on adjusted fair values of assets and liabilities."
+          },
+          {
+            "term": "WACC",
+            "definition": "Weighted Average Cost of Capital used to discount future cash flows."
+          }
+        ],
+        "signOff": {
+          "preparedByLabel": "Prepared by:",
+          "acceptedByLabel": "Accepted by (Executor):"
+        }
+      }
+    },
+    "warnings": [],
+    "dependencyStates": [],
+    "approvedAt": "2026-03-13T08:15:00+02:00",
+    "approvedByName": "Ayesha Parker",
+    "createdAt": "2026-03-13T08:00:00+02:00",
+    "updatedAt": "2026-03-13T08:15:00+02:00"
+  },
+  {
+    "id": "golden_estate_engine_run_pre_death_001",
+    "estateId": "golden_estate_001",
+    "yearPackId": "estate_year_pack_2026_v1",
+    "engineType": "PRE_DEATH_ITR12",
+    "status": "APPROVED",
+    "reviewRequired": false,
+    "inputSnapshot": {
+      "estateId": "golden_estate_001",
+      "taxYear": 2026
+    },
+    "outputSnapshot": {
+      "transformedInput": {
+        "taxpayerName": "Estate Late Lerato Khumalo",
+        "estateId": "golden_estate_001",
+        "yearPackId": "estate_year_pack_2026_v1",
+        "dateOfDeath": "2026-01-19",
+        "deathTruncatedPeriodEnd": "2026-01-19"
+      },
+      "calculation": {
+        "assessmentYear": 2026,
+        "summary": {
+          "totalIncome": 1265400,
+          "totalDeductions": 244000,
+          "taxableIncome": 1021400,
+          "normalTax": 324950,
+          "totalCredits": 227540,
+          "netAmountPayable": 0,
+          "netAmountRefundable": 32590
+        },
+        "reviewRequired": true,
+        "disclaimer": "Professional review required before submission."
+      }
+    },
+    "warnings": [],
+    "dependencyStates": [],
+    "approvedAt": "2026-03-13T08:40:00+02:00",
+    "approvedByName": "Ayesha Parker",
+    "createdAt": "2026-03-13T08:25:00+02:00",
+    "updatedAt": "2026-03-13T08:40:00+02:00"
+  },
+  {
+    "id": "golden_estate_engine_run_cgt_001",
+    "estateId": "golden_estate_001",
+    "yearPackId": "estate_year_pack_2026_v1",
+    "engineType": "CGT_ON_DEATH",
+    "status": "APPROVED",
+    "reviewRequired": false,
+    "inputSnapshot": {
+      "taxYear": 2026,
+      "estateId": "golden_estate_001"
+    },
+    "outputSnapshot": {
+      "calculation": {
+        "assetResults": [
+          {
+            "description": "Khumalo Industrial Supplies (Pty) Ltd - 80% shareholding",
+            "deemedProceeds": 5400000,
+            "baseCostUsed": 1100000,
+            "capitalGainBeforeRelief": 4300000,
+            "reliefApplied": {
+              "primaryResidence": 0,
+              "spouseRollover": 0
+            },
+            "netCapitalGain": 4300000
+          },
+          {
+            "description": "Primary residence in Bryanston",
+            "deemedProceeds": 2350000,
+            "baseCostUsed": 760000,
+            "capitalGainBeforeRelief": 1590000,
+            "reliefApplied": {
+              "primaryResidence": 1590000,
+              "spouseRollover": 0
+            },
+            "netCapitalGain": 0
+          },
+          {
+            "description": "Listed share portfolio",
+            "deemedProceeds": 1250000,
+            "baseCostUsed": 680000,
+            "capitalGainBeforeRelief": 570000,
+            "reliefApplied": {
+              "primaryResidence": 0,
+              "spouseRollover": 0
+            },
+            "netCapitalGain": 570000
+          },
+          {
+            "description": "Main current account",
+            "deemedProceeds": 450000,
+            "baseCostUsed": 450000,
+            "capitalGainBeforeRelief": 0,
+            "reliefApplied": {
+              "primaryResidence": 0,
+              "spouseRollover": 0
+            },
+            "netCapitalGain": 0
+          }
+        ],
+        "warnings": [],
+        "summary": {
+          "aggregateNetCapitalGain": 4870000,
+          "annualExclusionApplied": 300000,
+          "inclusionRate": 0.4,
+          "taxableCapitalGain": 1828000
+        }
+      }
+    },
+    "warnings": [],
+    "dependencyStates": [],
+    "approvedAt": "2026-03-13T09:00:00+02:00",
+    "approvedByName": "Ayesha Parker",
+    "createdAt": "2026-03-13T08:45:00+02:00",
+    "updatedAt": "2026-03-13T09:00:00+02:00"
+  },
+  {
+    "id": "golden_estate_engine_run_estate_duty_001",
+    "estateId": "golden_estate_001",
+    "yearPackId": "estate_year_pack_2026_v1",
+    "engineType": "ESTATE_DUTY",
+    "status": "APPROVED",
+    "reviewRequired": false,
+    "inputSnapshot": {
+      "estateId": "golden_estate_001",
+      "taxYear": 2026,
+      "section4Deductions": 150000,
+      "spouseDeduction": 900000
+    },
+    "outputSnapshot": {
+      "calculation": {
+        "summary": {
+          "grossEstateValue": 9450000,
+          "liabilities": 605000,
+          "section4Deductions": 150000,
+          "spouseDeduction": 900000,
+          "totalDeductions": 1655000,
+          "netEstateBeforeAbatement": 7795000,
+          "abatementApplied": 3500000,
+          "dutiableEstate": 4295000,
+          "estateDutyPayable": 859000
+        }
+      }
+    },
+    "warnings": [],
+    "dependencyStates": [
+      {
+        "engineType": "CGT_ON_DEATH",
+        "runId": "golden_estate_engine_run_cgt_001",
+        "status": "APPROVED",
+        "isStale": false,
+        "reviewedAt": "2026-03-13T09:00:00+02:00"
+      },
+      {
+        "engineType": "BUSINESS_VALUATION",
+        "runId": "golden_estate_engine_run_business_valuation_001",
+        "status": "APPROVED",
+        "isStale": false,
+        "reviewedAt": "2026-03-13T08:15:00+02:00"
+      }
+    ],
+    "approvedAt": "2026-03-13T09:10:00+02:00",
+    "approvedByName": "Ayesha Parker",
+    "createdAt": "2026-03-13T09:02:00+02:00",
+    "updatedAt": "2026-03-13T09:10:00+02:00"
+  },
+  {
+    "id": "golden_estate_engine_run_post_death_001",
+    "estateId": "golden_estate_001",
+    "yearPackId": "estate_year_pack_2026_v1",
+    "engineType": "POST_DEATH_IT_AE",
+    "status": "APPROVED",
+    "reviewRequired": false,
+    "inputSnapshot": {
+      "estateId": "golden_estate_001",
+      "taxYear": 2026
+    },
+    "outputSnapshot": {
+      "calculation": {
+        "summary": {
+          "totalIncome": 380000,
+          "deductions": 25000,
+          "taxableIncome": 355000,
+          "appliedRate": 0.45,
+          "taxPayable": 159750
+        }
+      }
+    },
+    "warnings": [],
+    "dependencyStates": [],
+    "approvedAt": "2026-03-13T09:18:00+02:00",
+    "approvedByName": "Ayesha Parker",
+    "createdAt": "2026-03-13T09:12:00+02:00",
+    "updatedAt": "2026-03-13T09:18:00+02:00"
+  }
+]
