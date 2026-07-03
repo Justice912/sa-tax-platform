@@ -147,6 +147,9 @@ function buildIncomeGroups(calc: IndividualTaxCalculation) {
           computations: "Declared travel allowance component",
           amountAssessed: asCurrencyAmount(travelAllowance),
         },
+        // TODO(compliance-review): labels for 3713/3825 need verification against
+        // PAYE-AE-06-G06 — always-zero placeholders, not calculation-driven (out of
+        // scope for Phase 3; see Phase 7 audit backlog).
         {
           code: "3713",
           description: "Other travel payments",
@@ -185,6 +188,19 @@ function buildIncomeGroups(calc: IndividualTaxCalculation) {
       ],
     },
   ];
+
+  // Reimbursive travel allowance — only appended when the calculation actually emits a
+  // 3702 line (legacy calcs and estimate-path FIXED allowances never do), preserving the
+  // legacy report's exact income-code list.
+  const reimbursiveLine = findLine(calc.incomeLines, "3702");
+  if (reimbursiveLine) {
+    groups[0].rows.splice(2, 0, {
+      code: "3702",
+      description: "Reimbursive travel allowance",
+      computations: reimbursiveLine.computations,
+      amountAssessed: asCurrencyAmount(reimbursiveLine.amountAssessed),
+    });
+  }
 
   // Pension & Annuity Income — only include when at least one line is non-zero.
   if (pensionIncome !== 0 || annuityIncome !== 0) {
@@ -250,7 +266,6 @@ function buildDeductionRows(calc: IndividualTaxCalculation) {
   const retirementAmount = Math.abs(findLine(calc.deductionLines, "4029")?.amountAssessed ?? 0);
   const travelLine =
     findLine(calc.deductionLines, "TRAVEL_CLAIM") ?? findLine(calc.deductionLines, "4014");
-  const travelAmount = Math.abs(travelLine?.amountAssessed ?? 0);
   const retirementCap = asCurrencyAmount(calc.summary.totalIncome * 0.275);
 
   const rows: IndividualTaxReport["deductions"]["rows"] = [
@@ -261,11 +276,11 @@ function buildDeductionRows(calc: IndividualTaxCalculation) {
       amountAssessed: asCurrencyAmount(retirementAmount),
     },
     {
-      code: "4014",
+      code: travelLine?.code ?? "TRAVEL_CLAIM",
       description: "Travel claim against allowance",
       computations:
-        "Logbook submitted. Vehicle details: purchase date 2021-03-01, registration ND 458-221, cost price R 485000.00, total kilometres 36210, business kilometres 22140, deemed fuel/maintenance/wear expenditure applied.",
-      amountAssessed: asCurrencyAmount(travelAmount),
+        travelLine?.computations ?? "No travel claim captured in the current assessment input",
+      amountAssessed: asCurrencyAmount(Math.abs(travelLine?.amountAssessed ?? 0)),
     },
   ];
 
