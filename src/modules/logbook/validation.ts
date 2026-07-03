@@ -27,27 +27,34 @@ export const vehicleDetailsSchema = z.object({
   acquisitionDate: isoDateSchema.optional().nullable(),
 });
 
-export const tripInputSchema = z
-  .object({
-    date: isoDateSchema,
-    businessKm: z.number().finite().positive(),
-    fromLocation: trimmedNonEmptyString,
-    toLocation: trimmedNonEmptyString,
-    reason: trimmedNonEmptyString,
-    /** Per-trip odometer readings are OPTIONAL per the official SARS eLogbook ("not compulsory"). */
-    odometerStart: z.number().finite().min(0).optional().nullable(),
-    odometerEnd: z.number().finite().min(0).optional().nullable(),
-  })
-  .refine(
-    (value) => {
-      if (value.odometerStart == null || value.odometerEnd == null) return true;
-      return value.odometerEnd >= value.odometerStart;
-    },
-    {
-      message: "Odometer end reading cannot be less than the odometer start reading.",
-      path: ["odometerEnd"],
-    },
-  );
+/** Base field shape shared by full trip capture and partial trip-patch validation (Plan 02-04).
+    Kept separate from the refined `tripInputSchema` because Zod refinements cannot be
+    `.partial()`-ed directly. */
+const tripFieldsSchema = z.object({
+  date: isoDateSchema,
+  businessKm: z.number().finite().positive(),
+  fromLocation: trimmedNonEmptyString,
+  toLocation: trimmedNonEmptyString,
+  reason: trimmedNonEmptyString,
+  /** Per-trip odometer readings are OPTIONAL per the official SARS eLogbook ("not compulsory"). */
+  odometerStart: z.number().finite().min(0).optional().nullable(),
+  odometerEnd: z.number().finite().min(0).optional().nullable(),
+});
+
+export const tripInputSchema = tripFieldsSchema.refine(
+  (value) => {
+    if (value.odometerStart == null || value.odometerEnd == null) return true;
+    return value.odometerEnd >= value.odometerStart;
+  },
+  {
+    message: "Odometer end reading cannot be less than the odometer start reading.",
+    path: ["odometerEnd"],
+  },
+);
+
+/** Partial trip patch (used by `updateLogbookTrip`) — per-field validation only; the merged
+    resulting trip set is re-checked for odometer continuity/reversal at the service layer. */
+export const tripPatchSchema = tripFieldsSchema.partial();
 
 export const logbookCreateSchema = z
   .object({
