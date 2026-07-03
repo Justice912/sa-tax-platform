@@ -31,6 +31,10 @@ export interface IndividualTaxTravelInput {
   totalKilometres: number;
   vehicleCost: number;
   vehiclePurchaseDate: string;
+  /** Controls the income line's SARS source code only: 3701 (fixed) vs 3702 (taxable reimbursive).
+      The deduction calculation is identical for both (PAYE-GEN-01-G03 §3.2 combines the codes on assessment).
+      Optional — absent means FIXED/3701. UI selector deferred to Phase 6 per research Open Question 1. */
+  allowanceType?: "FIXED" | "REIMBURSIVE";
 }
 
 export interface IndividualTaxMedicalInput {

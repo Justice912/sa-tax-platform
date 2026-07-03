@@ -48,6 +48,7 @@ export const nearEfilingIndividualTaxInputSchema = z.object({
     totalKilometres: z.number().min(0),
     vehicleCost: z.number().min(0),
     vehiclePurchaseDate: z.string().regex(/^\d{4}-\d{2}-\d{2}$/),
+    allowanceType: z.enum(["FIXED", "REIMBURSIVE"]).optional(),
   }).superRefine((value, ctx) => {
     if (value.businessKilometres > value.totalKilometres) {
       ctx.addIssue({
