@@ -357,7 +357,7 @@ export function calculateNearEfilingIndividualTaxEstimate(
     ...makeScheduleLines(rental.lines, "Rental schedule", sourceReference),
     ...makeScheduleLines(soleProprietor.lines, "Business schedule", sourceReference),
     ...makeScheduleLines(
-      travel.lines.filter((line) => line.code === "3701"),
+      travel.lines.filter((line) => line.code === "3701" || line.code === "3702"),
       "Travel schedule",
       sourceReference,
     ),
@@ -399,7 +399,7 @@ export function calculateNearEfilingIndividualTaxEstimate(
 
   const deductionLines: IndividualTaxLine[] = [
     ...makeScheduleLines(
-      travel.lines.filter((line) => line.code === "4014"),
+      travel.lines.filter((line) => line.code === "TRAVEL_CLAIM"),
       "Travel schedule",
       sourceReference,
     ).map((line) => ({ ...line, amountAssessed: -Math.abs(line.amountAssessed) })),

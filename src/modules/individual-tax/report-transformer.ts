@@ -248,7 +248,9 @@ function buildIncomeGroups(calc: IndividualTaxCalculation) {
 
 function buildDeductionRows(calc: IndividualTaxCalculation) {
   const retirementAmount = Math.abs(findLine(calc.deductionLines, "4029")?.amountAssessed ?? 0);
-  const travelAmount = Math.abs(findLine(calc.deductionLines, "4014")?.amountAssessed ?? 0);
+  const travelLine =
+    findLine(calc.deductionLines, "TRAVEL_CLAIM") ?? findLine(calc.deductionLines, "4014");
+  const travelAmount = Math.abs(travelLine?.amountAssessed ?? 0);
   const retirementCap = asCurrencyAmount(calc.summary.totalIncome * 0.275);
 
   const rows: IndividualTaxReport["deductions"]["rows"] = [
