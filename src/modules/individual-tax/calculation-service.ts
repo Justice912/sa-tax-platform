@@ -13,6 +13,7 @@ import type {
   IndividualTaxRulePack,
   NearEfilingIndividualTaxInput,
 } from "@/modules/individual-tax/types";
+import type { LogbookTravelResult } from "@/modules/logbook/types";
 
 function r2(value: number): number {
   return Math.round(value * 100) / 100;
@@ -203,6 +204,7 @@ export function calculateIndividualTax2026(
 
 export function calculateNearEfilingIndividualTaxEstimate(
   input: NearEfilingIndividualTaxInput,
+  logbookResult?: LogbookTravelResult | null,
 ): IndividualTaxCalculation {
   const rulePack = getIndividualTaxRulePackByYear(input.profile.assessmentYear);
   const sourceReference = rulePack.sourceReference;
@@ -213,7 +215,7 @@ export function calculateNearEfilingIndividualTaxEstimate(
 
   // ── Income schedules ──
   const employment = calculateEmploymentSchedule(input.employment);
-  const travel = calculateTravelSchedule(input.travel);
+  const travel = calculateTravelSchedule(input.travel, logbookResult);
   const interest = calculateInterestSchedule({
     interest: input.interest,
     age,
@@ -397,10 +399,14 @@ export function calculateNearEfilingIndividualTaxEstimate(
     );
   }
 
+  const travelClaimComputations = logbookResult
+    ? `Logbook-based travel claim (${logbookResult.costMethod} method): R ${logbookResult.claimedDeduction.toFixed(2)} calculated from logbook data, limited to the travel allowance received`
+    : "Estimated travel claim: allowance × business-kilometre ratio (no logbook on file)";
+
   const deductionLines: IndividualTaxLine[] = [
     ...makeScheduleLines(
       travel.lines.filter((line) => line.code === "TRAVEL_CLAIM"),
-      "Travel schedule",
+      travelClaimComputations,
       sourceReference,
     ).map((line) => ({ ...line, amountAssessed: -Math.abs(line.amountAssessed) })),
     makeLine(
