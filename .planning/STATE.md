@@ -4,17 +4,17 @@ milestone: v1.0
 milestone_name: milestone
 current_phase: 03
 current_phase_name: ITR12 Travel Schedule Integration
-current_plan: 2
+current_plan: 3
 status: executing
-stopped_at: Completed 03-01-PLAN.md
-last_updated: "2026-07-03T10:41:59.138Z"
+stopped_at: Completed 03-02-PLAN.md
+last_updated: "2026-07-03T10:51:22.799Z"
 last_activity: 2026-07-03
 progress:
   total_phases: 7
   completed_phases: 2
   total_plans: 10
-  completed_plans: 8
-  percent: 80
+  completed_plans: 9
+  percent: 90
 ---
 
 # Project State
@@ -31,12 +31,12 @@ See: .planning/PROJECT.md (updated 2026-07-02)
 **Current Phase:** 03
 **Current Phase Name:** ITR12 Travel Schedule Integration
 **Total Phases:** 7
-**Current Plan:** 2
+**Current Plan:** 3
 **Total Plans in Phase:** 3
 **Status:** Ready to execute
 **Last Activity:** 2026-07-03
 
-**Progress:** [████████░░] 80%
+**Progress:** [█████████░] 90%
 
 ## Performance Metrics
 
@@ -64,6 +64,7 @@ See: .planning/PROJECT.md (updated 2026-07-02)
 | Phase 02 P03 | 20min | 3 tasks | 3 files |
 | Phase 02 P04 | 12min | 3 tasks | 5 files |
 | Phase 03 P01 | 12min | 3 tasks | 6 files |
+| Phase 03 P02 | 8min | 3 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -94,6 +95,8 @@ Recent decisions affecting current work:
 - [Phase 03]: Allowance cap (min(claimedDeduction, travelAllowance)) applies uniformly to both DEEMED and ACTUAL cost methods rather than branching by method
 - [Phase 03]: allowanceType only changes the income line code/description (3701 vs 3702) -- deduction math is identical for both
 - [Phase 03]: report-transformer keeps a 4014 fallback for the legacy calculateIndividualTax2026 path; only the near-eFiling schedule layer moved to TRAVEL_CLAIM
+- [Phase 03]: Travel deduction computations text built once from logbookResult presence and passed as the makeScheduleLines computations prefix (logbook-based vs km-ratio estimate wording)
+- [Phase 03]: report-transformer's 3702 income row is spliced in only when the calc emits one, preserving the legacy report's exact income-code list untouched
 
 ### Pending Todos
 
@@ -110,6 +113,6 @@ None yet.
 
 ## Session Continuity
 
-**Last Session:** 2026-07-03T10:41:59.135Z
-**Stopped At:** Completed 03-01-PLAN.md
+**Last Session:** 2026-07-03T10:51:22.796Z
+**Stopped At:** Completed 03-02-PLAN.md
 **Resume File:** None
