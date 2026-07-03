@@ -48,10 +48,13 @@ Plans:
   3. Logbook data survives page refresh and navigation (persisted like assessments, not lost to component state)
   4. The logbook shows a side-by-side deemed-cost vs actual-cost deduction comparison for the same trip data, with the two methods never mixed in one calculation
   5. User can export a logbook as CSV and a printable summary suitable for SARS audit
-**Plans**: TBD
+**Plans**: 4 plans
 
 Plans:
-- [ ] 02-01: TBD
+- [ ] 02-01-PLAN.md — Logbook domain contracts: types, Prisma Vehicle/Logbook/LogbookTrip models, Zod validation + odometer-continuity validator
+- [ ] 02-02-PLAN.md — Deemed/actual travel cost calculation engines + side-by-side comparison (TDD)
+- [ ] 02-03-PLAN.md — Repository + persistence: DemoLogbookRepository, storage/demo-logbooks.json, Prisma paths
+- [ ] 02-04-PLAN.md — Service layer with audit trail + CSV export and SARS audit-summary data shape
 
 ### Phase 3: ITR12 Travel Schedule Integration
 **Goal**: The travel schedule calculation uses real logbook data instead of the crude allowance×ratio estimate, correctly distinguishing SARS travel allowance codes, without breaking any other schedule.
