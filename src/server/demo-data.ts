@@ -21,6 +21,7 @@ import type {
   ITR12WorkpaperRecord,
   ITR12WorkspaceRecord,
 } from "@/modules/itr12/types";
+import type { LogbookRecord } from "@/modules/logbook/types";
 import type {
   AppUser,
   AuditLogRecord,
@@ -757,6 +758,54 @@ export const demoIndividualTaxAssessments: IndividualTaxAssessmentRecord[] = [
     },
   },
   ...goldenIndividualTaxAssessments,
+];
+
+export const demoLogbooks: LogbookRecord[] = [
+  {
+    id: "d6f3b0a2-1a2b-4c3d-9e4f-5a6b7c8d9e0f",
+    clientId: "client_001",
+    assessmentYear: 2026,
+    vehicle: {
+      id: "a1b2c3d4-5e6f-4a7b-8c9d-0e1f2a3b4c5d",
+      make: "Toyota",
+      model: "Corolla Cross 1.8 XR",
+      registrationNumber: "CA 123-456",
+      costPrice: 349900,
+      acquisitionDate: "2024-02-01",
+    },
+    openingOdometer: 45000,
+    closingOdometer: 68000,
+    costMethod: "DEEMED",
+    actualExpenses: null,
+    trips: [
+      {
+        id: "b2c3d4e5-6f7a-4b8c-9d0e-1f2a3b4c5d6e",
+        date: "2025-04-14",
+        businessKm: 82,
+        fromLocation: "Cape Town office",
+        toLocation: "Client site - Bellville",
+        reason: "Client meeting - VAT review",
+        odometerStart: 45210,
+        odometerEnd: 45292,
+        createdAt: "2025-04-14T08:15:00.000Z",
+        updatedAt: "2025-04-14T08:15:00.000Z",
+      },
+      {
+        id: "c3d4e5f6-7a8b-4c9d-0e1f-2a3b4c5d6e7f",
+        date: "2025-07-02",
+        businessKm: 145,
+        fromLocation: "Cape Town office",
+        toLocation: "SARS branch - Paarl",
+        reason: "SARS branch appointment",
+        odometerStart: null,
+        odometerEnd: null,
+        createdAt: "2025-07-02T09:00:00.000Z",
+        updatedAt: "2025-07-02T09:00:00.000Z",
+      },
+    ],
+    createdAt: "2025-03-01T07:00:00.000Z",
+    updatedAt: "2025-07-02T09:00:00.000Z",
+  },
 ];
 
 export const demoITR12Workspaces: ITR12WorkspaceRecord[] = [
