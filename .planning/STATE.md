@@ -2,19 +2,19 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-current_phase: 02
-current_phase_name: Logbook Domain Module
-current_plan: Not started
-status: completed
-stopped_at: Completed 02-04-PLAN.md
-last_updated: "2026-07-03T08:55:51.137Z"
+current_phase: 03
+current_phase_name: ITR12 Travel Schedule Integration
+current_plan: 2
+status: executing
+stopped_at: Completed 03-01-PLAN.md
+last_updated: "2026-07-03T10:41:59.138Z"
 last_activity: 2026-07-03
 progress:
   total_phases: 7
   completed_phases: 2
-  total_plans: 7
-  completed_plans: 7
-  percent: 100
+  total_plans: 10
+  completed_plans: 8
+  percent: 80
 ---
 
 # Project State
@@ -24,19 +24,19 @@ progress:
 See: .planning/PROJECT.md (updated 2026-07-02)
 
 **Core value:** A tax practitioner can capture or import a client's travel logbook and complete an individual tax assessment knowing every figure and format matches current SARS requirements — without the app slowing down.
-**Current focus:** Phase 2 - Logbook Domain Module
+**Current focus:** Phase 3 - ITR12 Travel Schedule Integration
 
 ## Current Position
 
-**Current Phase:** 02
-**Current Phase Name:** Logbook Domain Module
+**Current Phase:** 03
+**Current Phase Name:** ITR12 Travel Schedule Integration
 **Total Phases:** 7
-**Current Plan:** Not started
-**Total Plans in Phase:** 4
-**Status:** Milestone complete
+**Current Plan:** 2
+**Total Plans in Phase:** 3
+**Status:** Ready to execute
 **Last Activity:** 2026-07-03
 
-**Progress:** [██████████] 100%
+**Progress:** [████████░░] 80%
 
 ## Performance Metrics
 
@@ -63,6 +63,7 @@ See: .planning/PROJECT.md (updated 2026-07-02)
 | Phase 02 P02 | 9min | 3 tasks | 2 files |
 | Phase 02 P03 | 20min | 3 tasks | 3 files |
 | Phase 02 P04 | 12min | 3 tasks | 5 files |
+| Phase 03 P01 | 12min | 3 tasks | 6 files |
 
 ## Accumulated Context
 
@@ -90,6 +91,9 @@ Recent decisions affecting current work:
 - [Phase 02]: buildTravelResult resolves claimedDeduction via explicit if/else on costMethod, never a data-presence fallback chain; ACTUAL election with null expenses claims 0, not the deemed figure
 - [Phase 02]: Prisma createLogbook reuses an existing Vehicle row by clientId+registrationNumber instead of creating a new vehicle per logbook, relying on the @@unique([clientId, vehicleId, assessmentYear]) constraint
 - [Phase 02]: Split tripInputSchema into base tripFieldsSchema + refined tripInputSchema, added tripPatchSchema (partial) since Zod v4 refinements cannot be .partial()-ed
+- [Phase 03]: Allowance cap (min(claimedDeduction, travelAllowance)) applies uniformly to both DEEMED and ACTUAL cost methods rather than branching by method
+- [Phase 03]: allowanceType only changes the income line code/description (3701 vs 3702) -- deduction math is identical for both
+- [Phase 03]: report-transformer keeps a 4014 fallback for the legacy calculateIndividualTax2026 path; only the near-eFiling schedule layer moved to TRAVEL_CLAIM
 
 ### Pending Todos
 
@@ -106,6 +110,6 @@ None yet.
 
 ## Session Continuity
 
-**Last Session:** 2026-07-03T08:49:34.123Z
-**Stopped At:** Completed 02-04-PLAN.md
+**Last Session:** 2026-07-03T10:41:59.135Z
+**Stopped At:** Completed 03-01-PLAN.md
 **Resume File:** None
