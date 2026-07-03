@@ -2,19 +2,19 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-current_phase: 1
-current_phase_name: Rulepack Extension
-current_plan: Not started
-status: completed
-stopped_at: Completed 01-03-PLAN.md
-last_updated: "2026-07-02T17:22:03.090Z"
-last_activity: 2026-07-02
+current_phase: 2
+current_phase_name: Logbook Domain Module
+current_plan: 2
+status: executing
+stopped_at: Completed 02-01-PLAN.md
+last_updated: "2026-07-03T08:18:48.494Z"
+last_activity: 2026-07-03
 progress:
   total_phases: 7
   completed_phases: 1
-  total_plans: 3
-  completed_plans: 3
-  percent: 100
+  total_plans: 7
+  completed_plans: 4
+  percent: 57
 ---
 
 # Project State
@@ -24,19 +24,19 @@ progress:
 See: .planning/PROJECT.md (updated 2026-07-02)
 
 **Core value:** A tax practitioner can capture or import a client's travel logbook and complete an individual tax assessment knowing every figure and format matches current SARS requirements — without the app slowing down.
-**Current focus:** Phase 1 - Rulepack Extension
+**Current focus:** Phase 2 - Logbook Domain Module
 
 ## Current Position
 
-**Current Phase:** 1
-**Current Phase Name:** Rulepack Extension
+**Current Phase:** 2
+**Current Phase Name:** Logbook Domain Module
 **Total Phases:** 7
-**Current Plan:** Not started
-**Total Plans in Phase:** 3
-**Status:** Milestone complete
-**Last Activity:** 2026-07-02
+**Current Plan:** 2
+**Total Plans in Phase:** 4
+**Status:** Ready to execute
+**Last Activity:** 2026-07-03
 
-**Progress:** [██████████] 100%
+**Progress:** [██████░░░░] 57%
 
 ## Performance Metrics
 
@@ -59,6 +59,7 @@ See: .planning/PROJECT.md (updated 2026-07-02)
 | Phase 01 P01 | 9min | 3 tasks | 6 files |
 | Phase 01 P02 | 27min | 2 tasks | 2 files |
 | Phase 01 P03 | 30 | 3 tasks | 1 files |
+| Phase 02 P01 | 7min | 3 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -77,6 +78,10 @@ Recent decisions affecting current work:
 - [Phase 01]: 2024 rulepack carries 2025 travel/provisionalTax values verbatim as a flagged, non-compliance-verified structural placeholder
 - [Phase 01]: Rulepack completeness build gate proven via mutation testing: copy-paste and unconverted-cents corruptions both independently fail the gate; no assertion strengthening needed
 - [Phase 01]: Fixed inverted provisional-tax safe-harbour branch orientation while wiring rulepack fields (0.90 at/below R1m, 0.80 above, per SARS para 20)
+- [Phase 02]: vehicleDetailsSchema includes id; logbookCreateSchema derives vehicle input via .omit({ id: true }) rather than a duplicated schema
+- [Phase 02]: ISO date validation uses regex + Date round-trip check to reject calendar-impossible dates (e.g. 2025-02-30)
+- [Phase 02]: Odometer/business-km comparisons use a 0.5km tolerance to avoid float-noise false positives
+- [Phase 02]: actualExpensesSchema requires all five expense categories so calculateActualCost never runs on partial data
 
 ### Pending Todos
 
@@ -93,6 +98,6 @@ None yet.
 
 ## Session Continuity
 
-**Last Session:** 2026-07-02T17:01:27.624Z
-**Stopped At:** Completed 01-03-PLAN.md
+**Last Session:** 2026-07-03T08:18:48.491Z
+**Stopped At:** Completed 02-01-PLAN.md
 **Resume File:** None

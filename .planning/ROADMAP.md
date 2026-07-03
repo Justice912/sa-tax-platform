@@ -137,7 +137,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Rulepack Extension | 3/3 | Complete    | 2026-07-02 |
-| 2. Logbook Domain Module | 0/TBD | Not started | - |
+| 2. Logbook Domain Module | 1/4 | In Progress|  |
 | 3. ITR12 Travel Schedule Integration | 0/TBD | Not started | - |
 | 4. Import Pipeline | 0/TBD | Not started | - |
 | 5. Component Decomposition | 0/TBD | Not started | - |

@@ -15,9 +15,9 @@ Requirements for this milestone. Each maps to roadmap phases.
 
 ### Logbook
 
-- [ ] **LOG-01**: User can create a logbook per client + tax year with vehicle details (make, model, registration, cost/purchase price)
-- [ ] **LOG-02**: User can record tax-year opening and closing odometer readings for the vehicle
-- [ ] **LOG-03**: User can capture trips manually with SARS-required fields (date, business kilometres, from, to, reason; per-trip odometer readings optional per official SARS elogbook)
+- [x] **LOG-01**: User can create a logbook per client + tax year with vehicle details (make, model, registration, cost/purchase price)
+- [x] **LOG-02**: User can record tax-year opening and closing odometer readings for the vehicle
+- [x] **LOG-03**: User can capture trips manually with SARS-required fields (date, business kilometres, from, to, reason; per-trip odometer readings optional per official SARS elogbook)
 - [ ] **LOG-04**: Logbook data persists in storage (like assessments) and survives page refresh and navigation
 - [ ] **LOG-05**: Logbook computes the travel deduction under BOTH the deemed-cost and actual-cost methods and shows a side-by-side comparison
 - [ ] **LOG-06**: User can export the logbook in a SARS-acceptable format for audit (CSV and printable summary)
@@ -81,9 +81,9 @@ Which phases cover which requirements. Updated during roadmap creation.
 | RULE-01 | Phase 1 - Rulepack Extension | Complete |
 | RULE-02 | Phase 1 - Rulepack Extension | Complete |
 | RULE-03 | Phase 1 - Rulepack Extension | Complete |
-| LOG-01 | Phase 2 - Logbook Domain Module | Pending |
-| LOG-02 | Phase 2 - Logbook Domain Module | Pending |
-| LOG-03 | Phase 2 - Logbook Domain Module | Pending |
+| LOG-01 | Phase 2 - Logbook Domain Module | Complete |
+| LOG-02 | Phase 2 - Logbook Domain Module | Complete |
+| LOG-03 | Phase 2 - Logbook Domain Module | Complete |
 | LOG-04 | Phase 2 - Logbook Domain Module | Pending |
 | LOG-05 | Phase 2 - Logbook Domain Module | Pending |
 | LOG-06 | Phase 2 - Logbook Domain Module | Pending |
