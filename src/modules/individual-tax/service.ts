@@ -11,6 +11,8 @@ import {
 import type { IndividualTaxInput, NearEfilingIndividualTaxInput } from "@/modules/individual-tax/types";
 import { writeAuditLog } from "@/modules/audit/audit-writer";
 import { getClientById } from "@/modules/clients/client-service";
+import { getLogbookForClientYear, getLogbookTravelResult } from "@/modules/logbook/service";
+import type { LogbookTravelResult } from "@/modules/logbook/types";
 
 const isoDateRegex = /^\d{4}-\d{2}-\d{2}$/;
 
@@ -179,9 +181,12 @@ export function calculateLegacyIndividualTaxAssessment(input: IndividualTaxInput
   return calculateIndividualTax2026(parsedInput);
 }
 
-export function calculateNearEfilingEstimate(input: NearEfilingIndividualTaxInput) {
+export function calculateNearEfilingEstimate(
+  input: NearEfilingIndividualTaxInput,
+  logbookResult?: LogbookTravelResult | null,
+) {
   const parsedInput = nearEfilingIndividualTaxInputSchema.parse(input);
-  return calculateNearEfilingIndividualTaxEstimate(parsedInput);
+  return calculateNearEfilingIndividualTaxEstimate(parsedInput, logbookResult);
 }
 
 export async function getIndividualTaxAssessmentResult(assessmentId: string) {
@@ -190,13 +195,28 @@ export async function getIndividualTaxAssessmentResult(assessmentId: string) {
     return null;
   }
 
-  const calc =
-    assessment.assessmentMode === "NEAR_EFILING_ESTIMATE" && assessment.nearEfilingInput
-      ? calculateNearEfilingEstimate(assessment.nearEfilingInput)
-      : calculateLegacyIndividualTaxAssessment({
-          assessmentYear: assessment.assessmentYear,
-          ...assessment.input,
-        });
+  let calc;
+  if (assessment.assessmentMode === "NEAR_EFILING_ESTIMATE" && assessment.nearEfilingInput) {
+    // clientId is string | undefined (a standalone assessment may have no linked client) —
+    // guarded here rather than try/caught, so a standalone assessment resolves to null (the
+    // estimate fallback) instead of throwing (Pitfall 4). The hasTravelAllowance guard skips
+    // repository I/O entirely when the travel section isn't in play.
+    let logbookResult: LogbookTravelResult | null = null;
+    if (
+      assessment.nearEfilingInput.travel.hasTravelAllowance &&
+      assessment.clientId
+    ) {
+      const logbook = await getLogbookForClientYear(assessment.clientId, assessment.assessmentYear);
+      logbookResult = logbook ? await getLogbookTravelResult(logbook.id) : null;
+    }
+
+    calc = calculateNearEfilingEstimate(assessment.nearEfilingInput, logbookResult);
+  } else {
+    calc = calculateLegacyIndividualTaxAssessment({
+      assessmentYear: assessment.assessmentYear,
+      ...assessment.input,
+    });
+  }
 
   return {
     assessment,
