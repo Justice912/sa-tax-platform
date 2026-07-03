@@ -89,7 +89,7 @@ export function hasPermission(role: ExtendedRole | undefined, permission: string
   return permissions.includes(permission);
 }
 
-export function canAccessAdmin(role: AppRole | undefined): boolean {
+export function canAccessAdmin(role: ExtendedRole | undefined): boolean {
   return role === "ADMIN" || role === "REVIEWER";
 }
 

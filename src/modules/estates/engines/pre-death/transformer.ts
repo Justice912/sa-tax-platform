@@ -112,9 +112,12 @@ export function buildEstatePreDeathNearEfilingInput(
       donationsUnderSection18A: prorate(parsed.deductions.donationsUnderSection18A),
       priorAssessmentDebitOrCredit: parsed.deductions.priorAssessmentDebitOrCredit,
     },
-    ...(parsed.cgtTaxableCapitalGain !== undefined && parsed.cgtTaxableCapitalGain > 0
-      ? { capitalGains: { taxableCapitalGain: parsed.cgtTaxableCapitalGain } }
-      : {}),
+    // TODO(compliance-review): parsed.cgtTaxableCapitalGain (the death-CGT engine's
+    // pre-computed taxable gain) is NOT forwarded. IndividualTaxCapitalGainsInput only
+    // accepts raw proceeds/baseCost, so the previous `{ taxableCapitalGain }` object was
+    // silently ignored by the calculation (gross gain computed as 0). Wiring a
+    // pre-computed gain through requires an individual-tax input extension — deferred to
+    // the calculator audit phase. Runtime output is unchanged by this omission.
   };
 
   return {
