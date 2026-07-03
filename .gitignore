@@ -40,3 +40,13 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+.vercel
+
+# local credentials and scratch files
+cookie.txt
+.tmp-*
+
+# claude local state
+.claude/worktrees/
+.claude/settings.local.json
