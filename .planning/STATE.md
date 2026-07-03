@@ -4,17 +4,17 @@ milestone: v1.0
 milestone_name: milestone
 current_phase: 2
 current_phase_name: Logbook Domain Module
-current_plan: 2
+current_plan: 3
 status: executing
-stopped_at: Completed 02-01-PLAN.md
-last_updated: "2026-07-03T08:18:48.494Z"
+stopped_at: Completed 02-02-PLAN.md
+last_updated: "2026-07-03T08:29:04.983Z"
 last_activity: 2026-07-03
 progress:
   total_phases: 7
   completed_phases: 1
   total_plans: 7
-  completed_plans: 4
-  percent: 57
+  completed_plans: 5
+  percent: 71
 ---
 
 # Project State
@@ -31,12 +31,12 @@ See: .planning/PROJECT.md (updated 2026-07-02)
 **Current Phase:** 2
 **Current Phase Name:** Logbook Domain Module
 **Total Phases:** 7
-**Current Plan:** 2
+**Current Plan:** 3
 **Total Plans in Phase:** 4
 **Status:** Ready to execute
 **Last Activity:** 2026-07-03
 
-**Progress:** [██████░░░░] 57%
+**Progress:** [███████░░░] 71%
 
 ## Performance Metrics
 
@@ -60,6 +60,7 @@ See: .planning/PROJECT.md (updated 2026-07-02)
 | Phase 01 P02 | 27min | 2 tasks | 2 files |
 | Phase 01 P03 | 30 | 3 tasks | 1 files |
 | Phase 02 P01 | 7min | 3 tasks | 4 files |
+| Phase 02 P02 | 9min | 3 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -82,6 +83,9 @@ Recent decisions affecting current work:
 - [Phase 02]: ISO date validation uses regex + Date round-trip check to reject calendar-impossible dates (e.g. 2025-02-30)
 - [Phase 02]: Odometer/business-km comparisons use a 0.5km tolerance to avoid float-noise false positives
 - [Phase 02]: actualExpensesSchema requires all five expense categories so calculateActualCost never runs on partial data
+- [Phase 02]: Deemed/actual-cost engines share a resolveKilometreDenominator helper: totalKm floored at businessKm when the closing odometer is not yet recorded
+- [Phase 02]: Actual-cost finance charges pro-rated by cappedValue/vehicleCostPrice above the R665,000 cap — flagged TODO(compliance-review), exact SARS mechanics underdocumented
+- [Phase 02]: buildTravelResult resolves claimedDeduction via explicit if/else on costMethod, never a data-presence fallback chain; ACTUAL election with null expenses claims 0, not the deemed figure
 
 ### Pending Todos
 
@@ -98,6 +102,6 @@ None yet.
 
 ## Session Continuity
 
-**Last Session:** 2026-07-03T08:18:48.491Z
-**Stopped At:** Completed 02-01-PLAN.md
+**Last Session:** 2026-07-03T08:29:04.979Z
+**Stopped At:** Completed 02-02-PLAN.md
 **Resume File:** None

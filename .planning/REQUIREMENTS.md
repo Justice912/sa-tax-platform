@@ -19,7 +19,7 @@ Requirements for this milestone. Each maps to roadmap phases.
 - [x] **LOG-02**: User can record tax-year opening and closing odometer readings for the vehicle
 - [x] **LOG-03**: User can capture trips manually with SARS-required fields (date, business kilometres, from, to, reason; per-trip odometer readings optional per official SARS elogbook)
 - [ ] **LOG-04**: Logbook data persists in storage (like assessments) and survives page refresh and navigation
-- [ ] **LOG-05**: Logbook computes the travel deduction under BOTH the deemed-cost and actual-cost methods and shows a side-by-side comparison
+- [x] **LOG-05**: Logbook computes the travel deduction under BOTH the deemed-cost and actual-cost methods and shows a side-by-side comparison
 - [ ] **LOG-06**: User can export the logbook in a SARS-acceptable format for audit (CSV and printable summary)
 
 ### Import
@@ -85,7 +85,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | LOG-02 | Phase 2 - Logbook Domain Module | Complete |
 | LOG-03 | Phase 2 - Logbook Domain Module | Complete |
 | LOG-04 | Phase 2 - Logbook Domain Module | Pending |
-| LOG-05 | Phase 2 - Logbook Domain Module | Pending |
+| LOG-05 | Phase 2 - Logbook Domain Module | Complete |
 | LOG-06 | Phase 2 - Logbook Domain Module | Pending |
 | ITR-01 | Phase 3 - ITR12 Travel Schedule Integration | Pending |
 | ITR-02 | Phase 3 - ITR12 Travel Schedule Integration | Pending |
