@@ -82,10 +82,15 @@ Plans:
   3. The official SARS eLogbook column layout is auto-detected and mapped automatically; user can manually map columns for other layouts
   4. Importing a 10,000+ row file keeps the UI responsive (parsing happens off the main thread, with a preview shown before commit)
   5. Odometer discontinuities, invalid dates, and unparseable rows are flagged in the preview before the user finalizes the import
-**Plans**: TBD
+**Plans**: 6 plans
 
 Plans:
-- [ ] 04-01: TBD
+- [ ] 04-01-PLAN.md — Foundation: PapaParse + SheetJS (CDN) install, import type contracts, SA/Excel date utilities, worker-bundling spike
+- [ ] 04-02-PLAN.md — Bulk import commit: repository.addTrips + service.importTripsToLogbook (one write, one audit entry, merged continuity gate)
+- [ ] 04-03-PLAN.md — Robust CSV parsing: PapaParse wrapper (quoted fields, delimiter auto-detect, CRLF) + worker-backed File path + fixtures
+- [ ] 04-04-PLAN.md — XLSX parsing: SheetJS wrapper with serial-date conversion + dedicated xlsx.worker.ts + programmatic workbook fixtures
+- [ ] 04-05-PLAN.md — SARS eLogbook auto-detection + column-mapping application (TDD)
+- [ ] 04-06-PLAN.md — Import validation preview (Phase 2 continuity reuse), guarded client entry with worker routing, end-to-end + 10k-row integration tests
 
 ### Phase 5: Component Decomposition
 **Goal**: The 2,148-line tax-tools monolith is split so each calculator is independently stateful, eliminating the shared-state re-render freeze.
