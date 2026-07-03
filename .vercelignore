@@ -1,0 +1,15 @@
+.next
+dist
+desktop/dist
+node_modules
+.git
+.claude
+.planning
+coverage
+test-results
+playwright-report
+cookie.txt
+.tmp-*
+*.tsbuildinfo
+*.7z
+*.exe
