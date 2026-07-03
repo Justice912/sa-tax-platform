@@ -65,10 +65,12 @@ Plans:
   2. Source codes 3701/3702 are handled as distinct calculation paths with correct deduction codes, verified against official SARS code guides
   3. An assessment with no logbook still falls back to the legacy estimate path with unchanged output
   4. The full existing test suite (employment, medical, interest, rental, sole proprietor schedules) still passes unmodified
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
-- [ ] 03-01: TBD
+- [ ] 03-01-PLAN.md — Logbook-aware travel schedule (TDD): optional LogbookTravelResult param, allowance cap, verified 3701/3702 + TRAVEL_CLAIM codes, lockstep filter updates
+- [ ] 03-02-PLAN.md — Thread logbook result through near-eFiling calculation; honest report rows (conditional 3702, real computations replacing fabricated narrative)
+- [ ] 03-03-PLAN.md — Resolve client logbook in getIndividualTaxAssessmentResult; integration tests against seeded demo logbook; full-suite verification
 
 ### Phase 4: Import Pipeline
 **Goal**: Practitioners can import a client's logbook from CSV or Excel — including the official SARS eLogbook template — quickly and safely, with bad data caught before it's committed.
@@ -138,7 +140,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7
 |-------|----------------|--------|-----------|
 | 1. Rulepack Extension | 3/3 | Complete    | 2026-07-02 |
 | 2. Logbook Domain Module | 4/4 | Complete   | 2026-07-03 |
-| 3. ITR12 Travel Schedule Integration | 0/TBD | Not started | - |
+| 3. ITR12 Travel Schedule Integration | 0/3 | Planned | - |
 | 4. Import Pipeline | 0/TBD | Not started | - |
 | 5. Component Decomposition | 0/TBD | Not started | - |
 | 6. Logbook UI, Import Wizard & Performance Hardening | 0/TBD | Not started | - |
