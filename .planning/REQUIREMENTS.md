@@ -33,7 +33,7 @@ Requirements for this milestone. Each maps to roadmap phases.
 ### ITR12 Integration
 
 - [x] **ITR-01**: Logbook result feeds the ITR12 travel schedule with correct source codes (3701/3702) and verified deduction codes, replacing the allowance×ratio estimate
-- [ ] **ITR-02**: Travel deduction follows SARS method rules (deemed vs actual, claim limited to allowance where applicable); all existing schedule tests keep passing
+- [x] **ITR-02**: Travel deduction follows SARS method rules (deemed vs actual, claim limited to allowance where applicable); all existing schedule tests keep passing
 
 ### Performance & UI
 
@@ -88,7 +88,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | LOG-05 | Phase 2 - Logbook Domain Module | Complete |
 | LOG-06 | Phase 2 - Logbook Domain Module | Complete |
 | ITR-01 | Phase 3 - ITR12 Travel Schedule Integration | Complete |
-| ITR-02 | Phase 3 - ITR12 Travel Schedule Integration | Pending |
+| ITR-02 | Phase 3 - ITR12 Travel Schedule Integration | Complete |
 | IMP-01 | Phase 4 - Import Pipeline | Pending |
 | IMP-02 | Phase 4 - Import Pipeline | Pending |
 | IMP-03 | Phase 4 - Import Pipeline | Pending |

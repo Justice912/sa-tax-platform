@@ -5,16 +5,16 @@ milestone_name: milestone
 current_phase: 03
 current_phase_name: ITR12 Travel Schedule Integration
 current_plan: 3
-status: executing
+status: verifying
 stopped_at: Completed 03-02-PLAN.md
-last_updated: "2026-07-03T10:51:22.799Z"
+last_updated: "2026-07-03T10:58:52.322Z"
 last_activity: 2026-07-03
 progress:
   total_phases: 7
-  completed_phases: 2
+  completed_phases: 3
   total_plans: 10
-  completed_plans: 9
-  percent: 90
+  completed_plans: 10
+  percent: 100
 ---
 
 # Project State
@@ -33,10 +33,10 @@ See: .planning/PROJECT.md (updated 2026-07-02)
 **Total Phases:** 7
 **Current Plan:** 3
 **Total Plans in Phase:** 3
-**Status:** Ready to execute
+**Status:** Phase complete — ready for verification
 **Last Activity:** 2026-07-03
 
-**Progress:** [█████████░] 90%
+**Progress:** [██████████] 100%
 
 ## Performance Metrics
 
@@ -65,6 +65,7 @@ See: .planning/PROJECT.md (updated 2026-07-02)
 | Phase 02 P04 | 12min | 3 tasks | 5 files |
 | Phase 03 P01 | 12min | 3 tasks | 6 files |
 | Phase 03 P02 | 8min | 3 tasks | 3 files |
+| Phase 03 P03 | 7min | 3 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -97,6 +98,8 @@ Recent decisions affecting current work:
 - [Phase 03]: report-transformer keeps a 4014 fallback for the legacy calculateIndividualTax2026 path; only the near-eFiling schedule layer moved to TRAVEL_CLAIM
 - [Phase 03]: Travel deduction computations text built once from logbookResult presence and passed as the makeScheduleLines computations prefix (logbook-based vs km-ratio estimate wording)
 - [Phase 03]: report-transformer's 3702 income row is spliced in only when the calc emits one, preserving the legacy report's exact income-code list untouched
+- [Phase 03]: Logbook resolution in getIndividualTaxAssessmentResult guarded by assessmentMode + hasTravelAllowance + clientId, skipping repository I/O when the travel section or client link is absent
+- [Phase 03]: Async logbook lookup left unguarded by try/catch -- a throwing lookup is a real bug that must surface, not be masked as no-logbook
 
 ### Pending Todos
 
