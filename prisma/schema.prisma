@@ -328,6 +328,8 @@ model Client {
   comments           Comment[]
   assignments        Assignment[]
   individualTaxProfiles IndividualTaxProfile[]
+  vehicles           Vehicle[]
+  logbooks           Logbook[]
 
   @@index([firmId, status])
   @@index([clientType])
@@ -1106,5 +1108,66 @@ model GeneratedReport {
   generatedBy   User?               @relation(fields: [generatedById], references: [id])
 
   @@index([assessmentId, generatedAt])
+}
+
+enum LogbookCostMethod {
+  DEEMED
+  ACTUAL
+}
+
+model Vehicle {
+  id                 String    @id @default(cuid())
+  clientId           String
+  make               String
+  model              String
+  registrationNumber String
+  costPrice          Decimal   @db.Decimal(18, 2)
+  acquisitionDate    DateTime?
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+  client             Client    @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  logbooks           Logbook[]
+
+  @@index([clientId])
+}
+
+model Logbook {
+  id                   String            @id @default(cuid())
+  clientId             String
+  vehicleId            String
+  assessmentYear       Int
+  openingOdometer      Decimal           @db.Decimal(10, 1)
+  closingOdometer      Decimal?          @db.Decimal(10, 1)
+  costMethod           LogbookCostMethod @default(DEEMED)
+  actualFuel           Decimal?          @db.Decimal(18, 2)
+  actualMaintenance    Decimal?          @db.Decimal(18, 2)
+  actualInsurance      Decimal?          @db.Decimal(18, 2)
+  actualLicence        Decimal?          @db.Decimal(18, 2)
+  actualFinanceCharges Decimal?          @db.Decimal(18, 2)
+  createdAt            DateTime          @default(now())
+  updatedAt            DateTime          @updatedAt
+  client               Client            @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  vehicle              Vehicle           @relation(fields: [vehicleId], references: [id], onDelete: Cascade)
+  trips                LogbookTrip[]
+
+  @@unique([clientId, vehicleId, assessmentYear])
+  @@index([clientId, assessmentYear])
+}
+
+model LogbookTrip {
+  id            String   @id @default(cuid())
+  logbookId     String
+  date          DateTime
+  odometerStart Decimal? @db.Decimal(10, 1)
+  odometerEnd   Decimal? @db.Decimal(10, 1)
+  businessKm    Decimal  @db.Decimal(10, 1)
+  fromLocation  String
+  toLocation    String
+  reason        String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  logbook       Logbook  @relation(fields: [logbookId], references: [id], onDelete: Cascade)
+
+  @@index([logbookId, date])
 }
 
