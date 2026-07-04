@@ -2,165 +2,27 @@
 
 import { useState, useEffect, useRef, useCallback } from "react";
 import { getIndividualTaxRulePackByYear } from "@/modules/individual-tax/rulepack-registry";
-import type {
-  IndividualTaxRulePack,
-  SupportedAssessmentYear,
-} from "@/modules/individual-tax/types";
-
-const calcTax = (rulePack: IndividualTaxRulePack, taxable: number) => {
-  if (taxable <= 0) return 0;
-  const b = rulePack.taxBrackets.find(
-    (br) => taxable >= br.min && (br.max === null || taxable <= br.max),
-  );
-  if (!b) return 0;
-  return b.baseTax + (taxable - b.min + 1) * b.rate;
-};
-const getMarginalRate = (rulePack: IndividualTaxRulePack, taxable: number) => {
-  if (taxable <= 0) return 0.18;
-  const b = rulePack.taxBrackets.find(
-    (br) => taxable >= br.min && (br.max === null || taxable <= br.max),
-  );
-  return b ? b.rate : 0.45;
-};
-const getDeemedRate = (rulePack: IndividualTaxRulePack, v: number) =>
-  rulePack.travelDeemedCostTable.find(
-    (r) => v >= r.min && (r.max === null || v <= r.max),
-  ) ?? rulePack.travelDeemedCostTable[0];
-const fmt = (n: number) =>
-  "R " +
-  Number(n || 0).toLocaleString("en-ZA", {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  });
-const fmtKm = (n: number) =>
-  Number(n || 0).toLocaleString("en-ZA", { maximumFractionDigits: 1 }) + " km";
-const pct = (n: number) => (n || 0).toFixed(1) + "%";
-const MONTHS = [
-  "Jan",
-  "Feb",
-  "Mar",
-  "Apr",
-  "May",
-  "Jun",
-  "Jul",
-  "Aug",
-  "Sep",
-  "Oct",
-  "Nov",
-  "Dec",
-];
-
-type TabKey =
-  | "dashboard"
-  | "travel"
-  | "medical"
-  | "retirement"
-  | "cgt"
-  | "provisional"
-  | "rental"
-  | "homeoffice";
-
-interface Trip {
-  id: number;
-  date: string;
-  from: string;
-  to: string;
-  odometerStart: string | number;
-  odometerEnd: string | number;
-  purpose: string;
-  tripType: "Business" | "Private" | "Mixed";
-  mixedSplit: number;
-  businessKm: number;
-  privateKm: number;
-  totalDistance: number;
-}
-
-interface UploadData {
-  headers: string[];
-  rows: Record<string, string>[];
-  name: string;
-}
-
-/* ═══════════════════════════════════════════
-   HELPERS — Reusable UI pieces (Tailwind)
-   ═══════════════════════════════════════════ */
-
-function StatCard({
-  label,
-  value,
-  colorClass = "text-amber-500",
-}: {
-  label: string;
-  value: string | number;
-  colorClass?: string;
-}) {
-  return (
-    <div className="rounded-xl border border-slate-200/80 bg-white p-4 shadow-sm">
-      <div className="text-xs text-slate-500">{label}</div>
-      <div className={`mt-1 text-lg font-bold font-mono ${colorClass}`}>
-        {value}
-      </div>
-    </div>
-  );
-}
-
-function ResultCard({
-  label,
-  value,
-  colorClass = "text-amber-500",
-  sub,
-}: {
-  label: string;
-  value: string | number;
-  colorClass?: string;
-  sub?: string;
-}) {
-  return (
-    <div className="rounded-lg bg-slate-50 p-3.5">
-      <div className="text-xs text-slate-500">{label}</div>
-      <div className={`mt-1 text-base font-bold font-mono ${colorClass}`}>
-        {value}
-      </div>
-      {sub && <div className="mt-0.5 text-[11px] text-slate-400">{sub}</div>}
-    </div>
-  );
-}
-
-function Highlight({
-  label,
-  value,
-}: {
-  label: string;
-  value: string;
-}) {
-  return (
-    <div className="mt-4 rounded-xl border border-teal-200 bg-teal-50 p-5 text-center">
-      <div className="text-sm font-semibold text-teal-700">{label}</div>
-      <div className="mt-1.5 text-2xl font-bold font-mono text-teal-800">
-        {value}
-      </div>
-    </div>
-  );
-}
-
-function Field({
-  label,
-  children,
-}: {
-  label: string;
-  children: React.ReactNode;
-}) {
-  return (
-    <label className="space-y-1 text-sm">
-      <span className="font-medium text-slate-600">{label}</span>
-      {children}
-    </label>
-  );
-}
-
-const inputCls =
-  "w-full rounded-md border border-slate-300 px-3 py-2 text-sm text-slate-900 focus:border-teal-400 focus:outline-none";
-const selectCls = inputCls;
+import type { SupportedAssessmentYear } from "@/modules/individual-tax/types";
+import {
+  calcTax,
+  getMarginalRate,
+  getDeemedRate,
+} from "@/components/individual-tax/tax-tools/calc-helpers";
+import {
+  StatCard,
+  ResultCard,
+  Highlight,
+  Field,
+  inputCls,
+  selectCls,
+  fmt,
+  fmtKm,
+  pct,
+  MONTHS,
+  type Trip,
+  type UploadData,
+  type TabKey,
+} from "@/components/individual-tax/tax-tools/shared";
 
 /* ═══════════════════════════════════════════
    MAIN COMPONENT
