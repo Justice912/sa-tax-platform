@@ -1,3 +1,4 @@
+import { z } from "zod";
 import { getClientById } from "@/modules/clients/client-service";
 import { getIndividualTaxRulePackByYear } from "@/modules/individual-tax/rulepack-registry";
 import { writeAuditLog } from "@/modules/audit/audit-writer";
@@ -162,6 +163,52 @@ export async function addTripToLogbook(
     entityId: logbookId,
     summary: `Added trip on ${parsedTrip.date} (${parsedTrip.businessKm} business km) to the ${record.assessmentYear} logbook.`,
     afterData: { date: parsedTrip.date, businessKm: parsedTrip.businessKm },
+  });
+
+  return updated;
+}
+
+/** Commit step of the import pipeline (preview -> finalize): validates, continuity-checks
+    against the merged existing+imported trip set, persists the whole batch in ONE repository
+    write, and writes ONE audit entry — never N writes/entries for N imported trips. Rows must
+    already be filtered to valid ones by the import preview (Plan 04-06); reaching here with a
+    structurally invalid row is a programming error, not a UX path, so it fails the whole batch. */
+export async function importTripsToLogbook(
+  logbookId: string,
+  trips: unknown,
+  source: "CSV" | "XLSX" = "CSV",
+): Promise<LogbookRecord> {
+  const parsedTrips = z.array(tripInputSchema).min(1).parse(trips);
+  const record = await loadLogbookOrThrow(logbookId);
+
+  const prospectiveTrips = [
+    ...record.trips.map(toContinuityTrip),
+    ...parsedTrips.map(toContinuityTrip),
+  ];
+  assertOdometerContinuity(
+    { openingOdometer: record.openingOdometer, closingOdometer: record.closingOdometer },
+    prospectiveTrips,
+  );
+
+  const updated = await logbookRepository.addTrips(
+    logbookId,
+    parsedTrips.map((trip) => ({
+      date: trip.date,
+      businessKm: trip.businessKm,
+      fromLocation: trip.fromLocation,
+      toLocation: trip.toLocation,
+      reason: trip.reason,
+      odometerStart: trip.odometerStart ?? null,
+      odometerEnd: trip.odometerEnd ?? null,
+    })),
+  );
+
+  await writeAuditLog({
+    action: "LOGBOOK_TRIPS_IMPORTED",
+    entityType: "Logbook",
+    entityId: logbookId,
+    summary: `Imported ${parsedTrips.length} trips from ${source} import into the ${record.assessmentYear} logbook.`,
+    afterData: { tripCount: parsedTrips.length, source },
   });
 
   return updated;
