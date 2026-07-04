@@ -120,6 +120,10 @@ export interface ILogbookRepository {
     logbookId: string,
     trip: Omit<LogbookTripRecord, "id" | "createdAt" | "updatedAt">,
   ): Promise<LogbookRecord>;
+  addTrips(
+    logbookId: string,
+    trips: Array<Omit<LogbookTripRecord, "id" | "createdAt" | "updatedAt">>,
+  ): Promise<LogbookRecord>;
   updateTrip(logbookId: string, tripId: string, patch: UpdateTripInput): Promise<LogbookRecord>;
   deleteTrip(logbookId: string, tripId: string): Promise<LogbookRecord>;
 }
@@ -569,6 +573,68 @@ class DemoLogbookRepository implements ILogbookRepository {
     };
 
     record.trips.push(newTrip);
+    record.updatedAt = now;
+
+    writeDemoLogbooksToDisk(records);
+    return cloneLogbook(record);
+  }
+
+  async addTrips(
+    logbookId: string,
+    trips: Array<Omit<LogbookTripRecord, "id" | "createdAt" | "updatedAt">>,
+  ): Promise<LogbookRecord> {
+    if (trips.length === 0) {
+      throw new Error("No trips to import.");
+    }
+
+    if (!isDemoMode) {
+      const existing = await prisma.logbook.findUnique({ where: { id: logbookId } });
+      if (!existing) {
+        throw new Error("Logbook not found.");
+      }
+
+      await prisma.logbookTrip.createMany({
+        data: trips.map((trip) => ({
+          logbookId,
+          date: new Date(`${trip.date}T00:00:00.000Z`),
+          businessKm: trip.businessKm,
+          fromLocation: trip.fromLocation,
+          toLocation: trip.toLocation,
+          reason: trip.reason,
+          odometerStart: trip.odometerStart ?? null,
+          odometerEnd: trip.odometerEnd ?? null,
+        })),
+      });
+
+      const updated = await prisma.logbook.findUniqueOrThrow({
+        where: { id: logbookId },
+        include: LOGBOOK_INCLUDE,
+      });
+
+      return this.mapRow(updated);
+    }
+
+    const records = readDemoLogbooksFromDisk();
+    const record = records.find((entry) => entry.id === logbookId);
+    if (!record) {
+      throw new Error("Logbook not found.");
+    }
+
+    const now = new Date().toISOString();
+    const newTrips: LogbookTripRecord[] = trips.map((trip) => ({
+      id: randomUUID(),
+      date: trip.date,
+      businessKm: trip.businessKm,
+      fromLocation: trip.fromLocation,
+      toLocation: trip.toLocation,
+      reason: trip.reason,
+      odometerStart: trip.odometerStart ?? null,
+      odometerEnd: trip.odometerEnd ?? null,
+      createdAt: now,
+      updatedAt: now,
+    }));
+
+    record.trips.push(...newTrips);
     record.updatedAt = now;
 
     writeDemoLogbooksToDisk(records);
