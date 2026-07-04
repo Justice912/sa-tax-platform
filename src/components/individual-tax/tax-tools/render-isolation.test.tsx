@@ -8,6 +8,8 @@ import { RentalTab } from "@/components/individual-tax/tax-tools/rental-tab";
 import { HomeOfficeTab } from "@/components/individual-tax/tax-tools/home-office-tab";
 import { CgtTab } from "@/components/individual-tax/tax-tools/cgt-tab";
 import { RetirementTab } from "@/components/individual-tax/tax-tools/retirement-tab";
+import { MedicalTab } from "@/components/individual-tax/tax-tools/medical-tab";
+import { ProvisionalTaxTab } from "@/components/individual-tax/tax-tools/provisional-tax-tab";
 import { fmt } from "@/components/individual-tax/tax-tools/shared";
 import { TaxTools } from "@/components/individual-tax/tax-tools";
 
@@ -237,6 +239,111 @@ describe("CGT/Retirement render isolation", () => {
     // existing contributions -> headroom = 137,500
     expect(
       screen.getAllByText(fmt(137500), { normalizer: rawNormalizer }).length,
+    ).toBeGreaterThan(0);
+  });
+});
+
+function renderMedicalAndProvisional(
+  onRenderMedical: (id: string, phase: string) => void,
+  onRenderProvisional: (id: string, phase: string) => void,
+) {
+  return render(
+    <RulePackProvider>
+      <TaxToolsSummaryProvider>
+        <Profiler id="medical" onRender={onRenderMedical}>
+          <MedicalTab />
+        </Profiler>
+        <Profiler id="provisional" onRender={onRenderProvisional}>
+          <ProvisionalTaxTab />
+        </Profiler>
+      </TaxToolsSummaryProvider>
+    </RulePackProvider>,
+  );
+}
+
+describe("Medical/Provisional render isolation", () => {
+  it("does not re-render ProvisionalTaxTab when typing into MedicalTab (Profiler-verified)", async () => {
+    const user = userEvent.setup();
+    const onRenderMedical = vi.fn();
+    const onRenderProvisional = vi.fn();
+
+    renderMedicalAndProvisional(onRenderMedical, onRenderProvisional);
+
+    // Let the initial-mount + summary-publish effects settle before measuring.
+    onRenderMedical.mockClear();
+    onRenderProvisional.mockClear();
+
+    const monthlyContrib = screen.getByLabelText(
+      /monthly medical aid contribution \(r\)/i,
+    );
+    await user.type(monthlyContrib, "5");
+
+    expect(onRenderMedical).toHaveBeenCalled();
+    expect(onRenderProvisional).not.toHaveBeenCalled();
+  });
+
+  it("preserves the Phase-1-corrected safe-harbour branch orientation after extraction (2026, R1,000,000 threshold)", async () => {
+    const user = userEvent.setup();
+
+    render(
+      <RulePackProvider>
+        <TaxToolsSummaryProvider>
+          <ProvisionalTaxTab />
+        </TaxToolsSummaryProvider>
+      </RulePackProvider>,
+    );
+
+    await user.type(
+      screen.getByLabelText(/prior year tax assessed \(r\)/i),
+      "100000",
+    );
+
+    // At/below threshold: estTaxable = 500,000 <= 1,000,000 ->
+    // safeHarbour = priorTax * safeHarbourBasicAmountOrActualPctBelowThreshold (0.90)
+    const estimatedTaxable = screen.getByLabelText(
+      /estimated current year taxable income \(r\)/i,
+    );
+    await user.type(estimatedTaxable, "500000");
+    expect(
+      screen.getAllByText(fmt(90000), { normalizer: rawNormalizer }).length,
+    ).toBeGreaterThan(0);
+
+    // Above threshold: estTaxable = 1,500,000 > 1,000,000 ->
+    // safeHarbour = priorTax * safeHarbourActualPctAboveThreshold (0.80).
+    // A mechanical "tidy" of the ternary that swaps branch orientation would
+    // instead produce 90,000 here -- this assertion catches that regression.
+    await user.clear(estimatedTaxable);
+    await user.type(estimatedTaxable, "1500000");
+    expect(
+      screen.getAllByText(fmt(80000), { normalizer: rawNormalizer }).length,
+    ).toBeGreaterThan(0);
+  });
+
+  it("still publishes Medical total to the Dashboard after extraction", async () => {
+    const user = userEvent.setup();
+    render(<TaxTools />);
+
+    const medicalNav = screen.getAllByRole("button", {
+      name: /medical credits/i,
+    })[0];
+    await user.click(medicalNav);
+
+    // dependants defaults to 1: s6aMonthly = 1*364 = 364; contrib = 1000*12 = 12000
+    // s6a = min(364*12, 12000) = 4368; age "under65"/no disability ->
+    // qual = 0 - 0.075*0 - 3*4368 = -13104 -> s6b = max(0, ...) = 0
+    // total = round(4368 + 0) = 4368
+    await user.type(
+      screen.getByLabelText(/monthly medical aid contribution \(r\)/i),
+      "1000",
+    );
+
+    const dashboardNav = screen.getAllByRole("button", {
+      name: /^dashboard$/i,
+    })[0];
+    await user.click(dashboardNav);
+
+    expect(
+      screen.getAllByText(fmt(4368), { normalizer: rawNormalizer }).length,
     ).toBeGreaterThan(0);
   });
 });

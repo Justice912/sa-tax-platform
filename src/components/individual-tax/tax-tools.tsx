@@ -3,7 +3,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import type { SupportedAssessmentYear } from "@/modules/individual-tax/types";
 import {
-  calcTax,
   getDeemedRate,
 } from "@/components/individual-tax/tax-tools/calc-helpers";
 import {
@@ -34,6 +33,8 @@ import { RentalTab } from "@/components/individual-tax/tax-tools/rental-tab";
 import { HomeOfficeTab } from "@/components/individual-tax/tax-tools/home-office-tab";
 import { CgtTab } from "@/components/individual-tax/tax-tools/cgt-tab";
 import { RetirementTab } from "@/components/individual-tax/tax-tools/retirement-tab";
+import { MedicalTab } from "@/components/individual-tax/tax-tools/medical-tab";
+import { ProvisionalTaxTab } from "@/components/individual-tax/tax-tools/provisional-tax-tab";
 
 /* ═══════════════════════════════════════════
    MAIN COMPONENT
@@ -76,26 +77,6 @@ function TaxToolsInner() {
   const [importTrips, setImportTrips] = useState<Trip[]>([]);
   const [uploadStep, setUploadStep] = useState(0);
   const fileRef = useRef<HTMLInputElement>(null);
-
-  // ── Medical Credits State ──
-  const [med, setMed] = useState({
-    dependants: 1,
-    monthlyContrib: "",
-    outOfPocket: "",
-    age: "under65",
-    disability: false,
-    taxableIncome: "",
-  });
-
-  // ── Provisional Tax State ──
-  const [prov, setProv] = useState({
-    priorTaxable: "",
-    priorTax: "",
-    estimatedTaxable: "",
-    payeDeducted: "",
-    credits: "",
-    period: "P1",
-  });
 
   useEffect(() => {
     if (toast) {
@@ -209,72 +190,10 @@ function TaxToolsInner() {
   const deemedTotal = deemedFixed + deemedFuel + deemedMaint;
   const travelDeduction = (deemedTotal * bizPct) / 100;
 
-  // ── Medical calc ──
-  const calcMedical = () => {
-    const deps = parseInt(String(med.dependants)) || 1;
-    const contrib = (parseFloat(med.monthlyContrib) || 0) * 12;
-    const oop = parseFloat(med.outOfPocket) || 0;
-    const taxInc = parseFloat(med.taxableIncome) || 0;
-    const s6aMonthly =
-      Math.min(deps, 2) * rulePack.medicalTaxCredit.firstTwoMembersPerMonth +
-      Math.max(0, deps - 2) * rulePack.medicalTaxCredit.additionalMemberPerMonth;
-    const s6a = Math.min(s6aMonthly * 12, contrib);
-    let s6b = 0;
-    if (med.age !== "under65" || med.disability) {
-      const qual = oop + Math.max(0, contrib - 3 * s6a);
-      s6b = Math.max(0, qual * 0.333);
-    } else {
-      const qual = oop - 0.075 * taxInc - 3 * s6a;
-      s6b = Math.max(0, qual * 0.25);
-    }
-    return {
-      s6a: Math.round(s6a),
-      s6b: Math.round(s6b),
-      total: Math.round(s6a + s6b),
-    };
-  };
-  const medResult = calcMedical();
-
-  // ── Provisional tax calc ──
-  const calcProv = () => {
-    const estTaxable = parseFloat(prov.estimatedTaxable) || 0;
-    const paye = parseFloat(prov.payeDeducted) || 0;
-    const credits = parseFloat(prov.credits) || 0;
-    const priorTax = parseFloat(prov.priorTax) || 0;
-    const fullTax = calcTax(rulePack, estTaxable) - rulePack.rebates.primary;
-    const netTax = Math.max(0, fullTax - credits);
-    let payment = 0;
-    if (prov.period === "P1") payment = Math.max(0, netTax * 0.5 - paye * 0.5);
-    else payment = Math.max(0, netTax - paye);
-    const pt = rulePack.provisionalTax;
-    const safeHarbour =
-      estTaxable > pt.safeHarbourTaxableIncomeThreshold
-        ? priorTax * pt.safeHarbourActualPctAboveThreshold
-        : priorTax * pt.safeHarbourBasicAmountOrActualPctBelowThreshold;
-    const risk =
-      netTax > 0 && payment < safeHarbour * 0.8
-        ? "red"
-        : payment < safeHarbour
-          ? "amber"
-          : "green";
-    return {
-      fullTax: Math.max(0, Math.round(fullTax)),
-      netTax: Math.round(netTax),
-      payment: Math.round(payment),
-      safeHarbour: Math.round(safeHarbour),
-      risk,
-    };
-  };
-  const provResult = calcProv();
-
   // ── Publish summary values for DashboardTab (write-only; stable setter) ──
   useEffect(
     () => setSummaryValue("travelDeduction", travelDeduction),
     [travelDeduction, setSummaryValue],
-  );
-  useEffect(
-    () => setSummaryValue("medicalTotal", medResult.total),
-    [medResult.total, setSummaryValue],
   );
 
   // Upload handler
@@ -1111,108 +1030,9 @@ function TaxToolsInner() {
       )}
 
       {/* ════════ MEDICAL CREDITS ════════ */}
-      {tab === "medical" && (
-        <div className="space-y-5">
-          <div>
-            <h2 className="text-xl font-semibold text-slate-900">
-              Medical Tax Credits
-            </h2>
-            <p className="text-sm text-slate-500">
-              Section 6A (fees credit) &amp; Section 6B (additional expenses
-              credit)
-            </p>
-          </div>
-          <div className="rounded-xl border border-slate-200/80 bg-white p-5 shadow-sm">
-            <div className="grid grid-cols-2 gap-3">
-              <Field label="Number of Dependants (incl. main member)">
-                <input
-                  type="number"
-                  min="1"
-                  className={inputCls}
-                  value={med.dependants}
-                  onChange={(e) =>
-                    setMed({ ...med, dependants: parseInt(e.target.value) || 1 })
-                  }
-                />
-              </Field>
-              <Field label="Monthly Medical Aid Contribution (R)">
-                <input
-                  type="number"
-                  className={inputCls}
-                  value={med.monthlyContrib}
-                  onChange={(e) =>
-                    setMed({ ...med, monthlyContrib: e.target.value })
-                  }
-                />
-              </Field>
-              <Field label="Out-of-Pocket Medical Expenses (R/year)">
-                <input
-                  type="number"
-                  className={inputCls}
-                  value={med.outOfPocket}
-                  onChange={(e) =>
-                    setMed({ ...med, outOfPocket: e.target.value })
-                  }
-                />
-              </Field>
-              <Field label="Taxable Income (R)">
-                <input
-                  type="number"
-                  className={inputCls}
-                  value={med.taxableIncome}
-                  onChange={(e) =>
-                    setMed({ ...med, taxableIncome: e.target.value })
-                  }
-                />
-              </Field>
-              <Field label="Age Category">
-                <select
-                  className={selectCls}
-                  value={med.age}
-                  onChange={(e) => setMed({ ...med, age: e.target.value })}
-                >
-                  <option value="under65">Under 65</option>
-                  <option value="65to74">65 – 74</option>
-                  <option value="75plus">75+</option>
-                </select>
-              </Field>
-              <Field label="Disability?">
-                <select
-                  className={selectCls}
-                  value={med.disability ? "yes" : "no"}
-                  onChange={(e) =>
-                    setMed({ ...med, disability: e.target.value === "yes" })
-                  }
-                >
-                  <option value="no">No</option>
-                  <option value="yes">Yes — taxpayer or dependant</option>
-                </select>
-              </Field>
-            </div>
-          </div>
-          <div className="grid grid-cols-3 gap-3">
-            <ResultCard
-              label="Section 6A Credit"
-              value={fmt(medResult.s6a)}
-              colorClass="text-sky-600"
-            />
-            <ResultCard
-              label="Section 6B Credit"
-              value={fmt(medResult.s6b)}
-              colorClass="text-violet-600"
-            />
-            <ResultCard
-              label="Total Credit"
-              value={fmt(medResult.total)}
-              colorClass="text-teal-600"
-            />
-          </div>
-          <Highlight
-            label="TOTAL MEDICAL TAX CREDITS (ITR12)"
-            value={fmt(medResult.total)}
-          />
-        </div>
-      )}
+      <div className={tab === "medical" ? "" : "hidden"}>
+        <MedicalTab />
+      </div>
 
       {/* ════════ RETIREMENT ════════ */}
       <div className={tab === "retirement" ? "" : "hidden"}>
@@ -1225,122 +1045,9 @@ function TaxToolsInner() {
       </div>
 
       {/* ════════ PROVISIONAL TAX ════════ */}
-      {tab === "provisional" && (
-        <div className="space-y-5">
-          <div>
-            <h2 className="text-xl font-semibold text-slate-900">
-              Provisional Tax Estimator
-            </h2>
-            <p className="text-sm text-slate-500">
-              IRP6 — P1 and P2 payment estimates with penalty risk
-            </p>
-          </div>
-          <div className="rounded-xl border border-slate-200/80 bg-white p-5 shadow-sm">
-            <div className="grid grid-cols-2 gap-3">
-              <Field label="Prior Year Taxable Income (R)">
-                <input
-                  type="number"
-                  className={inputCls}
-                  value={prov.priorTaxable}
-                  onChange={(e) =>
-                    setProv({ ...prov, priorTaxable: e.target.value })
-                  }
-                />
-              </Field>
-              <Field label="Prior Year Tax Assessed (R)">
-                <input
-                  type="number"
-                  className={inputCls}
-                  value={prov.priorTax}
-                  onChange={(e) =>
-                    setProv({ ...prov, priorTax: e.target.value })
-                  }
-                />
-              </Field>
-              <Field label="Estimated Current Year Taxable Income (R)">
-                <input
-                  type="number"
-                  className={inputCls}
-                  value={prov.estimatedTaxable}
-                  onChange={(e) =>
-                    setProv({ ...prov, estimatedTaxable: e.target.value })
-                  }
-                />
-              </Field>
-              <Field label="PAYE Deducted (R/year)">
-                <input
-                  type="number"
-                  className={inputCls}
-                  value={prov.payeDeducted}
-                  onChange={(e) =>
-                    setProv({ ...prov, payeDeducted: e.target.value })
-                  }
-                />
-              </Field>
-              <Field label="Other Tax Credits (R)">
-                <input
-                  type="number"
-                  className={inputCls}
-                  value={prov.credits}
-                  onChange={(e) =>
-                    setProv({ ...prov, credits: e.target.value })
-                  }
-                />
-              </Field>
-              <Field label="Payment Period">
-                <select
-                  className={selectCls}
-                  value={prov.period}
-                  onChange={(e) =>
-                    setProv({ ...prov, period: e.target.value })
-                  }
-                >
-                  <option value="P1">P1 — First Period (6 months)</option>
-                  <option value="P2">P2 — Second Period (year-end)</option>
-                </select>
-              </Field>
-            </div>
-          </div>
-          <div className="grid grid-cols-3 gap-3">
-            <ResultCard
-              label="Estimated Tax (full year)"
-              value={fmt(provResult.fullTax)}
-              colorClass="text-sky-600"
-            />
-            <ResultCard
-              label="Net After Credits"
-              value={fmt(provResult.netTax)}
-              colorClass="text-violet-600"
-            />
-            <ResultCard
-              label="Safe Harbour Minimum"
-              value={fmt(provResult.safeHarbour)}
-              colorClass="text-slate-600"
-            />
-          </div>
-          <Highlight
-            label={`${prov.period} PAYMENT DUE`}
-            value={fmt(provResult.payment)}
-          />
-          <div className="flex justify-center">
-            <span
-              className={`rounded-full px-4 py-2 text-sm font-semibold ${
-                provResult.risk === "green"
-                  ? "bg-teal-100 text-teal-800"
-                  : provResult.risk === "amber"
-                    ? "bg-amber-100 text-amber-800"
-                    : "bg-red-100 text-red-800"
-              }`}
-            >
-              {provResult.risk === "green"
-                ? "Low Penalty Risk"
-                : provResult.risk === "amber"
-                  ? "Marginal — Review Estimate"
-                  : "High Penalty Risk — Increase Payment"}
-            </span>
-          </div>
-        </div>
-      )}
+      <div className={tab === "provisional" ? "" : "hidden"}>
+        <ProvisionalTaxTab />
+      </div>
 
       {/* ════════ RENTAL INCOME ════════ */}
       <div className={tab === "rental" ? "" : "hidden"}>
