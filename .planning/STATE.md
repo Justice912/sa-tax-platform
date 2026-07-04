@@ -4,17 +4,17 @@ milestone: v1.0
 milestone_name: milestone
 current_phase: 4
 current_phase_name: Import Pipeline
-current_plan: 2
-status: in_progress
-stopped_at: Completed 04-02-PLAN.md
-last_updated: "2026-07-04T07:36:10.422Z"
+current_plan: 3
+status: executing
+stopped_at: Completed 04-01-PLAN.md
+last_updated: "2026-07-04T07:53:12.336Z"
 last_activity: 2026-07-04
 progress:
   total_phases: 7
   completed_phases: 3
   total_plans: 16
-  completed_plans: 11
-  percent: 69
+  completed_plans: 12
+  percent: 75
 ---
 
 # Project State
@@ -31,12 +31,12 @@ See: .planning/PROJECT.md (updated 2026-07-02)
 **Current Phase:** 4
 **Current Phase Name:** Import Pipeline
 **Total Phases:** 7
-**Current Plan:** 2 of 6 (04-01 running in parallel; 04-03..04-06 not yet started)
+**Current Plan:** 3
 **Total Plans in Phase:** 6
-**Status:** In progress
+**Status:** Ready to execute
 **Last Activity:** 2026-07-04
 
-**Progress:** [███████░░░] 69%
+**Progress:** [████████░░] 75%
 
 ## Performance Metrics
 
@@ -67,6 +67,7 @@ See: .planning/PROJECT.md (updated 2026-07-02)
 | Phase 03 P02 | 8min | 3 tasks | 3 files |
 | Phase 03 P03 | 7min | 3 tasks | 2 files |
 | Phase 04 P02 | 10min | 3 tasks | 3 files |
+| Phase 04 P01 | 25min | 3 tasks | 6 files |
 
 ## Accumulated Context
 
@@ -103,6 +104,9 @@ Recent decisions affecting current work:
 - [Phase 03]: Async logbook lookup left unguarded by try/catch -- a throwing lookup is a real bug that must surface, not be masked as no-logbook
 - [Phase 04]: Batch import mutators mirror single-item mutator structure (parse -> load -> merged-set continuity check -> one write -> one audit entry) rather than looping the single-item path
 - [Phase 04]: Demo-mode writeAuditLog silently drops afterData/beforeData (pre-existing, codebase-wide gap, out of scope for this plan); import tests assert audit-entry count and match the human-readable summary string instead
+- [Phase 04]: xlsx installed from cdn.sheetjs.com tarball, not npm registry (0.18.5 has unpatched CVEs) -- lockfile confirmed resolving to the CDN URL
+- [Phase 04]: parse-dates.ts uses date-fns format() rather than .toISOString() for locally-parsed dates to avoid a UTC-shift timezone bug
+- [Phase 04]: Worker bundling spike verdict: CONFIRMED under both Turbopack and webpack -- 04-04/04-06 proceed with dedicated xlsx.worker.ts, no fallback needed
 
 ### Pending Todos
 
@@ -114,11 +118,10 @@ None yet.
 - Phase 3/ITR12: exact deduction codes 4014/4015 are LOW-MEDIUM confidence (contradictory signal — 4015 may be commission-income-specific); must confirm against PAYE-AE-06-G06 and IT-AE-36-G05 before hardcoding
 - Phase 7/medical credits: s6B multipliers (3x/4x, 25%/33.3%, 7.5% threshold) are MEDIUM confidence; re-verify against SARS Guide IT07
 - Phase 7/provisional tax: 8%/18-month basic-amount escalation mechanics are MEDIUM confidence; verify against Interpretation Note 1 (Issue 3)
-- Phase 4/Worker bundling: no confirmed worked example of `new Worker(new URL(...))` under Next.js 16.1.6 + Turbopack; run a small spike early in Phase 4
-- Phase 4: SheetJS `xlsx` must be installed from cdn.sheetjs.com, NOT the npm registry (npm version has unpatched CVEs)
+- Phase 4/next build --webpack: pre-existing, unrelated route-export type error in the Estates filing-pack route fails `next build --webpack` specifically (not the project's actual Turbopack build); see `.planning/phases/04-import-pipeline/deferred-items.md`
 
 ## Session Continuity
 
-**Last Session:** 2026-07-04T07:36:10.422Z
-**Stopped At:** Completed 04-02-PLAN.md
+**Last Session:** 2026-07-04T07:53:12.331Z
+**Stopped At:** Completed 04-01-PLAN.md
 **Resume File:** None
