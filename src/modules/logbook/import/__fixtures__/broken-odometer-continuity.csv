@@ -1,0 +1,4 @@
+Date,*Opening Km,*Closing Km,Total Business Km,From,To,Reason
+15/01/2026,10000,10600,600,Depot,Client A,Site visit
+16/01/2026,10400,10900,500,Depot,Client B,Delivery run
+17/01/2026,11000,10950,50,Depot,Client C,Reversed reading typo
