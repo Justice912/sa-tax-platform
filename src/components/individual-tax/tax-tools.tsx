@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useEffect, useRef, useCallback } from "react";
-import { getIndividualTaxRulePackByYear } from "@/modules/individual-tax/rulepack-registry";
 import type { SupportedAssessmentYear } from "@/modules/individual-tax/types";
 import {
   calcTax,
@@ -23,15 +22,33 @@ import {
   type UploadData,
   type TabKey,
 } from "@/components/individual-tax/tax-tools/shared";
+import {
+  RulePackProvider,
+  useRulePack,
+} from "@/components/individual-tax/tax-tools/rulepack-context";
+import {
+  TaxToolsSummaryProvider,
+  useSummaryWriter,
+} from "@/components/individual-tax/tax-tools/summary-context";
+import { DashboardTab } from "@/components/individual-tax/tax-tools/dashboard-tab";
 
 /* ═══════════════════════════════════════════
    MAIN COMPONENT
    ═══════════════════════════════════════════ */
 export function TaxTools() {
+  return (
+    <RulePackProvider>
+      <TaxToolsSummaryProvider>
+        <TaxToolsInner />
+      </TaxToolsSummaryProvider>
+    </RulePackProvider>
+  );
+}
+
+function TaxToolsInner() {
   const [tab, setTab] = useState<TabKey>("dashboard");
-  const [assessmentYear, setAssessmentYear] =
-    useState<SupportedAssessmentYear>(2026);
-  const rulePack = getIndividualTaxRulePackByYear(assessmentYear);
+  const { assessmentYear, setAssessmentYear, rulePack } = useRulePack();
+  const setSummaryValue = useSummaryWriter();
   const [toast, setToast] = useState<{
     msg: string;
     type: "success" | "error";
@@ -400,6 +417,32 @@ export function TaxTools() {
   };
   const hoResult = calcHO();
 
+  // ── Publish summary values for DashboardTab (write-only; stable setter) ──
+  useEffect(
+    () => setSummaryValue("travelDeduction", travelDeduction),
+    [travelDeduction, setSummaryValue],
+  );
+  useEffect(
+    () => setSummaryValue("medicalTotal", medResult.total),
+    [medResult.total, setSummaryValue],
+  );
+  useEffect(
+    () => setSummaryValue("retirementHeadroom", retResult.headroom),
+    [retResult.headroom, setSummaryValue],
+  );
+  useEffect(
+    () => setSummaryValue("rentalNet", rentalResult.net),
+    [rentalResult.net, setSummaryValue],
+  );
+  useEffect(
+    () =>
+      setSummaryValue(
+        "homeOfficeAnnual",
+        hoResult.qualifies ? hoResult.annual : 0,
+      ),
+    [hoResult.qualifies, hoResult.annual, setSummaryValue],
+  );
+
   // Upload handler
   const handleFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
@@ -571,64 +614,9 @@ export function TaxTools() {
       </div>
 
       {/* ════════ DASHBOARD ════════ */}
-      {tab === "dashboard" && (
-        <div className="space-y-5">
-          <div>
-            <h2 className="text-xl font-semibold text-slate-900">
-              Individual Tax Dashboard
-            </h2>
-            <p className="text-sm text-slate-500">
-              Tax Year {assessmentYear - 1}/{assessmentYear} — Summary of
-              deductions and credits
-            </p>
-          </div>
-          <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
-            <StatCard
-              label="Travel Deduction"
-              value={fmt(travelDeduction)}
-              colorClass="text-teal-600"
-            />
-            <StatCard
-              label="Medical Credits"
-              value={fmt(medResult.total)}
-              colorClass="text-sky-600"
-            />
-            <StatCard
-              label="Retirement Headroom"
-              value={fmt(retResult.headroom)}
-              colorClass="text-violet-600"
-            />
-            <StatCard
-              label="Rental Net Income"
-              value={fmt(rentalResult.net)}
-              colorClass={
-                rentalResult.net >= 0 ? "text-teal-600" : "text-red-500"
-              }
-            />
-            <StatCard
-              label="Home Office Deduction"
-              value={fmt(hoResult.qualifies ? hoResult.annual : 0)}
-              colorClass="text-amber-600"
-            />
-          </div>
-          <div className="rounded-xl border border-slate-200/80 bg-white p-5 shadow-sm">
-            <h3 className="mb-3 text-sm font-semibold text-slate-900">
-              Quick Actions
-            </h3>
-            <div className="flex flex-wrap gap-2">
-              {NAV.slice(1).map((n) => (
-                <button
-                  key={n.key}
-                  onClick={() => setTab(n.key)}
-                  className="rounded-md border border-slate-200 px-3 py-2 text-sm text-slate-600 transition hover:border-teal-300 hover:text-teal-700"
-                >
-                  {n.label}
-                </button>
-              ))}
-            </div>
-          </div>
-        </div>
-      )}
+      <div className={tab === "dashboard" ? "" : "hidden"}>
+        <DashboardTab navItems={NAV.slice(1)} onNavigate={setTab} />
+      </div>
 
       {/* ════════ TRAVEL LOGBOOK ════════ */}
       {tab === "travel" && (
