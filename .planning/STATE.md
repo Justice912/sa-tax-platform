@@ -4,17 +4,17 @@ milestone: v1.0
 milestone_name: milestone
 current_phase: 5
 current_phase_name: Component Decomposition
-current_plan: 2
+current_plan: 3
 status: executing
-stopped_at: Completed 05-01-PLAN.md
-last_updated: "2026-07-04T14:35:10.476Z"
+stopped_at: Completed 05-02-PLAN.md
+last_updated: "2026-07-04T14:44:34.954Z"
 last_activity: 2026-07-04
 progress:
   total_phases: 7
   completed_phases: 4
   total_plans: 22
-  completed_plans: 17
-  percent: 77
+  completed_plans: 18
+  percent: 82
 ---
 
 # Project State
@@ -31,12 +31,12 @@ See: .planning/PROJECT.md (updated 2026-07-02)
 **Current Phase:** 5
 **Current Phase Name:** Component Decomposition
 **Total Phases:** 7
-**Current Plan:** 2
+**Current Plan:** 3
 **Total Plans in Phase:** 6
 **Status:** Ready to execute
 **Last Activity:** 2026-07-04
 
-**Progress:** [████████░░] 77%
+**Progress:** [████████░░] 82%
 
 ## Performance Metrics
 
@@ -73,6 +73,7 @@ See: .planning/PROJECT.md (updated 2026-07-02)
 | Phase 04 P04 | 15min | 2 tasks | 3 files |
 | Phase 04 P06 | 18min | 3 tasks | 6 files |
 | Phase 05 P01 | 9min | 3 tasks | 3 files |
+| Phase 05 P02 | 7min | 3 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -121,6 +122,9 @@ Recent decisions affecting current work:
 - [Phase 04]: Integration tests reload committed logbooks via logbookRepository.getLogbookById, not getLogbookForClientYear, since the demo seed's pre-existing client_001/2026 logbook makes a clientId+year lookup ambiguous
 - [Phase 05]: calcTax/getMarginalRate/getDeemedRate relocated verbatim into tax-tools/calc-helpers.ts, NOT consolidated with calculation-service.ts's private getBracketTax (cross-module merge stays out of scope for this phase)
 - [Phase 05]: TabKey moved to tax-tools/shared.tsx (not left in the monolith) since shell, nav, and DashboardTab's onNavigate prop all reference it; NAV array and tab state remain shell-owned
+- [Phase 05]: tab/setTab remains plain shell-local useState in TaxToolsInner, never moved into any context (research Open Q3)
+- [Phase 05]: Two-context write-only summary design (stable setter context for calculators + separate value context for Dashboard) prevents calculator re-renders on Dashboard total changes
+- [Phase 05]: Shell split into TaxTools (provider wrapper, named export) + TaxToolsInner (calculator logic); all 5 dashboard totals published via useEffect until each calculator is extracted in later waves
 
 ### Pending Todos
 
@@ -136,6 +140,6 @@ None yet.
 
 ## Session Continuity
 
-**Last Session:** 2026-07-04T14:35:10.471Z
-**Stopped At:** Completed 05-01-PLAN.md
+**Last Session:** 2026-07-04T14:44:34.949Z
+**Stopped At:** Completed 05-02-PLAN.md
 **Resume File:** None
