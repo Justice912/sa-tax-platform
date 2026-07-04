@@ -1,0 +1,5 @@
+# CSV import-pipeline fixtures intentionally mix CRLF record separators with a bare LF
+# embedded inside a quoted field (testing that PapaParse doesn't split/corrupt on either).
+# Git's core.autocrlf normalization would otherwise silently rewrite these exact bytes on
+# commit/checkout, breaking the fixture's purpose. Treat them as binary: never touched.
+src/modules/logbook/import/__fixtures__/*.csv -text
