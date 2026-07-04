@@ -4,17 +4,17 @@ milestone: v1.0
 milestone_name: milestone
 current_phase: 5
 current_phase_name: Component Decomposition
-current_plan: 4
+current_plan: 5
 status: executing
-stopped_at: Completed 05-03-PLAN.md
-last_updated: "2026-07-04T15:00:58.243Z"
+stopped_at: Completed 05-04-PLAN.md
+last_updated: "2026-07-04T15:14:08.728Z"
 last_activity: 2026-07-04
 progress:
   total_phases: 7
   completed_phases: 4
   total_plans: 22
-  completed_plans: 19
-  percent: 86
+  completed_plans: 20
+  percent: 91
 ---
 
 # Project State
@@ -31,12 +31,12 @@ See: .planning/PROJECT.md (updated 2026-07-02)
 **Current Phase:** 5
 **Current Phase Name:** Component Decomposition
 **Total Phases:** 7
-**Current Plan:** 4
+**Current Plan:** 5
 **Total Plans in Phase:** 6
 **Status:** Ready to execute
 **Last Activity:** 2026-07-04
 
-**Progress:** [█████████░] 86%
+**Progress:** [█████████░] 91%
 
 ## Performance Metrics
 
@@ -75,6 +75,7 @@ See: .planning/PROJECT.md (updated 2026-07-02)
 | Phase 05 P01 | 9min | 3 tasks | 3 files |
 | Phase 05 P02 | 7min | 3 tasks | 4 files |
 | Phase 05 P03 | 15min | 3 tasks | 4 files |
+| Phase 05 P04 | 12min | 3 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -128,6 +129,9 @@ Recent decisions affecting current work:
 - [Phase 05]: Shell split into TaxTools (provider wrapper, named export) + TaxToolsInner (calculator logic); all 5 dashboard totals published via useEffect until each calculator is extracted in later waves
 - [Phase 05]: Rental and Home Office extracted first (both rulepack-free) to prove the colocated-state + CSS-hide + summary-publish + Profiler-verified render-isolation pattern before touching rulepack-dependent calculators
 - [Phase 05]: en-ZA currency assertions in tests must pass { normalizer: (text) => text } to getByText/getAllByText -- the default normalizer collapses the NBSP thousands separator on the DOM side only, silently breaking exact-string matches against fmt() output
+- [Phase 05]: CGT and Retirement extracted first among rulepack-dependent calculators, proving useRulePack() consumption and year-switch reactivity survive extraction before travel/medical/provisional
+- [Phase 05]: CgtTab has no useSummaryWriter() call -- CGT is not a Dashboard total, so it is the first extracted tab with zero summary-context coupling
+- [Phase 05]: Year-switch context proof written against the full TaxTools shell (real tax-year select, real nav) rather than an isolated component, to genuinely prove rates are read live from context
 
 ### Pending Todos
 
@@ -143,6 +147,6 @@ None yet.
 
 ## Session Continuity
 
-**Last Session:** 2026-07-04T15:00:58.238Z
-**Stopped At:** Completed 05-03-PLAN.md
+**Last Session:** 2026-07-04T15:14:08.723Z
+**Stopped At:** Completed 05-04-PLAN.md
 **Resume File:** None
