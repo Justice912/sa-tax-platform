@@ -5,16 +5,16 @@ milestone_name: milestone
 current_phase: 5
 current_phase_name: Component Decomposition
 current_plan: 6
-status: executing
-stopped_at: Completed 05-05-PLAN.md
-last_updated: "2026-07-04T15:25:15.553Z"
+status: verifying
+stopped_at: Completed 05-06-PLAN.md
+last_updated: "2026-07-04T15:39:56.347Z"
 last_activity: 2026-07-04
 progress:
   total_phases: 7
-  completed_phases: 4
+  completed_phases: 5
   total_plans: 22
-  completed_plans: 21
-  percent: 95
+  completed_plans: 22
+  percent: 100
 ---
 
 # Project State
@@ -33,10 +33,10 @@ See: .planning/PROJECT.md (updated 2026-07-02)
 **Total Phases:** 7
 **Current Plan:** 6
 **Total Plans in Phase:** 6
-**Status:** Ready to execute
+**Status:** Phase complete — ready for verification
 **Last Activity:** 2026-07-04
 
-**Progress:** [██████████] 95%
+**Progress:** [██████████] 100%
 
 ## Performance Metrics
 
@@ -77,6 +77,7 @@ See: .planning/PROJECT.md (updated 2026-07-02)
 | Phase 05 P03 | 15min | 3 tasks | 4 files |
 | Phase 05 P04 | 12min | 3 tasks | 4 files |
 | Phase 05 P05 | 9min | 3 tasks | 4 files |
+| Phase 05 P06 | 13min | 3 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -136,6 +137,9 @@ Recent decisions affecting current work:
 - [Phase 05]: Medical and Provisional Tax extracted together as the phase's second rulepack-dependent pair, both carrying prior-phase correctness content (Medical's untouched-by-design s6B formula constants, Provisional's Phase-1-corrected safe-harbour orientation) that must survive extraction verbatim
 - [Phase 05]: Added a Dashboard medicalTotal-flow test beyond the plan's explicit task-3 list, mirroring 05-04's retirementHeadroom-flow test, to give the must-have truth 'Medical total still flows to the Dashboard' its own automated proof
 - [Phase 05]: Safe-harbour spot-check asserts both ternary branches (0.90 at/below R1m, 0.80 above) in one test against a fixed priorTax, directly targeting the Phase-1 branch-orientation regression rather than only checking output preservation for one input
+- [Phase 05]: Travel Logbook extracted as a pure relocation (in-memory Trip[] + naive FileReader upload), explicitly not wiring in the Phase 4 import pipeline or Phase 2/3 logbook domain module -- deferred to Phase 6
+- [Phase 05]: Toast state/effect/notify and the hidden file input, previously shell-level, moved wholesale into TravelLogbookTab since grep confirmed notify() was exclusively called from Travel/Logbook functions
+- [Phase 05]: tripStats/filteredTrips/monthlyData+maxMon wrapped in useMemo during extraction to pre-empt a per-keystroke O(n) recompute before Phase 6 virtualization work begins
 
 ### Pending Todos
 
@@ -151,6 +155,6 @@ None yet.
 
 ## Session Continuity
 
-**Last Session:** 2026-07-04T15:25:15.549Z
-**Stopped At:** Completed 05-05-PLAN.md
+**Last Session:** 2026-07-04T15:39:56.343Z
+**Stopped At:** Completed 05-06-PLAN.md
 **Resume File:** None
