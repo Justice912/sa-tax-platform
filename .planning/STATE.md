@@ -2,19 +2,19 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-current_phase: 3
-current_phase_name: ITR12 Travel Schedule Integration
-current_plan: Not started
-status: completed
-stopped_at: Completed 03-02-PLAN.md
-last_updated: "2026-07-03T15:18:10.720Z"
-last_activity: 2026-07-03
+current_phase: 4
+current_phase_name: Import Pipeline
+current_plan: 2
+status: in_progress
+stopped_at: Completed 04-02-PLAN.md
+last_updated: "2026-07-04T07:36:10.422Z"
+last_activity: 2026-07-04
 progress:
   total_phases: 7
   completed_phases: 3
-  total_plans: 10
-  completed_plans: 10
-  percent: 100
+  total_plans: 16
+  completed_plans: 11
+  percent: 69
 ---
 
 # Project State
@@ -24,19 +24,19 @@ progress:
 See: .planning/PROJECT.md (updated 2026-07-02)
 
 **Core value:** A tax practitioner can capture or import a client's travel logbook and complete an individual tax assessment knowing every figure and format matches current SARS requirements — without the app slowing down.
-**Current focus:** Phase 3 - ITR12 Travel Schedule Integration
+**Current focus:** Phase 4 - Import Pipeline
 
 ## Current Position
 
-**Current Phase:** 3
-**Current Phase Name:** ITR12 Travel Schedule Integration
+**Current Phase:** 4
+**Current Phase Name:** Import Pipeline
 **Total Phases:** 7
-**Current Plan:** Not started
-**Total Plans in Phase:** 3
-**Status:** Milestone complete
-**Last Activity:** 2026-07-03
+**Current Plan:** 2 of 6 (04-01 running in parallel; 04-03..04-06 not yet started)
+**Total Plans in Phase:** 6
+**Status:** In progress
+**Last Activity:** 2026-07-04
 
-**Progress:** [██████████] 100%
+**Progress:** [███████░░░] 69%
 
 ## Performance Metrics
 
@@ -66,6 +66,7 @@ See: .planning/PROJECT.md (updated 2026-07-02)
 | Phase 03 P01 | 12min | 3 tasks | 6 files |
 | Phase 03 P02 | 8min | 3 tasks | 3 files |
 | Phase 03 P03 | 7min | 3 tasks | 2 files |
+| Phase 04 P02 | 10min | 3 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -100,6 +101,8 @@ Recent decisions affecting current work:
 - [Phase 03]: report-transformer's 3702 income row is spliced in only when the calc emits one, preserving the legacy report's exact income-code list untouched
 - [Phase 03]: Logbook resolution in getIndividualTaxAssessmentResult guarded by assessmentMode + hasTravelAllowance + clientId, skipping repository I/O when the travel section or client link is absent
 - [Phase 03]: Async logbook lookup left unguarded by try/catch -- a throwing lookup is a real bug that must surface, not be masked as no-logbook
+- [Phase 04]: Batch import mutators mirror single-item mutator structure (parse -> load -> merged-set continuity check -> one write -> one audit entry) rather than looping the single-item path
+- [Phase 04]: Demo-mode writeAuditLog silently drops afterData/beforeData (pre-existing, codebase-wide gap, out of scope for this plan); import tests assert audit-entry count and match the human-readable summary string instead
 
 ### Pending Todos
 
@@ -116,6 +119,6 @@ None yet.
 
 ## Session Continuity
 
-**Last Session:** 2026-07-03T10:51:22.796Z
-**Stopped At:** Completed 03-02-PLAN.md
+**Last Session:** 2026-07-04T07:36:10.422Z
+**Stopped At:** Completed 04-02-PLAN.md
 **Resume File:** None

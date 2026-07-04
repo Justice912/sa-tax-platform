@@ -27,8 +27,8 @@ Requirements for this milestone. Each maps to roadmap phases.
 - [ ] **IMP-01**: User can import trips from CSV with robust parsing (quoted fields, delimiter detection, SA DD/MM/YYYY date handling)
 - [ ] **IMP-02**: User can import trips from Excel (.xlsx), including Excel serial-date handling
 - [ ] **IMP-03**: The official SARS elogbook layout is auto-detected and columns mapped automatically; manual column mapping remains available for other layouts
-- [ ] **IMP-04**: Importing 10,000+ rows does not freeze the UI (parsing off the main thread, preview before commit)
-- [ ] **IMP-05**: Import validation flags odometer discontinuities, invalid dates and unparseable rows before the user finalises
+- [x] **IMP-04**: Importing 10,000+ rows does not freeze the UI (parsing off the main thread, preview before commit)
+- [x] **IMP-05**: Import validation flags odometer discontinuities, invalid dates and unparseable rows before the user finalises
 
 ### ITR12 Integration
 
@@ -92,8 +92,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | IMP-01 | Phase 4 - Import Pipeline | Pending |
 | IMP-02 | Phase 4 - Import Pipeline | Pending |
 | IMP-03 | Phase 4 - Import Pipeline | Pending |
-| IMP-04 | Phase 4 - Import Pipeline | Pending |
-| IMP-05 | Phase 4 - Import Pipeline | Pending |
+| IMP-04 | Phase 4 - Import Pipeline | Complete |
+| IMP-05 | Phase 4 - Import Pipeline | Complete |
 | PERF-01 | Phase 5 - Component Decomposition | Pending |
 | PERF-02 | Phase 6 - Logbook UI, Import Wizard & Performance Hardening | Pending |
 | PERF-03 | Phase 6 - Logbook UI, Import Wizard & Performance Hardening | Pending |
