@@ -2,38 +2,19 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-current_phase: 4
-current_phase_name: Import Pipeline
-current_plan: Not started
-status: completed
-stopped_at: Completed 04-06-PLAN.md
-last_updated: "2026-07-04T08:51:36.355Z"
+current_phase: 5
+current_phase_name: Component Decomposition
+current_plan: 2
+status: executing
+stopped_at: Completed 05-01-PLAN.md
+last_updated: "2026-07-04T14:35:10.476Z"
 last_activity: 2026-07-04
 progress:
   total_phases: 7
   completed_phases: 4
-  total_plans: 16
-  completed_plans: 16
-  percent: 100
----
-
----
-gsd_state_version: 1.0
-milestone: v1.0
-milestone_name: milestone
-current_phase: 4
-current_phase_name: Import Pipeline
-current_plan: 6
-status: verifying
-stopped_at: Completed 04-06-PLAN.md
-last_updated: "2026-07-04T08:38:29.243Z"
-last_activity: 2026-07-04
-progress:
-  total_phases: 7
-  completed_phases: 4
-  total_plans: 16
-  completed_plans: 16
-  percent: 100
+  total_plans: 22
+  completed_plans: 17
+  percent: 77
 ---
 
 # Project State
@@ -43,19 +24,19 @@ progress:
 See: .planning/PROJECT.md (updated 2026-07-02)
 
 **Core value:** A tax practitioner can capture or import a client's travel logbook and complete an individual tax assessment knowing every figure and format matches current SARS requirements — without the app slowing down.
-**Current focus:** Phase 4 - Import Pipeline
+**Current focus:** Phase 5 - Component Decomposition
 
 ## Current Position
 
-**Current Phase:** 4
-**Current Phase Name:** Import Pipeline
+**Current Phase:** 5
+**Current Phase Name:** Component Decomposition
 **Total Phases:** 7
-**Current Plan:** Not started
+**Current Plan:** 2
 **Total Plans in Phase:** 6
-**Status:** Milestone complete
+**Status:** Ready to execute
 **Last Activity:** 2026-07-04
 
-**Progress:** [██████████] 100%
+**Progress:** [████████░░] 77%
 
 ## Performance Metrics
 
@@ -91,6 +72,7 @@ See: .planning/PROJECT.md (updated 2026-07-02)
 | Phase 04 P03 | 22 | 2 tasks | 5 files |
 | Phase 04 P04 | 15min | 2 tasks | 3 files |
 | Phase 04 P06 | 18min | 3 tasks | 6 files |
+| Phase 05 P01 | 9min | 3 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -137,6 +119,8 @@ Recent decisions affecting current work:
 - [Phase 04]: Headers and rows in parse-xlsx.ts built via positional indexing into sheet_to_json header:1 output, not the default object-keyed mode, to avoid a latent header-whitespace key mismatch
 - [Phase 04]: TRIP_ODOMETER_REVERSED cannot come from a candidate CSV row surviving buildImportPreview's per-row pass -- tripInputSchema's refine is identical to validateOdometerContinuity's per-trip reversed check, so a hand-crafted existingTrips entry proves the shared-checker code path instead
 - [Phase 04]: Integration tests reload committed logbooks via logbookRepository.getLogbookById, not getLogbookForClientYear, since the demo seed's pre-existing client_001/2026 logbook makes a clientId+year lookup ambiguous
+- [Phase 05]: calcTax/getMarginalRate/getDeemedRate relocated verbatim into tax-tools/calc-helpers.ts, NOT consolidated with calculation-service.ts's private getBracketTax (cross-module merge stays out of scope for this phase)
+- [Phase 05]: TabKey moved to tax-tools/shared.tsx (not left in the monolith) since shell, nav, and DashboardTab's onNavigate prop all reference it; NAV array and tab state remain shell-owned
 
 ### Pending Todos
 
@@ -152,6 +136,6 @@ None yet.
 
 ## Session Continuity
 
-**Last Session:** 2026-07-04T08:38:29.238Z
-**Stopped At:** Completed 04-06-PLAN.md
+**Last Session:** 2026-07-04T14:35:10.471Z
+**Stopped At:** Completed 05-01-PLAN.md
 **Resume File:** None

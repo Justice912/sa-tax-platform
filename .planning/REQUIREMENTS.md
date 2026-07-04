@@ -37,7 +37,7 @@ Requirements for this milestone. Each maps to roadmap phases.
 
 ### Performance & UI
 
-- [ ] **PERF-01**: `tax-tools.tsx` is decomposed into per-calculator components with colocated state — typing in one calculator does not re-render the others
+- [x] **PERF-01**: `tax-tools.tsx` is decomposed into per-calculator components with colocated state — typing in one calculator does not re-render the others
 - [ ] **PERF-02**: Trip tables (logbook and import preview) are virtualized
 - [ ] **PERF-03**: A logbook with 10,000+ trips remains responsive for scroll, edit and filter operations
 
@@ -94,7 +94,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | IMP-03 | Phase 4 - Import Pipeline | Complete |
 | IMP-04 | Phase 4 - Import Pipeline | Complete |
 | IMP-05 | Phase 4 - Import Pipeline | Complete |
-| PERF-01 | Phase 5 - Component Decomposition | Pending |
+| PERF-01 | Phase 5 - Component Decomposition | Complete |
 | PERF-02 | Phase 6 - Logbook UI, Import Wizard & Performance Hardening | Pending |
 | PERF-03 | Phase 6 - Logbook UI, Import Wizard & Performance Hardening | Pending |
 | CALC-01 | Phase 7 - Calculator Audit | Pending |

@@ -152,6 +152,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7
 | 2. Logbook Domain Module | 4/4 | Complete   | 2026-07-03 |
 | 3. ITR12 Travel Schedule Integration | 3/3 | Complete    | 2026-07-03 |
 | 4. Import Pipeline | 6/6 | Complete    | 2026-07-04 |
-| 5. Component Decomposition | 0/6 | Not started | - |
+| 5. Component Decomposition | 1/6 | In Progress|  |
 | 6. Logbook UI, Import Wizard & Performance Hardening | 0/TBD | Not started | - |
 | 7. Calculator Audit | 0/TBD | Not started | - |
