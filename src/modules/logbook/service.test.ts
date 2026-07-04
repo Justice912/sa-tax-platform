@@ -3,9 +3,11 @@ import {
   addTripToLogbook,
   createLogbookForClient,
   getLogbookTravelResult,
+  importTripsToLogbook,
   setLogbookActualExpenses,
   setLogbookCostMethod,
 } from "@/modules/logbook/service";
+import { logbookRepository } from "@/modules/logbook/repository";
 import type { LogbookRecord } from "@/modules/logbook/types";
 import type { AuditLogRecord } from "@/modules/shared/types";
 import { demoAuditLogs, demoLogbooks } from "@/server/demo-data";
@@ -216,6 +218,164 @@ describe("logbook service — year resolution (Pitfall 4 regression guard)", () 
     const result2027 = await getLogbookTravelResult(logbook2027.id);
 
     expect(result2026.deemedCostDeduction).not.toBe(result2027.deemedCostDeduction);
+  });
+});
+
+describe("logbook service — bulk trip import", () => {
+  it("imports a batch as one repository write and one audit entry (no per-trip LOGBOOK_TRIP_ADDED entries)", async () => {
+    const created = await createLogbookForClient({
+      clientId: "client_001",
+      assessmentYear: 2026,
+      vehicle: { ...baseVehicleInput(), registrationNumber: "GP 900-001" },
+      openingOdometer: 10000,
+      closingOdometer: 30000,
+    });
+
+    const updated = await importTripsToLogbook(created.id, [
+      {
+        date: "2026-01-05",
+        businessKm: 3000,
+        fromLocation: "Depot",
+        toLocation: "Client site A",
+        reason: "Site visit",
+        odometerStart: 10000,
+        odometerEnd: 13000,
+      },
+      {
+        date: "2026-01-10",
+        businessKm: 4000,
+        fromLocation: "Depot",
+        toLocation: "Client site B",
+        reason: "Delivery run",
+      },
+      {
+        date: "2026-01-15",
+        businessKm: 3000,
+        fromLocation: "Depot",
+        toLocation: "Client site C",
+        reason: "Follow-up meeting",
+        odometerStart: 13000,
+        odometerEnd: 16000,
+      },
+    ]);
+
+    expect(updated.trips).toHaveLength(3);
+    const ids = new Set(updated.trips.map((trip) => trip.id));
+    expect(ids.size).toBe(3);
+    for (const trip of updated.trips) {
+      expect(trip.id).toBeTruthy();
+      expect(trip.createdAt).toBeTruthy();
+      expect(trip.updatedAt).toBeTruthy();
+    }
+
+    const importEntries = demoAuditLogs.filter(
+      (entry) => entry.action === "LOGBOOK_TRIPS_IMPORTED" && entry.entityId === created.id,
+    );
+    expect(importEntries).toHaveLength(1);
+    expect(importEntries[0]?.summary).toMatch(/Imported 3 trips from CSV import/);
+
+    const tripAddedEntries = demoAuditLogs.filter(
+      (entry) => entry.action === "LOGBOOK_TRIP_ADDED" && entry.entityId === created.id,
+    );
+    expect(tripAddedEntries).toHaveLength(0);
+  });
+
+  it("rejects a batch that breaks odometer continuity against the merged existing+imported trip set, persisting nothing", async () => {
+    const created = await createLogbookForClient({
+      clientId: "client_001",
+      assessmentYear: 2026,
+      vehicle: { ...baseVehicleInput(), registrationNumber: "GP 900-002" },
+      openingOdometer: 10000,
+      closingOdometer: 20000,
+    });
+
+    await addTripToLogbook(created.id, {
+      date: "2026-01-01",
+      businessKm: 8000,
+      fromLocation: "Depot",
+      toLocation: "Client site A",
+      reason: "Manual trip",
+    });
+
+    await expect(
+      importTripsToLogbook(created.id, [
+        {
+          date: "2026-01-05",
+          businessKm: 1500,
+          fromLocation: "Depot",
+          toLocation: "Client site B",
+          reason: "Import trip 1",
+        },
+        {
+          date: "2026-01-06",
+          businessKm: 1500,
+          fromLocation: "Depot",
+          toLocation: "Client site C",
+          reason: "Import trip 2",
+        },
+      ]),
+    ).rejects.toThrow(/business kilometres/i);
+
+    const record = await logbookRepository.getLogbookById(created.id);
+    expect(record?.trips).toHaveLength(1);
+  });
+
+  it("rejects an entire batch atomically when any trip is structurally invalid, persisting nothing", async () => {
+    const created = await createLogbookForClient({
+      clientId: "client_001",
+      assessmentYear: 2026,
+      vehicle: { ...baseVehicleInput(), registrationNumber: "GP 900-003" },
+      openingOdometer: 10000,
+      closingOdometer: 30000,
+    });
+
+    await expect(
+      importTripsToLogbook(created.id, [
+        {
+          date: "2026-01-05",
+          businessKm: 1000,
+          fromLocation: "Depot",
+          toLocation: "Client site A",
+          reason: "Valid trip",
+        },
+        {
+          date: "2026-01-06",
+          businessKm: -5,
+          fromLocation: "Depot",
+          toLocation: "Client site B",
+          reason: "Invalid trip",
+        },
+      ]),
+    ).rejects.toThrow();
+
+    const record = await logbookRepository.getLogbookById(created.id);
+    expect(record?.trips).toHaveLength(0);
+  });
+
+  it("rejects an empty batch", async () => {
+    const created = await createLogbookForClient({
+      clientId: "client_001",
+      assessmentYear: 2026,
+      vehicle: { ...baseVehicleInput(), registrationNumber: "GP 900-004" },
+      openingOdometer: 10000,
+      closingOdometer: 30000,
+    });
+
+    await expect(importTripsToLogbook(created.id, [])).rejects.toThrow();
+  });
+
+  it("rejects importing into a logbook that does not exist", async () => {
+    await expect(
+      importTripsToLogbook("logbook_does_not_exist", [
+        {
+          date: "2026-01-05",
+          businessKm: 1000,
+          fromLocation: "Depot",
+          toLocation: "Client site A",
+          reason: "Valid trip",
+        },
+      ]),
+    ).rejects.toThrow(/Logbook not found/i);
   });
 });
 
