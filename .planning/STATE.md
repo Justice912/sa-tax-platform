@@ -4,17 +4,17 @@ milestone: v1.0
 milestone_name: milestone
 current_phase: 4
 current_phase_name: Import Pipeline
-current_plan: 5
+current_plan: 6
 status: executing
-stopped_at: Completed 04-03-PLAN.md
-last_updated: "2026-07-04T08:11:02.403Z"
+stopped_at: Completed 04-04-PLAN.md
+last_updated: "2026-07-04T08:15:11.435Z"
 last_activity: 2026-07-04
 progress:
   total_phases: 7
   completed_phases: 3
   total_plans: 16
-  completed_plans: 14
-  percent: 88
+  completed_plans: 15
+  percent: 94
 ---
 
 # Project State
@@ -31,12 +31,12 @@ See: .planning/PROJECT.md (updated 2026-07-02)
 **Current Phase:** 4
 **Current Phase Name:** Import Pipeline
 **Total Phases:** 7
-**Current Plan:** 5
+**Current Plan:** 6
 **Total Plans in Phase:** 6
 **Status:** Ready to execute
 **Last Activity:** 2026-07-04
 
-**Progress:** [█████████░] 88%
+**Progress:** [█████████░] 94%
 
 ## Performance Metrics
 
@@ -70,6 +70,7 @@ See: .planning/PROJECT.md (updated 2026-07-02)
 | Phase 04 P01 | 25min | 3 tasks | 6 files |
 | Phase 04 P05 | 8min | 2 tasks | 4 files |
 | Phase 04 P03 | 22 | 2 tasks | 5 files |
+| Phase 04 P04 | 15min | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -112,6 +113,8 @@ Recent decisions affecting current work:
 - [Phase 04]: Ambiguity check in detect-elogbook.ts applies to all seven mapped fields (5 mandatory + 2 optional odometer), not just mandatory ones -- stricter never-guess safety
 - [Phase 04]: parseNumericCell disambiguates comma meaning by co-occurring dot presence: comma+dot = thousands separator, comma-only = SA decimal separator
 - [Phase 04]: CSV fixtures pinned as -text in .gitattributes to stop core.autocrlf from corrupting byte-exact CRLF/embedded-newline test fixtures
+- [Phase 04]: XLSX date cells normalized via UTC getters, confirmed by tracing xlsx.js's datenum/numdate source (Date.UTC-based epoch math) rather than assumption -- timezone-independent
+- [Phase 04]: Headers and rows in parse-xlsx.ts built via positional indexing into sheet_to_json header:1 output, not the default object-keyed mode, to avoid a latent header-whitespace key mismatch
 
 ### Pending Todos
 
@@ -127,6 +130,6 @@ None yet.
 
 ## Session Continuity
 
-**Last Session:** 2026-07-04T08:11:02.398Z
-**Stopped At:** Completed 04-03-PLAN.md
+**Last Session:** 2026-07-04T08:15:11.431Z
+**Stopped At:** Completed 04-04-PLAN.md
 **Resume File:** None
