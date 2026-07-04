@@ -4,17 +4,17 @@ milestone: v1.0
 milestone_name: milestone
 current_phase: 5
 current_phase_name: Component Decomposition
-current_plan: 5
+current_plan: 6
 status: executing
-stopped_at: Completed 05-04-PLAN.md
-last_updated: "2026-07-04T15:14:08.728Z"
+stopped_at: Completed 05-05-PLAN.md
+last_updated: "2026-07-04T15:25:15.553Z"
 last_activity: 2026-07-04
 progress:
   total_phases: 7
   completed_phases: 4
   total_plans: 22
-  completed_plans: 20
-  percent: 91
+  completed_plans: 21
+  percent: 95
 ---
 
 # Project State
@@ -31,12 +31,12 @@ See: .planning/PROJECT.md (updated 2026-07-02)
 **Current Phase:** 5
 **Current Phase Name:** Component Decomposition
 **Total Phases:** 7
-**Current Plan:** 5
+**Current Plan:** 6
 **Total Plans in Phase:** 6
 **Status:** Ready to execute
 **Last Activity:** 2026-07-04
 
-**Progress:** [█████████░] 91%
+**Progress:** [██████████] 95%
 
 ## Performance Metrics
 
@@ -76,6 +76,7 @@ See: .planning/PROJECT.md (updated 2026-07-02)
 | Phase 05 P02 | 7min | 3 tasks | 4 files |
 | Phase 05 P03 | 15min | 3 tasks | 4 files |
 | Phase 05 P04 | 12min | 3 tasks | 4 files |
+| Phase 05 P05 | 9min | 3 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -132,6 +133,9 @@ Recent decisions affecting current work:
 - [Phase 05]: CGT and Retirement extracted first among rulepack-dependent calculators, proving useRulePack() consumption and year-switch reactivity survive extraction before travel/medical/provisional
 - [Phase 05]: CgtTab has no useSummaryWriter() call -- CGT is not a Dashboard total, so it is the first extracted tab with zero summary-context coupling
 - [Phase 05]: Year-switch context proof written against the full TaxTools shell (real tax-year select, real nav) rather than an isolated component, to genuinely prove rates are read live from context
+- [Phase 05]: Medical and Provisional Tax extracted together as the phase's second rulepack-dependent pair, both carrying prior-phase correctness content (Medical's untouched-by-design s6B formula constants, Provisional's Phase-1-corrected safe-harbour orientation) that must survive extraction verbatim
+- [Phase 05]: Added a Dashboard medicalTotal-flow test beyond the plan's explicit task-3 list, mirroring 05-04's retirementHeadroom-flow test, to give the must-have truth 'Medical total still flows to the Dashboard' its own automated proof
+- [Phase 05]: Safe-harbour spot-check asserts both ternary branches (0.90 at/below R1m, 0.80 above) in one test against a fixed priorTax, directly targeting the Phase-1 branch-orientation regression rather than only checking output preservation for one input
 
 ### Pending Todos
 
@@ -147,6 +151,6 @@ None yet.
 
 ## Session Continuity
 
-**Last Session:** 2026-07-04T15:14:08.723Z
-**Stopped At:** Completed 05-04-PLAN.md
+**Last Session:** 2026-07-04T15:25:15.549Z
+**Stopped At:** Completed 05-05-PLAN.md
 **Resume File:** None
