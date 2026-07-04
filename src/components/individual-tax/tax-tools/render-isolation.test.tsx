@@ -10,6 +10,7 @@ import { CgtTab } from "@/components/individual-tax/tax-tools/cgt-tab";
 import { RetirementTab } from "@/components/individual-tax/tax-tools/retirement-tab";
 import { MedicalTab } from "@/components/individual-tax/tax-tools/medical-tab";
 import { ProvisionalTaxTab } from "@/components/individual-tax/tax-tools/provisional-tax-tab";
+import { TravelLogbookTab } from "@/components/individual-tax/tax-tools/travel-logbook-tab";
 import { fmt } from "@/components/individual-tax/tax-tools/shared";
 import { TaxTools } from "@/components/individual-tax/tax-tools";
 
@@ -345,5 +346,111 @@ describe("Medical/Provisional render isolation", () => {
     expect(
       screen.getAllByText(fmt(4368), { normalizer: rawNormalizer }).length,
     ).toBeGreaterThan(0);
+  });
+});
+
+function renderTravelAndMedical(
+  onRenderTravel: (id: string, phase: string) => void,
+  onRenderMedical: (id: string, phase: string) => void,
+) {
+  return render(
+    <RulePackProvider>
+      <TaxToolsSummaryProvider>
+        <Profiler id="travel" onRender={onRenderTravel}>
+          <TravelLogbookTab />
+        </Profiler>
+        <Profiler id="medical" onRender={onRenderMedical}>
+          <MedicalTab />
+        </Profiler>
+      </TaxToolsSummaryProvider>
+    </RulePackProvider>,
+  );
+}
+
+describe("Travel/Medical render isolation (final calculator extraction)", () => {
+  it("does not re-render MedicalTab when typing into Travel's vehicle-value input (Profiler-verified)", async () => {
+    const user = userEvent.setup();
+    const onRenderTravel = vi.fn();
+    const onRenderMedical = vi.fn();
+
+    renderTravelAndMedical(onRenderTravel, onRenderMedical);
+
+    // Let the initial-mount + summary-publish effects settle before measuring.
+    onRenderTravel.mockClear();
+    onRenderMedical.mockClear();
+
+    const vehicleValue = screen.getByLabelText(/determined value \(r\)/i);
+    await user.type(vehicleValue, "5");
+
+    expect(onRenderTravel).toHaveBeenCalled();
+    expect(onRenderMedical).not.toHaveBeenCalled();
+  });
+
+  it("still publishes Travel deduction to the Dashboard after extraction, reading deemed-cost rates via useRulePack()", async () => {
+    const user = userEvent.setup();
+    render(<TaxTools />);
+
+    const travelNav = screen.getAllByRole("button", {
+      name: /travel logbook/i,
+    })[0];
+    await user.click(travelNav);
+
+    await user.click(screen.getByRole("button", { name: /\+ new trip/i }));
+
+    // newTrip() defaults date to today and tripType to "Business"; only the
+    // odometer readings and purpose (required for a Business trip) need filling.
+    await user.type(screen.getByLabelText(/start odometer/i), "0");
+    await user.type(screen.getByLabelText(/end odometer/i), "1000");
+    await user.type(
+      screen.getByLabelText(/purpose \/ notes/i),
+      "Client site visit",
+    );
+    await user.click(screen.getByRole("button", { name: /^save trip$/i }));
+
+    // Business trip, 1,000 km, 100% business use. Vehicle value 250,000 falls
+    // in the 2026 rulepack's 200,001-300,000 deemed-cost band: fixedCostAnnual
+    // 87,497, fuelCostPerKm 1.779, maintenanceCostPerKm 0.654.
+    // deemedTotal = 87,497 + 1.779*1000 + 0.654*1000 = 89,930; travelDeduction
+    // = 89,930 * 100% = 89,930.
+    await user.type(
+      screen.getByLabelText(/determined value \(r\)/i),
+      "250000",
+    );
+
+    const dashboardNav = screen.getAllByRole("button", {
+      name: /^dashboard$/i,
+    })[0];
+    await user.click(dashboardNav);
+
+    expect(
+      screen.getAllByText(fmt(89930), { normalizer: rawNormalizer }).length,
+    ).toBeGreaterThan(0);
+  });
+
+  it("keeps in-progress Travel vehicle-value input intact across a tab switch away and back (always-mounted CSS-hide)", async () => {
+    const user = userEvent.setup();
+    render(<TaxTools />);
+
+    const travelNav = screen.getAllByRole("button", {
+      name: /travel logbook/i,
+    })[0];
+    await user.click(travelNav);
+
+    const vehicleValue = screen.getByLabelText(/determined value \(r\)/i);
+    await user.type(vehicleValue, "123456");
+    expect(vehicleValue).toHaveValue(123456);
+
+    const medicalNav = screen.getAllByRole("button", {
+      name: /medical credits/i,
+    })[0];
+    await user.click(medicalNav);
+
+    const travelNavAgain = screen.getAllByRole("button", {
+      name: /travel logbook/i,
+    })[0];
+    await user.click(travelNavAgain);
+
+    const vehicleValueAgain = screen.getByLabelText(/determined value \(r\)/i);
+    expect(vehicleValueAgain).toHaveValue(123456);
   });
 });
