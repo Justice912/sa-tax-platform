@@ -4,17 +4,17 @@ milestone: v1.0
 milestone_name: milestone
 current_phase: 4
 current_phase_name: Import Pipeline
-current_plan: 3
+current_plan: 4
 status: executing
-stopped_at: Completed 04-01-PLAN.md
-last_updated: "2026-07-04T07:53:12.336Z"
+stopped_at: Completed 04-05-PLAN.md
+last_updated: "2026-07-04T08:01:54.782Z"
 last_activity: 2026-07-04
 progress:
   total_phases: 7
   completed_phases: 3
   total_plans: 16
-  completed_plans: 12
-  percent: 75
+  completed_plans: 13
+  percent: 81
 ---
 
 # Project State
@@ -31,12 +31,12 @@ See: .planning/PROJECT.md (updated 2026-07-02)
 **Current Phase:** 4
 **Current Phase Name:** Import Pipeline
 **Total Phases:** 7
-**Current Plan:** 3
+**Current Plan:** 4
 **Total Plans in Phase:** 6
 **Status:** Ready to execute
 **Last Activity:** 2026-07-04
 
-**Progress:** [████████░░] 75%
+**Progress:** [████████░░] 81%
 
 ## Performance Metrics
 
@@ -68,6 +68,7 @@ See: .planning/PROJECT.md (updated 2026-07-02)
 | Phase 03 P03 | 7min | 3 tasks | 2 files |
 | Phase 04 P02 | 10min | 3 tasks | 3 files |
 | Phase 04 P01 | 25min | 3 tasks | 6 files |
+| Phase 04 P05 | 8min | 2 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -107,6 +108,8 @@ Recent decisions affecting current work:
 - [Phase 04]: xlsx installed from cdn.sheetjs.com tarball, not npm registry (0.18.5 has unpatched CVEs) -- lockfile confirmed resolving to the CDN URL
 - [Phase 04]: parse-dates.ts uses date-fns format() rather than .toISOString() for locally-parsed dates to avoid a UTC-shift timezone bug
 - [Phase 04]: Worker bundling spike verdict: CONFIRMED under both Turbopack and webpack -- 04-04/04-06 proceed with dedicated xlsx.worker.ts, no fallback needed
+- [Phase 04]: Ambiguity check in detect-elogbook.ts applies to all seven mapped fields (5 mandatory + 2 optional odometer), not just mandatory ones -- stricter never-guess safety
+- [Phase 04]: parseNumericCell disambiguates comma meaning by co-occurring dot presence: comma+dot = thousands separator, comma-only = SA decimal separator
 
 ### Pending Todos
 
@@ -122,6 +125,6 @@ None yet.
 
 ## Session Continuity
 
-**Last Session:** 2026-07-04T07:53:12.331Z
-**Stopped At:** Completed 04-01-PLAN.md
+**Last Session:** 2026-07-04T08:01:54.768Z
+**Stopped At:** Completed 04-05-PLAN.md
 **Resume File:** None
