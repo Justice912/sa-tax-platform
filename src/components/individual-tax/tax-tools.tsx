@@ -4,7 +4,6 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import type { SupportedAssessmentYear } from "@/modules/individual-tax/types";
 import {
   calcTax,
-  getMarginalRate,
   getDeemedRate,
 } from "@/components/individual-tax/tax-tools/calc-helpers";
 import {
@@ -33,6 +32,8 @@ import {
 import { DashboardTab } from "@/components/individual-tax/tax-tools/dashboard-tab";
 import { RentalTab } from "@/components/individual-tax/tax-tools/rental-tab";
 import { HomeOfficeTab } from "@/components/individual-tax/tax-tools/home-office-tab";
+import { CgtTab } from "@/components/individual-tax/tax-tools/cgt-tab";
+import { RetirementTab } from "@/components/individual-tax/tax-tools/retirement-tab";
 
 /* ═══════════════════════════════════════════
    MAIN COMPONENT
@@ -83,27 +84,6 @@ function TaxToolsInner() {
     outOfPocket: "",
     age: "under65",
     disability: false,
-    taxableIncome: "",
-  });
-
-  // ── Retirement State ──
-  const [ret, setRet] = useState({
-    income: "",
-    employerContrib: "",
-    employeeContrib: "",
-    raContrib: "",
-    additionalRA: 0,
-  });
-
-  // ── CGT State ──
-  const [cgt, setCgt] = useState({
-    assetType: "Other property",
-    proceeds: "",
-    baseCost: "",
-    improvements: "",
-    sellingCosts: "",
-    primaryRes: false,
-    death: false,
     taxableIncome: "",
   });
 
@@ -255,56 +235,6 @@ function TaxToolsInner() {
   };
   const medResult = calcMedical();
 
-  // ── Retirement calc ──
-  const calcRetire = () => {
-    const inc = parseFloat(ret.income) || 0;
-    const empC = (parseFloat(ret.employerContrib) || 0) * 12;
-    const eeC = (parseFloat(ret.employeeContrib) || 0) * 12;
-    const raC = (parseFloat(ret.raContrib) || 0) * 12;
-    const current = empC + eeC + raC;
-    const limit = Math.min(
-      inc * rulePack.retirement.deductiblePercentageLimit,
-      rulePack.retirement.annualCap,
-    );
-    const headroom = Math.max(0, limit - current);
-    const addRA = ret.additionalRA * 12;
-    const usable = Math.min(addRA, headroom);
-    const marginal = getMarginalRate(rulePack, inc);
-    const saving = usable * marginal;
-    return { current, limit, headroom, usable, saving, marginal };
-  };
-  const retResult = calcRetire();
-
-  // ── CGT calc ──
-  const calcCGT = () => {
-    const proceeds = parseFloat(cgt.proceeds) || 0;
-    const base = parseFloat(cgt.baseCost) || 0;
-    const impr = parseFloat(cgt.improvements) || 0;
-    const sell = parseFloat(cgt.sellingCosts) || 0;
-    const taxInc = parseFloat(cgt.taxableIncome) || 0;
-    const gain = proceeds - base - impr - sell;
-    let exclusion = cgt.death
-      ? rulePack.cgt.deathExclusion
-      : rulePack.cgt.annualExclusion;
-    if (cgt.primaryRes && gain > 0)
-      exclusion += Math.min(gain, rulePack.cgt.primaryResidenceExclusion);
-    const netGain = Math.max(0, gain - exclusion);
-    const taxableGain = netGain * rulePack.cgt.inclusionRate;
-    const marginal = getMarginalRate(rulePack, taxInc);
-    const cgtPayable = taxableGain * marginal;
-    const effectiveRate = gain > 0 ? (cgtPayable / gain) * 100 : 0;
-    return {
-      gain,
-      exclusion,
-      netGain,
-      taxableGain,
-      cgtPayable: Math.round(cgtPayable),
-      effectiveRate,
-      marginal,
-    };
-  };
-  const cgtResult = calcCGT();
-
   // ── Provisional tax calc ──
   const calcProv = () => {
     const estTaxable = parseFloat(prov.estimatedTaxable) || 0;
@@ -345,10 +275,6 @@ function TaxToolsInner() {
   useEffect(
     () => setSummaryValue("medicalTotal", medResult.total),
     [medResult.total, setSummaryValue],
-  );
-  useEffect(
-    () => setSummaryValue("retirementHeadroom", retResult.headroom),
-    [retResult.headroom, setSummaryValue],
   );
 
   // Upload handler
@@ -1289,246 +1215,14 @@ function TaxToolsInner() {
       )}
 
       {/* ════════ RETIREMENT ════════ */}
-      {tab === "retirement" && (
-        <div className="space-y-5">
-          <div>
-            <h2 className="text-xl font-semibold text-slate-900">
-              Retirement Contribution Optimizer
-            </h2>
-            <p className="text-sm text-slate-500">
-              27.5% cap / R350,000 annual limit
-            </p>
-          </div>
-          <div className="rounded-xl border border-slate-200/80 bg-white p-5 shadow-sm">
-            <div className="grid grid-cols-2 gap-3">
-              <Field label="Annual Remuneration (R)">
-                <input
-                  type="number"
-                  className={inputCls}
-                  value={ret.income}
-                  onChange={(e) => setRet({ ...ret, income: e.target.value })}
-                />
-              </Field>
-              <Field label="Employer Contribution (R/month)">
-                <input
-                  type="number"
-                  className={inputCls}
-                  value={ret.employerContrib}
-                  onChange={(e) =>
-                    setRet({ ...ret, employerContrib: e.target.value })
-                  }
-                />
-              </Field>
-              <Field label="Employee Contribution (R/month)">
-                <input
-                  type="number"
-                  className={inputCls}
-                  value={ret.employeeContrib}
-                  onChange={(e) =>
-                    setRet({ ...ret, employeeContrib: e.target.value })
-                  }
-                />
-              </Field>
-              <Field label="RA Contributions (R/month)">
-                <input
-                  type="number"
-                  className={inputCls}
-                  value={ret.raContrib}
-                  onChange={(e) =>
-                    setRet({ ...ret, raContrib: e.target.value })
-                  }
-                />
-              </Field>
-            </div>
-            <div className="mt-4">
-              <Field
-                label={`Additional RA: R${ret.additionalRA.toLocaleString()}/month`}
-              >
-                <input
-                  type="range"
-                  min="0"
-                  max="10000"
-                  step="100"
-                  value={ret.additionalRA}
-                  onChange={(e) =>
-                    setRet({
-                      ...ret,
-                      additionalRA: parseInt(e.target.value),
-                    })
-                  }
-                  className="w-full accent-teal-600"
-                />
-              </Field>
-            </div>
-          </div>
-          <div className="grid grid-cols-3 gap-3">
-            <ResultCard
-              label="Current Annual Contributions"
-              value={fmt(retResult.current)}
-              colorClass="text-slate-600"
-            />
-            <ResultCard
-              label="Deduction Limit"
-              value={fmt(retResult.limit)}
-              colorClass="text-sky-600"
-              sub="27.5% or R350k"
-            />
-            <ResultCard
-              label="Headroom Available"
-              value={fmt(retResult.headroom)}
-              colorClass="text-teal-600"
-            />
-          </div>
-          <Highlight
-            label={`TAX SAVING FROM R${ret.additionalRA.toLocaleString()}/mo ADDITIONAL RA`}
-            value={fmt(retResult.saving)}
-          />
-          <p className="text-center text-xs text-slate-400">
-            Marginal rate: {(retResult.marginal * 100).toFixed(0)}%
-          </p>
-        </div>
-      )}
+      <div className={tab === "retirement" ? "" : "hidden"}>
+        <RetirementTab />
+      </div>
 
       {/* ════════ CGT ════════ */}
-      {tab === "cgt" && (
-        <div className="space-y-5">
-          <div>
-            <h2 className="text-xl font-semibold text-slate-900">
-              Capital Gains Tax
-            </h2>
-            <p className="text-sm text-slate-500">
-              Calculate CGT on disposal of assets
-            </p>
-          </div>
-          <div className="rounded-xl border border-slate-200/80 bg-white p-5 shadow-sm">
-            <div className="grid grid-cols-2 gap-3">
-              <Field label="Asset Type">
-                <select
-                  className={selectCls}
-                  value={cgt.assetType}
-                  onChange={(e) =>
-                    setCgt({ ...cgt, assetType: e.target.value })
-                  }
-                >
-                  {[
-                    "Primary residence",
-                    "Other property",
-                    "Listed shares",
-                    "Unlisted shares",
-                    "Cryptocurrency",
-                    "Other",
-                  ].map((o) => (
-                    <option key={o}>{o}</option>
-                  ))}
-                </select>
-              </Field>
-              <Field label="Taxable Income (R) — for marginal rate">
-                <input
-                  type="number"
-                  className={inputCls}
-                  value={cgt.taxableIncome}
-                  onChange={(e) =>
-                    setCgt({ ...cgt, taxableIncome: e.target.value })
-                  }
-                />
-              </Field>
-              <Field label="Proceeds / Selling Price (R)">
-                <input
-                  type="number"
-                  className={inputCls}
-                  value={cgt.proceeds}
-                  onChange={(e) =>
-                    setCgt({ ...cgt, proceeds: e.target.value })
-                  }
-                />
-              </Field>
-              <Field label="Base Cost / Purchase Price (R)">
-                <input
-                  type="number"
-                  className={inputCls}
-                  value={cgt.baseCost}
-                  onChange={(e) =>
-                    setCgt({ ...cgt, baseCost: e.target.value })
-                  }
-                />
-              </Field>
-              <Field label="Improvement Costs (R)">
-                <input
-                  type="number"
-                  className={inputCls}
-                  value={cgt.improvements}
-                  onChange={(e) =>
-                    setCgt({ ...cgt, improvements: e.target.value })
-                  }
-                />
-              </Field>
-              <Field label="Selling Costs (R)">
-                <input
-                  type="number"
-                  className={inputCls}
-                  value={cgt.sellingCosts}
-                  onChange={(e) =>
-                    setCgt({ ...cgt, sellingCosts: e.target.value })
-                  }
-                />
-              </Field>
-              <Field label="Primary Residence Exclusion?">
-                <select
-                  className={selectCls}
-                  value={cgt.primaryRes ? "yes" : "no"}
-                  onChange={(e) =>
-                    setCgt({ ...cgt, primaryRes: e.target.value === "yes" })
-                  }
-                >
-                  <option value="no">No</option>
-                  <option value="yes">Yes — R2m exclusion</option>
-                </select>
-              </Field>
-              <Field label="Disposal on Death?">
-                <select
-                  className={selectCls}
-                  value={cgt.death ? "yes" : "no"}
-                  onChange={(e) =>
-                    setCgt({ ...cgt, death: e.target.value === "yes" })
-                  }
-                >
-                  <option value="no">No — R40k exclusion</option>
-                  <option value="yes">Yes — R300k exclusion</option>
-                </select>
-              </Field>
-            </div>
-          </div>
-          <div className="grid grid-cols-2 gap-3">
-            <ResultCard
-              label="Capital Gain"
-              value={fmt(cgtResult.gain)}
-              colorClass={
-                cgtResult.gain >= 0 ? "text-sky-600" : "text-red-500"
-              }
-            />
-            <ResultCard
-              label="Exclusions Applied"
-              value={fmt(cgtResult.exclusion)}
-              colorClass="text-slate-600"
-            />
-            <ResultCard
-              label="Net Capital Gain"
-              value={fmt(cgtResult.netGain)}
-              colorClass="text-amber-600"
-            />
-            <ResultCard
-              label="Taxable Portion (40%)"
-              value={fmt(cgtResult.taxableGain)}
-              colorClass="text-violet-600"
-            />
-          </div>
-          <Highlight label="CGT PAYABLE" value={fmt(cgtResult.cgtPayable)} />
-          <p className="text-center text-xs text-slate-400">
-            Effective CGT rate: {cgtResult.effectiveRate.toFixed(2)}% | Marginal
-            rate: {(cgtResult.marginal * 100).toFixed(0)}%
-          </p>
-        </div>
-      )}
+      <div className={tab === "cgt" ? "" : "hidden"}>
+        <CgtTab />
+      </div>
 
       {/* ════════ PROVISIONAL TAX ════════ */}
       {tab === "provisional" && (
