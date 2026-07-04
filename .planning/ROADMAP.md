@@ -119,10 +119,15 @@ Plans:
   2. The import wizard (file select → parse → detect/map → preview → commit) works end-to-end for both CSV and XLSX, including the SARS eLogbook template
   3. A logbook with 10,000+ trips remains responsive for scroll, edit, and filter operations
   4. Both deemed-cost and actual-cost results are real (not stubbed) and update correctly after edits or imports
-**Plans**: TBD
+**Plans**: 6 plans
 
 Plans:
-- [ ] 06-01: TBD
+- [ ] 06-01-PLAN.md — Foundation: install @tanstack/react-virtual + jsdom virtualization test recipe; logbook Server Actions returning { record, travelResult }
+- [ ] 06-02-PLAN.md — Virtualized, month-filterable trip table over the real LogbookTripRecord schema (PERF-02/03 proofs)
+- [ ] 06-03-PLAN.md — Import wizard: file select → parse → detect/map → validated (virtualized) preview → commit, wired to the Phase 4 pipeline
+- [ ] 06-04-PLAN.md — Cost-method panel: side-by-side deemed/actual, method election, actual-expense capture
+- [ ] 06-05-PLAN.md — Printable SARS audit summary route + component (LOG-06 print half)
+- [ ] 06-06-PLAN.md — Container assembly: client/year resolution, logbook load, trip CRUD, wire sub-components, CSV/print, summary publish
 
 ### Phase 7: Calculator Audit
 **Goal**: All remaining calculators are verified against current SARS rules for 2025-2027 and pull every figure from the rulepack, closing known compliance gaps.
@@ -153,5 +158,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7
 | 3. ITR12 Travel Schedule Integration | 3/3 | Complete    | 2026-07-03 |
 | 4. Import Pipeline | 6/6 | Complete    | 2026-07-04 |
 | 5. Component Decomposition | 6/6 | Complete    | 2026-07-04 |
-| 6. Logbook UI, Import Wizard & Performance Hardening | 0/TBD | Not started | - |
+| 6. Logbook UI, Import Wizard & Performance Hardening | 0/6 | Not started | - |
 | 7. Calculator Audit | 0/TBD | Not started | - |
