@@ -15,7 +15,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 1: Rulepack Extension** - Per-year SARS constants (deemed-cost travel table, medical, retirement, CGT, provisional tax) added to rulepacks as the single source of truth (completed 2026-07-02)
 - [x] **Phase 2: Logbook Domain Module** - Vehicle/trip/logbook data model and deemed/actual cost calculation engine, persisted and unit-tested in isolation (completed 2026-07-03)
 - [x] **Phase 3: ITR12 Travel Schedule Integration** - Logbook results feed the ITR12 travel schedule with correct source codes, without breaking existing schedule tests (completed 2026-07-03)
-- [ ] **Phase 4: Import Pipeline** - CSV/XLSX import with SARS eLogbook auto-detection, off-main-thread parsing, and pre-commit validation
+- [x] **Phase 4: Import Pipeline** - CSV/XLSX import with SARS eLogbook auto-detection, off-main-thread parsing, and pre-commit validation (completed 2026-07-04)
 - [ ] **Phase 5: Component Decomposition** - The 2,148-line tax-tools monolith split into independent per-calculator components
 - [ ] **Phase 6: Logbook UI, Import Wizard & Performance Hardening** - End-to-end logbook capture/import experience, virtualized and validated at 10,000+ row scale
 - [ ] **Phase 7: Calculator Audit** - Remaining seven calculators verified against current SARS rules and rulepack-sourced values
@@ -146,7 +146,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7
 | 1. Rulepack Extension | 3/3 | Complete    | 2026-07-02 |
 | 2. Logbook Domain Module | 4/4 | Complete   | 2026-07-03 |
 | 3. ITR12 Travel Schedule Integration | 3/3 | Complete    | 2026-07-03 |
-| 4. Import Pipeline | 5/6 | In Progress|  |
+| 4. Import Pipeline | 6/6 | Complete   | 2026-07-04 |
 | 5. Component Decomposition | 0/TBD | Not started | - |
 | 6. Logbook UI, Import Wizard & Performance Hardening | 0/TBD | Not started | - |
 | 7. Calculator Audit | 0/TBD | Not started | - |

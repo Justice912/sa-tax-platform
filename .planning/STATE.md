@@ -5,16 +5,16 @@ milestone_name: milestone
 current_phase: 4
 current_phase_name: Import Pipeline
 current_plan: 6
-status: executing
-stopped_at: Completed 04-04-PLAN.md
-last_updated: "2026-07-04T08:15:11.435Z"
+status: verifying
+stopped_at: Completed 04-06-PLAN.md
+last_updated: "2026-07-04T08:38:29.243Z"
 last_activity: 2026-07-04
 progress:
   total_phases: 7
-  completed_phases: 3
+  completed_phases: 4
   total_plans: 16
-  completed_plans: 15
-  percent: 94
+  completed_plans: 16
+  percent: 100
 ---
 
 # Project State
@@ -33,10 +33,10 @@ See: .planning/PROJECT.md (updated 2026-07-02)
 **Total Phases:** 7
 **Current Plan:** 6
 **Total Plans in Phase:** 6
-**Status:** Ready to execute
+**Status:** Phase complete — ready for verification
 **Last Activity:** 2026-07-04
 
-**Progress:** [█████████░] 94%
+**Progress:** [██████████] 100%
 
 ## Performance Metrics
 
@@ -71,6 +71,7 @@ See: .planning/PROJECT.md (updated 2026-07-02)
 | Phase 04 P05 | 8min | 2 tasks | 4 files |
 | Phase 04 P03 | 22 | 2 tasks | 5 files |
 | Phase 04 P04 | 15min | 2 tasks | 3 files |
+| Phase 04 P06 | 18min | 3 tasks | 6 files |
 
 ## Accumulated Context
 
@@ -115,6 +116,8 @@ Recent decisions affecting current work:
 - [Phase 04]: CSV fixtures pinned as -text in .gitattributes to stop core.autocrlf from corrupting byte-exact CRLF/embedded-newline test fixtures
 - [Phase 04]: XLSX date cells normalized via UTC getters, confirmed by tracing xlsx.js's datenum/numdate source (Date.UTC-based epoch math) rather than assumption -- timezone-independent
 - [Phase 04]: Headers and rows in parse-xlsx.ts built via positional indexing into sheet_to_json header:1 output, not the default object-keyed mode, to avoid a latent header-whitespace key mismatch
+- [Phase 04]: TRIP_ODOMETER_REVERSED cannot come from a candidate CSV row surviving buildImportPreview's per-row pass -- tripInputSchema's refine is identical to validateOdometerContinuity's per-trip reversed check, so a hand-crafted existingTrips entry proves the shared-checker code path instead
+- [Phase 04]: Integration tests reload committed logbooks via logbookRepository.getLogbookById, not getLogbookForClientYear, since the demo seed's pre-existing client_001/2026 logbook makes a clientId+year lookup ambiguous
 
 ### Pending Todos
 
@@ -130,6 +133,6 @@ None yet.
 
 ## Session Continuity
 
-**Last Session:** 2026-07-04T08:15:11.431Z
-**Stopped At:** Completed 04-04-PLAN.md
+**Last Session:** 2026-07-04T08:38:29.238Z
+**Stopped At:** Completed 04-06-PLAN.md
 **Resume File:** None
