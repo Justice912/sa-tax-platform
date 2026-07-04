@@ -100,10 +100,15 @@ Plans:
   1. Each of the 8 calculators is its own component with colocated local state
   2. Typing in one calculator's input does not trigger a re-render of any other calculator
   3. All calculators read shared values (rates, selected tax year) from rulepack-derived context rather than duplicating constants locally
-**Plans**: TBD
+**Plans**: 6 plans
 
 Plans:
-- [ ] 05-01: TBD
+- [ ] 05-01-PLAN.md — Scaffold tax-tools/ subfolder: relocate shared UI/formatters/types + pure calc helpers (behaviour-neutral)
+- [ ] 05-02-PLAN.md — RulePackContext + write-only summary context; extract Dashboard as summary reader, wrap shell in providers
+- [ ] 05-03-PLAN.md — Extract Rental + Home Office (no rulepack dep); add Profiler render-isolation + tab-switch-persistence tests
+- [ ] 05-04-PLAN.md — Extract CGT + Retirement (read rates via useRulePack); extend isolation tests
+- [ ] 05-05-PLAN.md — Extract Medical + Provisional Tax (preserve s6B + safe-harbour verbatim); extend isolation tests
+- [ ] 05-06-PLAN.md — Extract Travel Logbook (largest; local toast, memoized aggregates); strip shell to thin container; final verification
 
 ### Phase 6: Logbook UI, Import Wizard & Performance Hardening
 **Goal**: The logbook module, ITR12 integration, and import pipeline come together as one working end-to-end feature that stays responsive at real-world scale.
@@ -147,6 +152,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7
 | 2. Logbook Domain Module | 4/4 | Complete   | 2026-07-03 |
 | 3. ITR12 Travel Schedule Integration | 3/3 | Complete    | 2026-07-03 |
 | 4. Import Pipeline | 6/6 | Complete    | 2026-07-04 |
-| 5. Component Decomposition | 0/TBD | Not started | - |
+| 5. Component Decomposition | 0/6 | Not started | - |
 | 6. Logbook UI, Import Wizard & Performance Hardening | 0/TBD | Not started | - |
 | 7. Calculator Audit | 0/TBD | Not started | - |
