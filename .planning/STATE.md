@@ -2,19 +2,19 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-current_phase: 5
-current_phase_name: Component Decomposition
-current_plan: Not started
-status: completed
-stopped_at: Completed 05-06-PLAN.md
-last_updated: "2026-07-04T19:25:57.098Z"
-last_activity: 2026-07-04
+current_phase: 6
+current_phase_name: Logbook UI, Import Wizard & Performance Hardening
+current_plan: 5
+status: executing
+stopped_at: Completed 06-05-PLAN.md
+last_updated: "2026-07-05T09:36:51.270Z"
+last_activity: 2026-07-05
 progress:
   total_phases: 7
   completed_phases: 5
-  total_plans: 22
-  completed_plans: 22
-  percent: 100
+  total_plans: 28
+  completed_plans: 25
+  percent: 89
 ---
 
 # Project State
@@ -24,19 +24,19 @@ progress:
 See: .planning/PROJECT.md (updated 2026-07-02)
 
 **Core value:** A tax practitioner can capture or import a client's travel logbook and complete an individual tax assessment knowing every figure and format matches current SARS requirements — without the app slowing down.
-**Current focus:** Phase 5 - Component Decomposition
+**Current focus:** Phase 6 - Logbook UI, Import Wizard & Performance Hardening
 
 ## Current Position
 
-**Current Phase:** 5
-**Current Phase Name:** Component Decomposition
+**Current Phase:** 6
+**Current Phase Name:** Logbook UI, Import Wizard & Performance Hardening
 **Total Phases:** 7
-**Current Plan:** Not started
+**Current Plan:** 5
 **Total Plans in Phase:** 6
-**Status:** Milestone complete
-**Last Activity:** 2026-07-04
+**Status:** Ready to execute
+**Last Activity:** 2026-07-05
 
-**Progress:** [██████████] 100%
+**Progress:** [█████████░] 89%
 
 ## Performance Metrics
 
@@ -78,6 +78,8 @@ See: .planning/PROJECT.md (updated 2026-07-02)
 | Phase 05 P04 | 12min | 3 tasks | 4 files |
 | Phase 05 P05 | 9min | 3 tasks | 4 files |
 | Phase 05 P06 | 13min | 3 tasks | 3 files |
+| Phase 06 P04 | 12min | 2 tasks | 2 files |
+| Phase 06 P05 | 10min | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -140,6 +142,8 @@ Recent decisions affecting current work:
 - [Phase 05]: Travel Logbook extracted as a pure relocation (in-memory Trip[] + naive FileReader upload), explicitly not wiring in the Phase 4 import pipeline or Phase 2/3 logbook domain module -- deferred to Phase 6
 - [Phase 05]: Toast state/effect/notify and the hidden file input, previously shell-level, moved wholesale into TravelLogbookTab since grep confirmed notify() was exclusively called from Travel/Logbook functions
 - [Phase 05]: tripStats/filteredTrips/monthlyData+maxMon wrapped in useMemo during extraction to pre-empt a per-keystroke O(n) recompute before Phase 6 virtualization work begins
+- [Phase 06]: Client-side ACTUAL-election and expense-clear guards in CostMethodPanel reuse setLogbookCostMethod/setLogbookActualExpenses's exact error-message strings verbatim, keeping the UI guard message and the server rejection reason a single source of truth
+- [Phase 06]: LogbookAuditSummaryView kept as a client component solely to host the screen-only window.print() button, matching the IndividualTaxIta34 precedent -- it still receives all data via props and performs zero fetching
 
 ### Pending Todos
 
@@ -155,6 +159,6 @@ None yet.
 
 ## Session Continuity
 
-**Last Session:** 2026-07-04T15:39:56.343Z
-**Stopped At:** Completed 05-06-PLAN.md
+**Last Session:** 2026-07-05T09:36:51.266Z
+**Stopped At:** Completed 06-05-PLAN.md
 **Resume File:** None
