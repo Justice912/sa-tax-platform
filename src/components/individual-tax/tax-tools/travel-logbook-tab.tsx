@@ -1,51 +1,116 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback, useMemo } from "react";
-import { getDeemedRate } from "@/components/individual-tax/tax-tools/calc-helpers";
+import { useCallback, useEffect, useState } from "react";
 import {
-  StatCard,
-  ResultCard,
-  Highlight,
   Field,
+  fmtKm,
   inputCls,
   selectCls,
-  fmt,
-  fmtKm,
-  pct,
-  MONTHS,
-  type Trip,
-  type UploadData,
 } from "@/components/individual-tax/tax-tools/shared";
 import { useRulePack } from "@/components/individual-tax/tax-tools/rulepack-context";
 import { useSummaryWriter } from "@/components/individual-tax/tax-tools/summary-context";
+import { TripTable } from "@/components/individual-tax/tax-tools/trip-table";
+import { CostMethodPanel } from "@/components/individual-tax/tax-tools/cost-method-panel";
+import { LogbookImportWizard } from "@/components/individual-tax/tax-tools/logbook-import-wizard";
+import {
+  addTripAction,
+  createLogbookAction,
+  deleteTripAction,
+  getLogbookCsvAction,
+  getLogbookForClientAction,
+  importTripsAction,
+  setActualExpensesAction,
+  setCostMethodAction,
+  updateOdometersAction,
+  updateTripAction,
+} from "@/modules/logbook/actions";
+import type { LogbookState } from "@/modules/logbook/actions";
+import type {
+  ActualCostExpenses,
+  LogbookCostMethod,
+  LogbookTripRecord,
+} from "@/modules/logbook/types";
+import type { ImportRowResult } from "@/modules/logbook/import/types";
+import type { ClientRecord } from "@/modules/shared/types";
 
-export function TravelLogbookTab() {
-  const { rulePack } = useRulePack();
+/**
+ * Wiring container assembling the three previously-isolated systems (persisted logbook
+ * domain, Phase 4 import pipeline, Phase 5 decomposed UI) into one working travel-logbook
+ * feature. Resolves a client + tax year, loads the REAL persisted logbook via Server
+ * Actions, and orchestrates TripTable / CostMethodPanel / LogbookImportWizard. Every
+ * mutation crosses `src/modules/logbook/actions.ts` and returns `{ record, travelResult }`
+ * merged directly into local state -- no client-side cost math, no revalidatePath-per-edit,
+ * no naive FileReader/.split(",") parser (06-RESEARCH.md Pitfalls 1-3).
+ */
+
+interface TripFormState {
+  date: string;
+  businessKm: string;
+  fromLocation: string;
+  toLocation: string;
+  reason: string;
+  odometerStart: string;
+  odometerEnd: string;
+}
+
+function emptyTripForm(): TripFormState {
+  return {
+    date: new Date().toISOString().slice(0, 10),
+    businessKm: "",
+    fromLocation: "",
+    toLocation: "",
+    reason: "",
+    odometerStart: "",
+    odometerEnd: "",
+  };
+}
+
+interface CreateFormState {
+  make: string;
+  model: string;
+  registrationNumber: string;
+  costPrice: string;
+  openingOdometer: string;
+  closingOdometer: string;
+}
+
+const EMPTY_CREATE_FORM: CreateFormState = {
+  make: "",
+  model: "",
+  registrationNumber: "",
+  costPrice: "",
+  openingOdometer: "",
+  closingOdometer: "",
+};
+
+interface OdometerFormState {
+  openingOdometer: string;
+  closingOdometer: string;
+}
+
+export function TravelLogbookTab({
+  clients = [],
+}: {
+  clients?: ClientRecord[];
+}) {
+  const { assessmentYear } = useRulePack();
   const setSummaryValue = useSummaryWriter();
+
   const [toast, setToast] = useState<{
     msg: string;
     type: "success" | "error";
   } | null>(null);
 
-  // ── Travel Logbook State ──
-  const [trips, setTrips] = useState<Trip[]>([]);
-  const [tripForm, setTripForm] = useState<Trip | null>(null);
-  const [editId, setEditId] = useState<number | null>(null);
-  const [filterMonth, setFilterMonth] = useState("all");
-  const [vehicleValue, setVehicleValue] = useState("");
-  const [vehicleName, setVehicleName] = useState("");
-  const [uploadData, setUploadData] = useState<UploadData | null>(null);
-  const [colMap, setColMap] = useState({
-    date: "",
-    from: "",
-    to: "",
-    odometerStart: "",
-    odometerEnd: "",
-    purpose: "",
-  });
-  const [importTrips, setImportTrips] = useState<Trip[]>([]);
-  const [uploadStep, setUploadStep] = useState(0);
-  const fileRef = useRef<HTMLInputElement>(null);
+  const [selectedClientId, setSelectedClientId] = useState("");
+  const [state, setState] = useState<LogbookState | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [busy, setBusy] = useState(false);
+
+  const [createForm, setCreateForm] = useState<CreateFormState>(EMPTY_CREATE_FORM);
+  const [tripForm, setTripForm] = useState<TripFormState | null>(null);
+  const [editingTripId, setEditingTripId] = useState<string | null>(null);
+  const [importOpen, setImportOpen] = useState(false);
+  const [odometerForm, setOdometerForm] = useState<OdometerFormState | null>(null);
 
   useEffect(() => {
     if (toast) {
@@ -53,241 +118,278 @@ export function TravelLogbookTab() {
       return () => clearTimeout(t);
     }
   }, [toast]);
+
   const notify = useCallback(
     (msg: string, type: "success" | "error" = "success") =>
       setToast({ msg, type }),
     [],
   );
 
-  // ── Trip helpers ──
-  const allocTrip = (t: Trip): Trip => {
-    const km = Math.max(
-      0,
-      (parseFloat(String(t.odometerEnd)) || 0) -
-        (parseFloat(String(t.odometerStart)) || 0),
-    );
-    if (t.tripType === "Business")
-      return { ...t, businessKm: km, privateKm: 0, totalDistance: km };
-    if (t.tripType === "Private")
-      return { ...t, businessKm: 0, privateKm: km, totalDistance: km };
-    const biz = Math.round((km * (t.mixedSplit || 50)) / 100 * 10) / 10;
-    return {
-      ...t,
-      businessKm: biz,
-      privateKm: Math.round((km - biz) * 10) / 10,
-      totalDistance: km,
-    };
-  };
-
-  const newTrip = (): Trip => ({
-    id: Date.now() + Math.random(),
-    date: new Date().toISOString().slice(0, 10),
-    from: "",
-    to: "",
-    odometerStart: "",
-    odometerEnd: "",
-    purpose: "",
-    tripType: "Business",
-    mixedSplit: 50,
-    businessKm: 0,
-    privateKm: 0,
-    totalDistance: 0,
-  });
-
-  const saveTrip = () => {
-    if (!tripForm) return;
-    if (
-      !tripForm.date ||
-      !tripForm.odometerStart ||
-      !tripForm.odometerEnd
-    ) {
-      notify("Date & odometer required", "error");
+  // Load (or clear) the logbook whenever the client or tax year changes. With no client
+  // selected this fires NO Server Action -- the shell stays renderable without a round trip.
+  useEffect(() => {
+    if (!selectedClientId) {
+      setState(null);
       return;
     }
-    if (
-      parseFloat(String(tripForm.odometerEnd)) <=
-      parseFloat(String(tripForm.odometerStart))
-    ) {
-      notify("End must exceed start", "error");
-      return;
-    }
-    if (
-      (tripForm.tripType === "Business" || tripForm.tripType === "Mixed") &&
-      !tripForm.purpose.trim()
-    ) {
-      notify("Purpose required for business/mixed trips", "error");
-      return;
-    }
-    const t = allocTrip(tripForm);
-    if (editId) {
-      setTrips((p) => p.map((x) => (x.id === editId ? t : x)));
-      setEditId(null);
-    } else {
-      setTrips((p) => [...p, t]);
-    }
-    setTripForm(null);
-    notify(editId ? "Trip updated" : "Trip added");
-  };
-
-  const changeTripType = (id: number, newType: Trip["tripType"]) => {
-    setTrips((p) =>
-      p.map((t) => (t.id === id ? allocTrip({ ...t, tripType: newType }) : t)),
-    );
-  };
-
-  // Trip stats
-  const tripStats = useMemo(
-    () =>
-      trips.reduce(
-        (a, t) => ({
-          totalKm: a.totalKm + t.totalDistance,
-          bizKm: a.bizKm + t.businessKm,
-          privKm: a.privKm + t.privateKm,
-          count: a.count + 1,
-        }),
-        { totalKm: 0, bizKm: 0, privKm: 0, count: 0 },
-      ),
-    [trips],
-  );
-  const bizPct =
-    tripStats.totalKm > 0
-      ? (tripStats.bizKm / tripStats.totalKm) * 100
-      : 0;
-
-  // Deemed cost
-  const vVal = parseFloat(vehicleValue) || 0;
-  const sRate = getDeemedRate(rulePack, vVal);
-  const deemedFixed = sRate.fixedCostAnnual;
-  const deemedFuel = sRate.fuelCostPerKm * tripStats.totalKm;
-  const deemedMaint = sRate.maintenanceCostPerKm * tripStats.totalKm;
-  const deemedTotal = deemedFixed + deemedFuel + deemedMaint;
-  const travelDeduction = (deemedTotal * bizPct) / 100;
-
-  // ── Publish summary value for DashboardTab (write-only; stable setter) ──
-  useEffect(
-    () => setSummaryValue("travelDeduction", travelDeduction),
-    [travelDeduction, setSummaryValue],
-  );
-
-  // Upload handler
-  const handleFile = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    const reader = new FileReader();
-    reader.onload = (ev) => {
-      const lines = (ev.target?.result as string)
-        .split("\n")
-        .filter((l) => l.trim());
-      if (lines.length < 2) {
-        notify("Empty file", "error");
-        return;
-      }
-      const headers = lines[0].split(",").map((h) => h.trim().toLowerCase());
-      const rows = lines.slice(1).map((l) => {
-        const v = l.split(",").map((x) => x.trim());
-        const o: Record<string, string> = {};
-        headers.forEach((h, i) => (o[h] = v[i] || ""));
-        return o;
-      });
-      setUploadData({ headers, rows, name: file.name });
-      setUploadStep(1);
-    };
-    reader.readAsText(file);
-    e.target.value = "";
-  };
-
-  const processImport = () => {
-    if (!colMap.date || !colMap.odometerStart || !colMap.odometerEnd) {
-      notify("Map Date, Start KM, End KM", "error");
-      return;
-    }
-    if (!uploadData) return;
-    const imp: Trip[] = uploadData.rows
-      .map((r, i) => {
-        const s = parseFloat(r[colMap.odometerStart]) || 0;
-        const en = parseFloat(r[colMap.odometerEnd]) || 0;
-        return {
-          id: Date.now() + i + Math.random(),
-          date: r[colMap.date] || "",
-          from: r[colMap.from] || "",
-          to: r[colMap.to] || "",
-          odometerStart: s,
-          odometerEnd: en,
-          purpose: r[colMap.purpose] || "",
-          tripType: "Business" as const,
-          mixedSplit: 50,
-          businessKm: Math.max(0, en - s),
-          privateKm: 0,
-          totalDistance: Math.max(0, en - s),
-        };
+    let cancelled = false;
+    setState(null);
+    setLoading(true);
+    getLogbookForClientAction(selectedClientId, assessmentYear)
+      .then((result) => {
+        if (cancelled) return;
+        setState(result);
+        setCreateForm(EMPTY_CREATE_FORM);
       })
-      .filter((t) => t.totalDistance > 0);
-    setImportTrips(imp);
-    setUploadStep(2);
-  };
+      .catch((error: unknown) => {
+        if (cancelled) return;
+        notify(
+          error instanceof Error ? error.message : "Failed to load logbook.",
+          "error",
+        );
+      })
+      .finally(() => {
+        if (!cancelled) setLoading(false);
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [selectedClientId, assessmentYear, notify]);
 
-  const finaliseImport = () => {
-    setTrips((p) => [...p, ...importTrips]);
-    notify(`${importTrips.length} trips imported`);
-    setUploadStep(0);
-    setUploadData(null);
-    setImportTrips([]);
-  };
+  // Re-seed the local odometer editor whenever the server-confirmed odometers change
+  // (mirrors CostMethodPanel's own actualExpenses re-seed pattern).
+  useEffect(() => {
+    if (!state) {
+      setOdometerForm(null);
+      return;
+    }
+    setOdometerForm({
+      openingOdometer: String(state.record.openingOdometer),
+      closingOdometer:
+        state.record.closingOdometer != null
+          ? String(state.record.closingOdometer)
+          : "",
+    });
+  }, [state]);
 
-  const bulkClassify = (type: Trip["tripType"]) => {
-    setImportTrips((p) => p.map((t) => allocTrip({ ...t, tripType: type })));
-  };
+  // Publish the real claimed deduction to the Dashboard (write-only; stable setter).
+  useEffect(() => {
+    setSummaryValue("travelDeduction", state?.travelResult.claimedDeduction ?? 0);
+  }, [state, setSummaryValue]);
 
-  const exportCSV = () => {
-    const h =
-      "Date,From,To,Start KM,End KM,Total KM,Trip Type,Business KM,Private KM,Mixed Split %,Purpose\n";
-    const r = trips
-      .map(
-        (t) =>
-          `${t.date},"${t.from}","${t.to}",${t.odometerStart},${t.odometerEnd},${t.totalDistance},${t.tripType},${t.businessKm},${t.privateKm},${t.tripType === "Mixed" ? t.mixedSplit : ""},"${t.purpose}"`,
-      )
-      .join("\n");
-    const b = new Blob([h + r], { type: "text/csv" });
-    const a = document.createElement("a");
-    a.href = URL.createObjectURL(b);
-    a.download = `SARS_Logbook_${new Date().getFullYear()}.csv`;
-    a.click();
-  };
-
-  const filteredTrips = useMemo(
-    () =>
-      trips
-        .filter(
-          (t) =>
-            filterMonth === "all" ||
-            new Date(t.date).getMonth() === parseInt(filterMonth),
-        )
-        .sort(
-          (a, b) => new Date(a.date).getTime() - new Date(b.date).getTime(),
-        ),
-    [trips, filterMonth],
+  // Generic mutation helper: every mutation goes through this so a single edit never
+  // refetches the whole page and never re-derives cost math client-side.
+  const applyAction = useCallback(
+    async (mutate: () => Promise<LogbookState>) => {
+      setBusy(true);
+      try {
+        const result = await mutate();
+        setState(result);
+        return result;
+      } catch (error) {
+        notify(
+          error instanceof Error ? error.message : "Something went wrong.",
+          "error",
+        );
+        throw error;
+      } finally {
+        setBusy(false);
+      }
+    },
+    [notify],
   );
 
-  // Monthly chart
-  const monthlyData = useMemo(
-    () =>
-      MONTHS.map((_, i) => {
-        const mt = trips.filter((t) => new Date(t.date).getMonth() === i);
-        return {
-          biz: mt.reduce((s, t) => s + t.businessKm, 0),
-          priv: mt.reduce((s, t) => s + t.privateKm, 0),
-        };
-      }),
-    [trips],
+  const handleEditTrip = useCallback((trip: LogbookTripRecord) => {
+    setEditingTripId(trip.id);
+    setTripForm({
+      date: trip.date,
+      businessKm: String(trip.businessKm),
+      fromLocation: trip.fromLocation,
+      toLocation: trip.toLocation,
+      reason: trip.reason,
+      odometerStart: trip.odometerStart != null ? String(trip.odometerStart) : "",
+      odometerEnd: trip.odometerEnd != null ? String(trip.odometerEnd) : "",
+    });
+  }, []);
+
+  const handleDeleteTrip = useCallback(
+    async (tripId: string) => {
+      if (!state) return;
+      try {
+        await applyAction(() => deleteTripAction(state.record.id, tripId));
+        notify("Trip deleted");
+      } catch {
+        // already toasted by applyAction
+      }
+    },
+    [state, applyAction, notify],
   );
-  const maxMon = useMemo(
-    () => Math.max(...monthlyData.map((d) => d.biz + d.priv), 1),
-    [monthlyData],
+
+  const handleElectMethod = useCallback(
+    async (method: LogbookCostMethod) => {
+      if (!state) return;
+      try {
+        await applyAction(() => setCostMethodAction(state.record.id, method));
+      } catch {
+        // already toasted by applyAction
+      }
+    },
+    [state, applyAction],
   );
+
+  const handleSaveExpenses = useCallback(
+    async (expenses: ActualCostExpenses | null) => {
+      if (!state) return;
+      try {
+        await applyAction(() => setActualExpensesAction(state.record.id, expenses));
+      } catch {
+        // already toasted by applyAction
+      }
+    },
+    [state, applyAction],
+  );
+
+  const handleImportCommit = useCallback(
+    async (validTrips: ImportRowResult["trip"][], source: "CSV" | "XLSX") => {
+      if (!state) return;
+      await applyAction(() => importTripsAction(state.record.id, validTrips, source));
+    },
+    [state, applyAction],
+  );
+
+  async function handleCreateLogbook() {
+    if (!selectedClientId) return;
+    if (
+      !createForm.make.trim() ||
+      !createForm.model.trim() ||
+      !createForm.registrationNumber.trim()
+    ) {
+      notify("Vehicle make, model and registration are required.", "error");
+      return;
+    }
+    const costPrice = parseFloat(createForm.costPrice);
+    if (!Number.isFinite(costPrice) || costPrice <= 0) {
+      notify("A valid vehicle cost price is required.", "error");
+      return;
+    }
+    const openingOdometer = parseFloat(createForm.openingOdometer);
+    if (!Number.isFinite(openingOdometer) || openingOdometer < 0) {
+      notify("A valid opening odometer reading is required.", "error");
+      return;
+    }
+    const closingOdometer =
+      createForm.closingOdometer.trim() === ""
+        ? null
+        : parseFloat(createForm.closingOdometer);
+
+    setBusy(true);
+    try {
+      const result = await createLogbookAction({
+        clientId: selectedClientId,
+        assessmentYear,
+        vehicle: {
+          make: createForm.make.trim(),
+          model: createForm.model.trim(),
+          registrationNumber: createForm.registrationNumber.trim(),
+          costPrice,
+          acquisitionDate: null,
+        },
+        openingOdometer,
+        closingOdometer,
+      });
+      setState(result);
+      notify("Logbook created");
+    } catch (error) {
+      notify(
+        error instanceof Error ? error.message : "Failed to create logbook.",
+        "error",
+      );
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function handleSaveTrip() {
+    if (!state || !tripForm) return;
+    const businessKm = parseFloat(tripForm.businessKm);
+    if (!tripForm.date || !Number.isFinite(businessKm) || businessKm <= 0) {
+      notify("Date and a positive business KM are required.", "error");
+      return;
+    }
+    if (
+      !tripForm.fromLocation.trim() ||
+      !tripForm.toLocation.trim() ||
+      !tripForm.reason.trim()
+    ) {
+      notify("From, To and Reason are required.", "error");
+      return;
+    }
+    const payload = {
+      date: tripForm.date,
+      businessKm,
+      fromLocation: tripForm.fromLocation.trim(),
+      toLocation: tripForm.toLocation.trim(),
+      reason: tripForm.reason.trim(),
+      odometerStart:
+        tripForm.odometerStart.trim() === "" ? null : parseFloat(tripForm.odometerStart),
+      odometerEnd:
+        tripForm.odometerEnd.trim() === "" ? null : parseFloat(tripForm.odometerEnd),
+    };
+    try {
+      if (editingTripId) {
+        await applyAction(() => updateTripAction(state.record.id, editingTripId, payload));
+        notify("Trip updated");
+      } else {
+        await applyAction(() => addTripAction(state.record.id, payload));
+        notify("Trip added");
+      }
+      setTripForm(null);
+      setEditingTripId(null);
+    } catch {
+      // already toasted by applyAction
+    }
+  }
+
+  async function handleSaveOdometers() {
+    if (!state || !odometerForm) return;
+    const openingOdometer = parseFloat(odometerForm.openingOdometer);
+    if (!Number.isFinite(openingOdometer) || openingOdometer < 0) {
+      notify("A valid opening odometer reading is required.", "error");
+      return;
+    }
+    const closingOdometer =
+      odometerForm.closingOdometer.trim() === ""
+        ? null
+        : parseFloat(odometerForm.closingOdometer);
+    try {
+      await applyAction(() =>
+        updateOdometersAction(state.record.id, { openingOdometer, closingOdometer }),
+      );
+      notify("Odometer readings updated");
+    } catch {
+      // already toasted by applyAction
+    }
+  }
+
+  async function handleExportCsv() {
+    if (!state) return;
+    try {
+      const csv = await getLogbookCsvAction(state.record.id);
+      const blob = new Blob([csv], { type: "text/csv" });
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(blob);
+      a.download = `logbook_${state.record.assessmentYear}_${state.record.vehicle.registrationNumber}.csv`;
+      a.click();
+    } catch (error) {
+      notify(
+        error instanceof Error ? error.message : "Failed to export CSV.",
+        "error",
+      );
+    }
+  }
 
   return (
     <>
-      {/* Toast */}
       {toast && (
         <div
           className={`fixed right-5 top-5 z-50 rounded-lg px-5 py-3 text-sm font-semibold text-white shadow-lg ${toast.type === "error" ? "bg-red-700" : "bg-teal-700"}`}
@@ -296,249 +398,249 @@ export function TravelLogbookTab() {
         </div>
       )}
 
-      {/* Hidden file input */}
-      <input
-        ref={fileRef}
-        type="file"
-        accept=".csv,.txt"
-        onChange={handleFile}
-        className="hidden"
-      />
-
       <div className="space-y-5">
         <div className="flex flex-wrap items-start justify-between gap-3">
           <div>
-            <h2 className="text-xl font-semibold text-slate-900">
-              Travel Logbook
-            </h2>
+            <h2 className="text-xl font-semibold text-slate-900">Travel Logbook</h2>
             <p className="text-sm text-slate-500">
-              SARS-Compliant &bull; {trips.length} trips logged
+              SARS-compliant &bull; persisted per client and tax year
             </p>
           </div>
-          <div className="flex gap-2">
-            <button
-              className="rounded-md border border-slate-200 px-3 py-2 text-sm text-slate-600 hover:border-teal-300 hover:text-teal-700"
-              onClick={() => fileRef.current?.click()}
-            >
-              Upload CSV
-            </button>
-            <button
-              className="rounded-md border border-slate-200 px-3 py-2 text-sm text-slate-600 hover:border-teal-300 hover:text-teal-700"
-              onClick={exportCSV}
-              disabled={!trips.length}
-            >
-              Export
-            </button>
-            <button
-              className="rounded-md bg-[#0E2433] px-4 py-2 text-sm font-medium text-white hover:bg-[#12344a]"
-              onClick={() => {
-                setTripForm(newTrip());
-                setEditId(null);
-              }}
-            >
-              + New Trip
-            </button>
-          </div>
-        </div>
-
-        {/* Stats */}
-        <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-5">
-          <StatCard
-            label="Total Trips"
-            value={tripStats.count}
-            colorClass="text-amber-500"
-          />
-          <StatCard
-            label="Total KM"
-            value={fmtKm(tripStats.totalKm)}
-            colorClass="text-sky-600"
-          />
-          <StatCard
-            label="Business KM"
-            value={fmtKm(tripStats.bizKm)}
-            colorClass="text-teal-600"
-          />
-          <StatCard
-            label="Private KM"
-            value={fmtKm(tripStats.privKm)}
-            colorClass="text-violet-600"
-          />
-          <StatCard
-            label="Business %"
-            value={pct(bizPct)}
-            colorClass={
-              bizPct >= 80
-                ? "text-teal-600"
-                : bizPct >= 50
-                  ? "text-amber-500"
-                  : "text-red-500"
-            }
-          />
-        </div>
-
-        {/* Upload Step 1 — Column Mapping */}
-        {uploadStep === 1 && uploadData && (
-          <div className="rounded-xl border border-slate-200/80 bg-white p-5 shadow-sm">
-            <h3 className="mb-3 text-sm font-semibold text-slate-900">
-              Step 1: Map Columns — {uploadData.name}
-            </h3>
-            <div className="grid grid-cols-3 gap-3">
-              {[
-                { k: "date" as const, l: "Date *" },
-                { k: "odometerStart" as const, l: "Start KM *" },
-                { k: "odometerEnd" as const, l: "End KM *" },
-                { k: "from" as const, l: "From" },
-                { k: "to" as const, l: "To" },
-                { k: "purpose" as const, l: "Purpose" },
-              ].map((f) => (
-                <Field key={f.k} label={f.l}>
-                  <select
-                    className={selectCls}
-                    value={colMap[f.k]}
-                    onChange={(e) =>
-                      setColMap({ ...colMap, [f.k]: e.target.value })
-                    }
-                  >
-                    <option value="">— Select —</option>
-                    {uploadData.headers.map((h) => (
-                      <option key={h} value={h}>
-                        {h}
-                      </option>
-                    ))}
-                  </select>
-                </Field>
-              ))}
-            </div>
-            <div className="mt-4 flex justify-end gap-2">
+          {state && (
+            <div className="flex flex-wrap gap-2">
               <button
-                className="rounded-md border border-slate-200 px-3 py-2 text-sm text-slate-600"
+                type="button"
+                className="rounded-md border border-slate-200 px-3 py-2 text-sm text-slate-600 hover:border-teal-300 hover:text-teal-700"
+                onClick={handleExportCsv}
+                disabled={busy}
+              >
+                Export CSV
+              </button>
+              <a
+                href={`/reports/logbook/${state.record.id}/print`}
+                target="_blank"
+                rel="noreferrer"
+                className="rounded-md border border-slate-200 px-3 py-2 text-sm text-slate-600 hover:border-teal-300 hover:text-teal-700"
+              >
+                Print / audit summary
+              </a>
+              <button
+                type="button"
+                className="rounded-md border border-slate-200 px-3 py-2 text-sm text-slate-600 hover:border-teal-300 hover:text-teal-700"
+                onClick={() => setImportOpen(true)}
+                disabled={busy}
+              >
+                + Import
+              </button>
+              <button
+                type="button"
+                className="rounded-md bg-[#0E2433] px-4 py-2 text-sm font-medium text-white hover:bg-[#12344a] disabled:opacity-50"
                 onClick={() => {
-                  setUploadStep(0);
-                  setUploadData(null);
+                  setEditingTripId(null);
+                  setTripForm(emptyTripForm());
                 }}
+                disabled={busy}
               >
-                Cancel
+                + New Trip
               </button>
+            </div>
+          )}
+        </div>
+
+        <Field label="Client">
+          <select
+            className={selectCls}
+            value={selectedClientId}
+            onChange={(e) => setSelectedClientId(e.target.value)}
+            disabled={clients.length === 0}
+          >
+            <option value="">— Select a client —</option>
+            {clients.map((c) => (
+              <option key={c.id} value={c.id}>
+                {c.displayName}
+              </option>
+            ))}
+          </select>
+        </Field>
+
+        {clients.length === 0 && (
+          <div className="rounded-xl border border-slate-200/80 bg-white p-12 text-center shadow-sm">
+            <p className="text-slate-400">
+              No individual clients available. Add an individual client to capture a travel
+              logbook.
+            </p>
+          </div>
+        )}
+
+        {clients.length > 0 && !selectedClientId && (
+          <div className="rounded-xl border border-slate-200/80 bg-white p-12 text-center shadow-sm">
+            <p className="text-slate-400">
+              Select a client to load their {assessmentYear} travel logbook.
+            </p>
+          </div>
+        )}
+
+        {selectedClientId && loading && (
+          <div className="rounded-xl border border-slate-200/80 bg-white p-12 text-center shadow-sm">
+            <p className="text-slate-400">Loading logbook…</p>
+          </div>
+        )}
+
+        {selectedClientId && !loading && !state && (
+          <div className="space-y-4 rounded-xl border border-slate-200/80 bg-white p-5 shadow-sm">
+            <h3 className="text-sm font-semibold text-slate-900">
+              No {assessmentYear} logbook yet — create one
+            </h3>
+            <div className="grid grid-cols-2 gap-3">
+              <Field label="Vehicle make *">
+                <input
+                  className={inputCls}
+                  value={createForm.make}
+                  onChange={(e) => setCreateForm({ ...createForm, make: e.target.value })}
+                />
+              </Field>
+              <Field label="Vehicle model *">
+                <input
+                  className={inputCls}
+                  value={createForm.model}
+                  onChange={(e) => setCreateForm({ ...createForm, model: e.target.value })}
+                />
+              </Field>
+              <Field label="Registration number *">
+                <input
+                  className={inputCls}
+                  value={createForm.registrationNumber}
+                  onChange={(e) =>
+                    setCreateForm({ ...createForm, registrationNumber: e.target.value })
+                  }
+                />
+              </Field>
+              <Field label="Cost price (R) *">
+                <input
+                  type="number"
+                  className={inputCls}
+                  value={createForm.costPrice}
+                  onChange={(e) => setCreateForm({ ...createForm, costPrice: e.target.value })}
+                />
+              </Field>
+              <Field label="Opening odometer (km) *">
+                <input
+                  type="number"
+                  className={inputCls}
+                  value={createForm.openingOdometer}
+                  onChange={(e) =>
+                    setCreateForm({ ...createForm, openingOdometer: e.target.value })
+                  }
+                />
+              </Field>
+              <Field label="Closing odometer (km)">
+                <input
+                  type="number"
+                  className={inputCls}
+                  value={createForm.closingOdometer}
+                  onChange={(e) =>
+                    setCreateForm({ ...createForm, closingOdometer: e.target.value })
+                  }
+                />
+              </Field>
+            </div>
+            <div className="flex justify-end">
               <button
-                className="rounded-md bg-[#0E2433] px-4 py-2 text-sm font-medium text-white"
-                onClick={processImport}
+                type="button"
+                className="rounded-md bg-[#0E2433] px-4 py-2 text-sm font-medium text-white disabled:opacity-50"
+                onClick={handleCreateLogbook}
+                disabled={busy}
               >
-                Next: Classify Trips
+                Create logbook
               </button>
             </div>
           </div>
         )}
 
-        {/* Upload Step 2 — Classify */}
-        {uploadStep === 2 && (
-          <div className="rounded-xl border border-slate-200/80 bg-white p-5 shadow-sm">
-            <div className="mb-3 flex flex-wrap items-center justify-between gap-2">
-              <h3 className="text-sm font-semibold text-slate-900">
-                Step 2: Classify {importTrips.length} Trips
+        {state && (
+          <>
+            <div className="rounded-xl border border-slate-200/80 bg-white p-5 shadow-sm">
+              <h3 className="mb-3 text-sm font-semibold text-slate-900">
+                {state.record.vehicle.make} {state.record.vehicle.model} (
+                {state.record.vehicle.registrationNumber})
               </h3>
-              <div className="flex gap-2">
-                {(["Business", "Private", "Mixed"] as const).map((t) => (
+              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3">
+                <Field label="Opening odometer (km)">
+                  <input
+                    type="number"
+                    className={inputCls}
+                    value={odometerForm?.openingOdometer ?? ""}
+                    disabled={busy}
+                    onChange={(e) =>
+                      setOdometerForm((prev) =>
+                        prev ? { ...prev, openingOdometer: e.target.value } : prev,
+                      )
+                    }
+                  />
+                </Field>
+                <Field label="Closing odometer (km)">
+                  <input
+                    type="number"
+                    className={inputCls}
+                    value={odometerForm?.closingOdometer ?? ""}
+                    disabled={busy}
+                    onChange={(e) =>
+                      setOdometerForm((prev) =>
+                        prev ? { ...prev, closingOdometer: e.target.value } : prev,
+                      )
+                    }
+                  />
+                </Field>
+                <div className="flex items-end">
                   <button
-                    key={t}
-                    className="rounded-md border border-slate-200 px-3 py-1.5 text-xs text-slate-600 hover:border-teal-300"
-                    onClick={() => bulkClassify(t)}
+                    type="button"
+                    className="rounded-md border border-slate-200 px-3 py-2 text-sm text-slate-600 hover:border-teal-300 hover:text-teal-700 disabled:opacity-50"
+                    onClick={handleSaveOdometers}
+                    disabled={busy}
                   >
-                    All {t}
+                    Save odometers
                   </button>
-                ))}
+                </div>
               </div>
+              <p className="mt-3 text-xs text-slate-400">
+                Total:{" "}
+                {state.travelResult.totalKilometres != null
+                  ? fmtKm(state.travelResult.totalKilometres)
+                  : "closing odometer not recorded"}{" "}
+                &middot; Business: {fmtKm(state.travelResult.businessKilometres)}
+              </p>
             </div>
-            <div className="max-h-96 overflow-auto">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="border-b border-slate-200 text-xs uppercase text-slate-500">
-                    <th className="px-2 py-1.5 text-left">Date</th>
-                    <th className="px-2 py-1.5 text-left">Route</th>
-                    <th className="px-2 py-1.5 text-right">Total KM</th>
-                    <th className="px-2 py-1.5 text-center">Type</th>
-                    <th className="px-2 py-1.5 text-right">Business</th>
-                    <th className="px-2 py-1.5 text-right">Private</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {importTrips.map((t, i) => (
-                    <tr
-                      key={i}
-                      className="border-b border-slate-100 hover:bg-slate-50"
-                    >
-                      <td className="px-2 py-2 font-mono text-xs">
-                        {t.date}
-                      </td>
-                      <td className="px-2 py-2 text-xs">
-                        {t.from && t.to
-                          ? `${t.from} → ${t.to}`
-                          : t.from || t.to || "—"}
-                      </td>
-                      <td className="px-2 py-2 text-right font-mono text-xs text-sky-600">
-                        {t.totalDistance.toFixed(1)}
-                      </td>
-                      <td className="px-2 py-2 text-center">
-                        <select
-                          value={t.tripType}
-                          onChange={(e) =>
-                            setImportTrips((p) =>
-                              p.map((x, j) =>
-                                j === i
-                                  ? allocTrip({
-                                      ...x,
-                                      tripType: e.target
-                                        .value as Trip["tripType"],
-                                    })
-                                  : x,
-                              ),
-                            )
-                          }
-                          className="rounded border border-slate-200 px-1.5 py-0.5 text-xs"
-                        >
-                          <option value="Business">Business</option>
-                          <option value="Private">Private</option>
-                          <option value="Mixed">Mixed</option>
-                        </select>
-                      </td>
-                      <td className="px-2 py-2 text-right font-mono text-xs text-teal-600">
-                        {t.businessKm > 0 ? t.businessKm.toFixed(1) : "—"}
-                      </td>
-                      <td className="px-2 py-2 text-right font-mono text-xs text-violet-600">
-                        {t.privateKm > 0 ? t.privateKm.toFixed(1) : "—"}
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-            <div className="mt-4 flex justify-end gap-2">
-              <button
-                className="rounded-md border border-slate-200 px-3 py-2 text-sm text-slate-600"
-                onClick={() => setUploadStep(1)}
-              >
-                Back
-              </button>
-              <button
-                className="rounded-md bg-[#0E2433] px-4 py-2 text-sm font-medium text-white"
-                onClick={finaliseImport}
-              >
-                Import {importTrips.length} Trips
-              </button>
-            </div>
-          </div>
+
+            <CostMethodPanel
+              record={state.record}
+              travelResult={state.travelResult}
+              busy={busy}
+              onElectMethod={handleElectMethod}
+              onSaveExpenses={handleSaveExpenses}
+            />
+
+            <TripTable
+              trips={state.record.trips}
+              onEditTrip={handleEditTrip}
+              onDeleteTrip={handleDeleteTrip}
+              busy={busy}
+            />
+          </>
         )}
 
-        {/* Trip Form Modal */}
         {tripForm && (
           <div
             className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm p-5"
             onClick={(e) => {
-              if (e.target === e.currentTarget) setTripForm(null);
+              if (e.target === e.currentTarget) {
+                setTripForm(null);
+                setEditingTripId(null);
+              }
             }}
           >
             <div className="w-full max-w-lg rounded-xl border border-slate-200/80 bg-white p-6 shadow-xl max-h-[90vh] overflow-y-auto">
               <h2 className="mb-4 text-lg font-semibold text-slate-900">
-                {editId ? "Edit Trip" : "Log New Trip"}
+                {editingTripId ? "Edit Trip" : "Log New Trip"}
               </h2>
               <div className="grid grid-cols-2 gap-3">
                 <Field label="Date *">
@@ -546,418 +648,107 @@ export function TravelLogbookTab() {
                     type="date"
                     className={inputCls}
                     value={tripForm.date}
+                    onChange={(e) => setTripForm({ ...tripForm, date: e.target.value })}
+                  />
+                </Field>
+                <Field label="Business KM *">
+                  <input
+                    type="number"
+                    className={inputCls}
+                    value={tripForm.businessKm}
                     onChange={(e) =>
-                      setTripForm({ ...tripForm, date: e.target.value })
+                      setTripForm({ ...tripForm, businessKm: e.target.value })
                     }
                   />
                 </Field>
-                <Field label="Trip Type *">
-                  <select
-                    className={selectCls}
-                    value={tripForm.tripType}
-                    onChange={(e) =>
-                      setTripForm({
-                        ...tripForm,
-                        tripType: e.target.value as Trip["tripType"],
-                      })
-                    }
-                  >
-                    <option value="Business">Business Trip</option>
-                    <option value="Private">Private Trip</option>
-                    <option value="Mixed">Mixed Trip</option>
-                  </select>
-                </Field>
-                <Field label="From">
+                <Field label="From *">
                   <input
                     className={inputCls}
                     placeholder="e.g. Office, Durban"
-                    value={tripForm.from}
+                    value={tripForm.fromLocation}
                     onChange={(e) =>
-                      setTripForm({ ...tripForm, from: e.target.value })
+                      setTripForm({ ...tripForm, fromLocation: e.target.value })
                     }
                   />
                 </Field>
-                <Field label="To">
+                <Field label="To *">
                   <input
                     className={inputCls}
                     placeholder="e.g. Client, Umhlanga"
-                    value={tripForm.to}
+                    value={tripForm.toLocation}
                     onChange={(e) =>
-                      setTripForm({ ...tripForm, to: e.target.value })
+                      setTripForm({ ...tripForm, toLocation: e.target.value })
                     }
                   />
                 </Field>
-                <Field label="Start Odometer (km) *">
+                <Field label="Odometer start (km)">
                   <input
                     type="number"
                     className={inputCls}
                     value={tripForm.odometerStart}
                     onChange={(e) =>
-                      setTripForm({
-                        ...tripForm,
-                        odometerStart: e.target.value,
-                      })
+                      setTripForm({ ...tripForm, odometerStart: e.target.value })
                     }
                   />
                 </Field>
-                <Field label="End Odometer (km) *">
+                <Field label="Odometer end (km)">
                   <input
                     type="number"
                     className={inputCls}
                     value={tripForm.odometerEnd}
                     onChange={(e) =>
-                      setTripForm({
-                        ...tripForm,
-                        odometerEnd: e.target.value,
-                      })
+                      setTripForm({ ...tripForm, odometerEnd: e.target.value })
                     }
                   />
                 </Field>
                 <div className="col-span-2">
-                  <Field label="Purpose / Notes *">
+                  <Field label="Reason *">
                     <input
                       className={inputCls}
-                      value={tripForm.purpose}
+                      value={tripForm.reason}
                       onChange={(e) =>
-                        setTripForm({
-                          ...tripForm,
-                          purpose: e.target.value,
-                        })
+                        setTripForm({ ...tripForm, reason: e.target.value })
                       }
                       placeholder="e.g. Client meeting — annual audit"
                     />
                   </Field>
                 </div>
-                {tripForm.tripType === "Mixed" && (
-                  <div className="col-span-2 rounded-lg bg-slate-50 p-3">
-                    <div className="mb-2 text-sm font-semibold text-amber-600">
-                      Business Portion: {tripForm.mixedSplit}%
-                    </div>
-                    <input
-                      type="range"
-                      min="0"
-                      max="100"
-                      value={tripForm.mixedSplit}
-                      onChange={(e) =>
-                        setTripForm({
-                          ...tripForm,
-                          mixedSplit: parseInt(e.target.value),
-                        })
-                      }
-                      className="w-full accent-teal-600"
-                    />
-                    {parseFloat(String(tripForm.odometerEnd)) >
-                      parseFloat(String(tripForm.odometerStart)) && (
-                      <div className="mt-1.5 flex justify-between text-xs">
-                        <span className="text-teal-600">
-                          Business:{" "}
-                          {(
-                            ((parseFloat(String(tripForm.odometerEnd)) -
-                              parseFloat(String(tripForm.odometerStart))) *
-                              tripForm.mixedSplit) /
-                            100
-                          ).toFixed(1)}{" "}
-                          km
-                        </span>
-                        <span className="text-violet-600">
-                          Private:{" "}
-                          {(
-                            ((parseFloat(String(tripForm.odometerEnd)) -
-                              parseFloat(String(tripForm.odometerStart))) *
-                              (100 - tripForm.mixedSplit)) /
-                            100
-                          ).toFixed(1)}{" "}
-                          km
-                        </span>
-                      </div>
-                    )}
-                  </div>
-                )}
               </div>
               <div className="mt-5 flex justify-end gap-2">
                 <button
+                  type="button"
                   className="rounded-md border border-slate-200 px-3 py-2 text-sm text-slate-600"
                   onClick={() => {
                     setTripForm(null);
-                    setEditId(null);
+                    setEditingTripId(null);
                   }}
                 >
                   Cancel
                 </button>
                 <button
-                  className="rounded-md bg-[#0E2433] px-4 py-2 text-sm font-medium text-white"
-                  onClick={saveTrip}
+                  type="button"
+                  className="rounded-md bg-[#0E2433] px-4 py-2 text-sm font-medium text-white disabled:opacity-50"
+                  onClick={handleSaveTrip}
+                  disabled={busy}
                 >
-                  {editId ? "Update" : "Save Trip"}
+                  {editingTripId ? "Update" : "Save Trip"}
                 </button>
               </div>
             </div>
           </div>
         )}
 
-        {/* Trip Table */}
-        <div className="flex flex-wrap items-center justify-between gap-2">
-          <h3 className="text-sm font-semibold text-slate-900">Trip Log</h3>
-          <select
-            className="rounded-md border border-slate-300 px-2 py-1.5 text-sm"
-            value={filterMonth}
-            onChange={(e) => setFilterMonth(e.target.value)}
-          >
-            <option value="all">All Months</option>
-            {MONTHS.map((m, i) => (
-              <option key={i} value={i}>
-                {m}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        {filteredTrips.length === 0 ? (
-          <div className="rounded-xl border border-slate-200/80 bg-white p-12 text-center shadow-sm">
-            <p className="text-slate-400">
-              No trips yet. Add a trip or upload CSV.
-            </p>
-          </div>
-        ) : (
-          <div className="overflow-x-auto rounded-xl border border-slate-200/80 bg-white shadow-sm">
-            <table className="w-full text-sm">
-              <thead>
-                <tr className="border-b border-slate-200 text-xs uppercase text-slate-500">
-                  <th className="px-3 py-2 text-left">Date</th>
-                  <th className="px-3 py-2 text-left">Route</th>
-                  <th className="px-3 py-2 text-right">Total</th>
-                  <th className="px-3 py-2 text-center">Type</th>
-                  <th className="px-3 py-2 text-right">Business</th>
-                  <th className="px-3 py-2 text-right">Private</th>
-                  <th className="px-3 py-2 text-left">Purpose</th>
-                  <th className="px-3 py-2"></th>
-                </tr>
-              </thead>
-              <tbody>
-                {filteredTrips.map((t) => (
-                  <tr
-                    key={t.id}
-                    className="border-b border-slate-100 hover:bg-slate-50"
-                  >
-                    <td className="whitespace-nowrap px-3 py-2.5 font-mono text-xs">
-                      {t.date}
-                    </td>
-                    <td className="px-3 py-2.5 text-xs">
-                      {t.from && t.to
-                        ? `${t.from} → ${t.to}`
-                        : t.from || t.to || "—"}
-                    </td>
-                    <td className="px-3 py-2.5 text-right font-mono text-xs text-sky-600">
-                      {t.totalDistance.toFixed(1)}
-                    </td>
-                    <td className="px-3 py-2.5 text-center">
-                      <select
-                        value={t.tripType}
-                        onChange={(e) =>
-                          changeTripType(
-                            t.id,
-                            e.target.value as Trip["tripType"],
-                          )
-                        }
-                        className={`rounded border px-1.5 py-0.5 text-xs font-semibold ${
-                          t.tripType === "Business"
-                            ? "border-teal-200 text-teal-700"
-                            : t.tripType === "Private"
-                              ? "border-violet-200 text-violet-700"
-                              : "border-amber-200 text-amber-700"
-                        }`}
-                      >
-                        <option value="Business">Business</option>
-                        <option value="Private">Private</option>
-                        <option value="Mixed">Mixed</option>
-                      </select>
-                    </td>
-                    <td className="px-3 py-2.5 text-right font-mono text-xs text-teal-600">
-                      {t.businessKm > 0 ? t.businessKm.toFixed(1) : "—"}
-                    </td>
-                    <td className="px-3 py-2.5 text-right font-mono text-xs text-violet-600">
-                      {t.privateKm > 0 ? t.privateKm.toFixed(1) : "—"}
-                    </td>
-                    <td className="max-w-[160px] truncate px-3 py-2.5 text-xs text-slate-500">
-                      {t.purpose || "—"}
-                    </td>
-                    <td className="whitespace-nowrap px-3 py-2.5">
-                      <button
-                        onClick={() => {
-                          setTripForm({ ...t });
-                          setEditId(t.id);
-                        }}
-                        className="mr-1 text-slate-400 hover:text-teal-600"
-                        title="Edit"
-                      >
-                        &#9998;
-                      </button>
-                      <button
-                        onClick={() =>
-                          setTrips((p) => p.filter((x) => x.id !== t.id))
-                        }
-                        className="text-slate-400 hover:text-red-500"
-                        title="Delete"
-                      >
-                        &times;
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-                {/* Running Totals */}
-                <tr className="bg-slate-50 font-semibold">
-                  <td colSpan={2} className="px-3 py-2.5 text-xs text-teal-700">
-                    TOTALS
-                  </td>
-                  <td className="px-3 py-2.5 text-right font-mono text-xs text-sky-600">
-                    {fmtKm(
-                      filteredTrips.reduce(
-                        (s, t) => s + t.totalDistance,
-                        0,
-                      ),
-                    )}
-                  </td>
-                  <td></td>
-                  <td className="px-3 py-2.5 text-right font-mono text-xs text-teal-600">
-                    {fmtKm(
-                      filteredTrips.reduce(
-                        (s, t) => s + t.businessKm,
-                        0,
-                      ),
-                    )}
-                  </td>
-                  <td className="px-3 py-2.5 text-right font-mono text-xs text-violet-600">
-                    {fmtKm(
-                      filteredTrips.reduce(
-                        (s, t) => s + t.privateKm,
-                        0,
-                      ),
-                    )}
-                  </td>
-                  <td></td>
-                  <td></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
+        {importOpen && state && (
+          <LogbookImportWizard
+            logbook={{
+              openingOdometer: state.record.openingOdometer,
+              closingOdometer: state.record.closingOdometer,
+              existingTrips: state.record.trips,
+            }}
+            onCommit={handleImportCommit}
+            onClose={() => setImportOpen(false)}
+          />
         )}
-
-        {/* Year-End Section */}
-        <div className="space-y-4 pt-2">
-          <h3 className="text-base font-semibold text-slate-900">
-            Year-End Summary
-          </h3>
-          <div className="grid grid-cols-2 gap-3">
-            <Field label="Vehicle Description">
-              <input
-                className={inputCls}
-                value={vehicleName}
-                onChange={(e) => setVehicleName(e.target.value)}
-                placeholder="e.g. Toyota Corolla 1.8"
-              />
-            </Field>
-            <Field label="Determined Value (R)">
-              <input
-                type="number"
-                className={inputCls}
-                value={vehicleValue}
-                onChange={(e) => setVehicleValue(e.target.value)}
-                placeholder="e.g. 350000"
-              />
-            </Field>
-          </div>
-
-          {/* Monthly Chart */}
-          <div className="rounded-xl border border-slate-200/80 bg-white p-5 shadow-sm">
-            <div className="flex h-28 items-end gap-1">
-              {monthlyData.map((d, i) => {
-                const t = d.biz + d.priv;
-                const h = t > 0 ? (t / maxMon) * 100 : 2;
-                const bh = t > 0 ? (d.biz / t) * h : 0;
-                return (
-                  <div
-                    key={i}
-                    className="flex flex-1 flex-col items-center gap-0.5"
-                  >
-                    <div
-                      className="flex w-full max-w-[28px] flex-col justify-end overflow-hidden rounded-t"
-                      style={{ height: h }}
-                    >
-                      {h - bh > 0 && (
-                        <div
-                          className="bg-violet-500"
-                          style={{ height: h - bh }}
-                        />
-                      )}
-                      {bh > 0 && (
-                        <div
-                          className="bg-teal-500"
-                          style={{ height: bh }}
-                        />
-                      )}
-                      {t === 0 && (
-                        <div className="h-0.5 bg-slate-200" />
-                      )}
-                    </div>
-                    <span className="text-[9px] text-slate-400">
-                      {MONTHS[i]}
-                    </span>
-                  </div>
-                );
-              })}
-            </div>
-            <div className="mt-2 flex justify-center gap-4 text-[11px] text-slate-500">
-              <span className="flex items-center gap-1">
-                <span className="inline-block h-2 w-2 rounded-sm bg-teal-500" />{" "}
-                Business
-              </span>
-              <span className="flex items-center gap-1">
-                <span className="inline-block h-2 w-2 rounded-sm bg-violet-500" />{" "}
-                Private
-              </span>
-            </div>
-          </div>
-
-          {vVal > 0 && (
-            <div className="rounded-xl border border-slate-200/80 bg-white p-5 shadow-sm">
-              <h4 className="mb-3 text-sm font-semibold text-slate-900">
-                SARS Deemed Cost
-              </h4>
-              <div className="grid grid-cols-2 gap-3">
-                <ResultCard
-                  label="Fixed Cost (annual)"
-                  value={fmt(deemedFixed)}
-                  colorClass="text-slate-700"
-                  sub={`${fmt(sRate.fixedCostAnnual)}/year`}
-                />
-                <ResultCard
-                  label="Fuel Cost"
-                  value={fmt(deemedFuel)}
-                  colorClass="text-slate-700"
-                  sub={`R${sRate.fuelCostPerKm.toFixed(3)}/km x ${fmtKm(tripStats.totalKm)}`}
-                />
-                <ResultCard
-                  label="Maintenance Cost"
-                  value={fmt(deemedMaint)}
-                  colorClass="text-slate-700"
-                  sub={`R${sRate.maintenanceCostPerKm.toFixed(3)}/km x ${fmtKm(tripStats.totalKm)}`}
-                />
-                <ResultCard
-                  label="Total Deemed Cost"
-                  value={fmt(deemedTotal)}
-                  colorClass="text-slate-700"
-                />
-              </div>
-              <Highlight
-                label="ALLOWABLE DEDUCTION (ITR12)"
-                value={fmt(travelDeduction)}
-              />
-              <p className="mt-2 text-center text-xs text-slate-400">
-                {fmt(deemedTotal)} x {pct(bizPct)} business use
-              </p>
-            </div>
-          )}
-        </div>
       </div>
     </>
   );
