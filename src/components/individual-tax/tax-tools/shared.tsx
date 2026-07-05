@@ -34,27 +34,6 @@ export type TabKey =
   | "rental"
   | "homeoffice";
 
-export interface Trip {
-  id: number;
-  date: string;
-  from: string;
-  to: string;
-  odometerStart: string | number;
-  odometerEnd: string | number;
-  purpose: string;
-  tripType: "Business" | "Private" | "Mixed";
-  mixedSplit: number;
-  businessKm: number;
-  privateKm: number;
-  totalDistance: number;
-}
-
-export interface UploadData {
-  headers: string[];
-  rows: Record<string, string>[];
-  name: string;
-}
-
 /* ═══════════════════════════════════════════
    HELPERS — Reusable UI pieces (Tailwind)
    ═══════════════════════════════════════════ */

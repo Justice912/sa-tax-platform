@@ -1,7 +1,12 @@
 import Link from "next/link";
 import { TaxTools } from "@/components/individual-tax/tax-tools";
+import { listClients } from "@/modules/clients/client-service";
 
-export default function IndividualTaxToolsPage() {
+export default async function IndividualTaxToolsPage() {
+  const clients = (await listClients())
+    .filter((client) => client.clientType === "INDIVIDUAL")
+    .sort((a, b) => a.displayName.localeCompare(b.displayName));
+
   return (
     <div className="space-y-5">
       <div className="flex flex-wrap items-start justify-between gap-3">
@@ -20,7 +25,7 @@ export default function IndividualTaxToolsPage() {
         </Link>
       </div>
 
-      <TaxTools />
+      <TaxTools clients={clients} />
     </div>
   );
 }

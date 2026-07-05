@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import type { SupportedAssessmentYear } from "@/modules/individual-tax/types";
+import type { ClientRecord } from "@/modules/shared/types";
 import {
   selectCls,
   type TabKey,
@@ -23,17 +24,17 @@ import { ProvisionalTaxTab } from "@/components/individual-tax/tax-tools/provisi
 /* ═══════════════════════════════════════════
    MAIN COMPONENT
    ═══════════════════════════════════════════ */
-export function TaxTools() {
+export function TaxTools({ clients = [] }: { clients?: ClientRecord[] }) {
   return (
     <RulePackProvider>
       <TaxToolsSummaryProvider>
-        <TaxToolsInner />
+        <TaxToolsInner clients={clients} />
       </TaxToolsSummaryProvider>
     </RulePackProvider>
   );
 }
 
-function TaxToolsInner() {
+function TaxToolsInner({ clients }: { clients: ClientRecord[] }) {
   const [tab, setTab] = useState<TabKey>("dashboard");
   const { assessmentYear, setAssessmentYear } = useRulePack();
 
@@ -92,7 +93,7 @@ function TaxToolsInner() {
 
       {/* ════════ TRAVEL LOGBOOK ════════ */}
       <div className={tab === "travel" ? "" : "hidden"}>
-        <TravelLogbookTab />
+        <TravelLogbookTab clients={clients} />
       </div>
 
       {/* ════════ MEDICAL CREDITS ════════ */}
