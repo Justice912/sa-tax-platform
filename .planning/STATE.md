@@ -6,15 +6,15 @@ current_phase: 6
 current_phase_name: Logbook UI, Import Wizard & Performance Hardening
 current_plan: 6
 status: verifying
-stopped_at: Completed 06-02-PLAN.md
-last_updated: "2026-07-05T09:50:18.868Z"
+stopped_at: Completed 06-03-PLAN.md
+last_updated: "2026-07-05T09:54:38.413Z"
 last_activity: 2026-07-05
 progress:
   total_phases: 7
   completed_phases: 5
   total_plans: 28
-  completed_plans: 26
-  percent: 93
+  completed_plans: 27
+  percent: 96
 ---
 
 # Project State
@@ -36,7 +36,7 @@ See: .planning/PROJECT.md (updated 2026-07-02)
 **Status:** Phase complete — ready for verification
 **Last Activity:** 2026-07-05
 
-**Progress:** [█████████░] 93%
+**Progress:** [██████████] 96%
 
 ## Performance Metrics
 
@@ -82,6 +82,7 @@ See: .planning/PROJECT.md (updated 2026-07-02)
 | Phase 06 P05 | 10min | 2 tasks | 3 files |
 | Phase 06 P01 | 12min | 3 tasks | 7 files |
 | Phase 06 P02 | 7min | 2 tasks | 2 files |
+| Phase 06 P03 | 14min | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -151,6 +152,8 @@ Recent decisions affecting current work:
 - [Phase 06]: data-virtual-row lives on the virtualizer's positioning wrapper div, not inside TripRow itself -- TripRow stays presentational so it can mount standalone in the Profiler isolation test
 - [Phase 06]: Profiler-isolation proof requires memoizing at a per-item wrapper (ProfiledRow) above the Profiler, not just a memo'd leaf beneath a bare Profiler under a re-rendering mapper -- otherwise onRender still fires (near-zero duration) for bailed-out siblings
 - [Phase 06]: filterAndSortTrips exported standalone from trip-table.tsx so PERF-03 throughput is measured directly, decoupled from React render timing
+- [Phase 06]: LogbookImportWizard's step model is 0|1|2 (select, map, preview) not a literal 0..4 range -- commit is the Import button's async action on the preview screen, not a separate rendered step, since onClose() fires immediately after a successful onCommit
+- [Phase 06]: Preview-table virtualization tests must call mockScrollElementSize() whenever asserting on rendered row content (not just summary counts) -- jsdom's zero-size viewport otherwise makes the virtualizer render zero data-virtual-row nodes
 
 ### Pending Todos
 
@@ -166,6 +169,6 @@ None yet.
 
 ## Session Continuity
 
-**Last Session:** 2026-07-05T09:50:18.865Z
-**Stopped At:** Completed 06-02-PLAN.md
+**Last Session:** 2026-07-05T09:54:38.408Z
+**Stopped At:** Completed 06-03-PLAN.md
 **Resume File:** None
