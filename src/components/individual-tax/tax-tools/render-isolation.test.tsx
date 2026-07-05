@@ -1,7 +1,8 @@
 import { Profiler } from "react";
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { describe, expect, it, vi } from "vitest";
+import { mockScrollElementSize } from "@/test/virtualization-test-utils";
 import { RulePackProvider } from "@/components/individual-tax/tax-tools/rulepack-context";
 import { TaxToolsSummaryProvider } from "@/components/individual-tax/tax-tools/summary-context";
 import { RentalTab } from "@/components/individual-tax/tax-tools/rental-tab";
@@ -13,8 +14,88 @@ import { ProvisionalTaxTab } from "@/components/individual-tax/tax-tools/provisi
 import { TravelLogbookTab } from "@/components/individual-tax/tax-tools/travel-logbook-tab";
 import { fmt } from "@/components/individual-tax/tax-tools/shared";
 import { TaxTools } from "@/components/individual-tax/tax-tools";
+import type { ClientRecord } from "@/modules/shared/types";
+import type { LogbookRecord, LogbookTravelResult } from "@/modules/logbook/types";
+
+// 06-06: TravelLogbookTab now loads a real persisted logbook via Server Actions. Mocked here
+// (module-wide) so the reverse-direction isolation test below can select a client and expose a
+// real input without pulling repository.ts's node:fs import into jsdom -- the exact same canned-
+// LogbookState shape the new travel-logbook-tab.test.tsx integration suite uses.
+vi.mock("@/modules/logbook/actions", () => ({
+  getLogbookForClientAction: vi.fn(),
+  createLogbookAction: vi.fn(),
+  addTripAction: vi.fn(),
+  updateTripAction: vi.fn(),
+  deleteTripAction: vi.fn(),
+  importTripsAction: vi.fn(),
+  setCostMethodAction: vi.fn(),
+  setActualExpensesAction: vi.fn(),
+  updateOdometersAction: vi.fn(),
+  getLogbookCsvAction: vi.fn(),
+}));
+
+import { getLogbookForClientAction } from "@/modules/logbook/actions";
 
 const rawNormalizer = (text: string) => text;
+
+const TRAVEL_ISOLATION_CLIENT: ClientRecord = {
+  id: "client_1",
+  code: "C-0001",
+  firmId: "firm_1",
+  displayName: "Jane Doe",
+  clientType: "INDIVIDUAL",
+  status: "ACTIVE",
+};
+
+function makeTravelIsolationLogbookState(): {
+  record: LogbookRecord;
+  travelResult: LogbookTravelResult;
+} {
+  const record: LogbookRecord = {
+    id: "logbook_1",
+    clientId: "client_1",
+    assessmentYear: 2026,
+    vehicle: {
+      id: "vehicle_1",
+      make: "Toyota",
+      model: "Corolla",
+      registrationNumber: "GP 123 456",
+      costPrice: 350000,
+      acquisitionDate: null,
+    },
+    openingOdometer: 10000,
+    closingOdometer: 20000,
+    costMethod: "DEEMED",
+    actualExpenses: null,
+    trips: [
+      {
+        id: "trip_1",
+        date: "2026-02-01",
+        businessKm: 500,
+        fromLocation: "Office",
+        toLocation: "Client site",
+        reason: "Site visit",
+        odometerStart: 10000,
+        odometerEnd: 10500,
+        createdAt: "2026-02-01T00:00:00.000Z",
+        updatedAt: "2026-02-01T00:00:00.000Z",
+      },
+    ],
+    createdAt: "2026-01-01T00:00:00.000Z",
+    updatedAt: "2026-01-01T00:00:00.000Z",
+  };
+  const travelResult: LogbookTravelResult = {
+    totalKilometres: 10000,
+    businessKilometres: 500,
+    costMethod: "DEEMED",
+    deemedCostDeduction: 45000,
+    actualCostDeduction: null,
+    claimedDeduction: 45000,
+    recommendedMethod: "DEEMED",
+    warnings: [],
+  };
+  return { record, travelResult };
+}
 
 function renderBothTabs(
   onRenderRental: (id: string, phase: string) => void,
@@ -367,90 +448,73 @@ function renderTravelAndMedical(
   );
 }
 
-describe("Travel/Medical render isolation (final calculator extraction)", () => {
-  it("does not re-render MedicalTab when typing into Travel's vehicle-value input (Profiler-verified)", async () => {
+describe("Travel/Medical render isolation (06-06 keystone: real persisted logbook container)", () => {
+  it("primary: does not re-render TravelLogbookTab when typing into MedicalTab (Profiler-verified, no travel input needed)", async () => {
     const user = userEvent.setup();
     const onRenderTravel = vi.fn();
     const onRenderMedical = vi.fn();
 
+    // TravelLogbookTab renders with NO clients prop (the shell/isolation default) -- per the
+    // Task-2 constraint this fires no Server Action on mount, so the tree is stable and this
+    // must_have direction needs no travel input at all.
     renderTravelAndMedical(onRenderTravel, onRenderMedical);
 
     // Let the initial-mount + summary-publish effects settle before measuring.
     onRenderTravel.mockClear();
     onRenderMedical.mockClear();
 
-    const vehicleValue = screen.getByLabelText(/determined value \(r\)/i);
-    await user.type(vehicleValue, "5");
+    const monthlyContrib = screen.getByLabelText(
+      /monthly medical aid contribution \(r\)/i,
+    );
+    await user.type(monthlyContrib, "5");
 
-    expect(onRenderTravel).toHaveBeenCalled();
-    expect(onRenderMedical).not.toHaveBeenCalled();
+    expect(onRenderMedical).toHaveBeenCalled();
+    expect(onRenderTravel).not.toHaveBeenCalled();
   });
 
-  it("still publishes Travel deduction to the Dashboard after extraction, reading deemed-cost rates via useRulePack()", async () => {
-    const user = userEvent.setup();
-    render(<TaxTools />);
+  it("reverse: does not re-render MedicalTab when a state change originates inside the real travel tab (Profiler-verified)", async () => {
+    const restore = mockScrollElementSize();
+    try {
+      const user = userEvent.setup();
+      const onRenderTravel = vi.fn();
+      const onRenderMedical = vi.fn();
+      vi.mocked(getLogbookForClientAction).mockResolvedValue(
+        makeTravelIsolationLogbookState(),
+      );
 
-    const travelNav = screen.getAllByRole("button", {
-      name: /travel logbook/i,
-    })[0];
-    await user.click(travelNav);
+      render(
+        <RulePackProvider>
+          <TaxToolsSummaryProvider>
+            <Profiler id="travel" onRender={onRenderTravel}>
+              <TravelLogbookTab clients={[TRAVEL_ISOLATION_CLIENT]} />
+            </Profiler>
+            <Profiler id="medical" onRender={onRenderMedical}>
+              <MedicalTab />
+            </Profiler>
+          </TaxToolsSummaryProvider>
+        </RulePackProvider>,
+      );
 
-    await user.click(screen.getByRole("button", { name: /\+ new trip/i }));
+      await user.selectOptions(
+        screen.getByLabelText(/^client$/i),
+        TRAVEL_ISOLATION_CLIENT.id,
+      );
+      await waitFor(() => {
+        expect(screen.getByText("2026-02-01")).toBeInTheDocument();
+      });
 
-    // newTrip() defaults date to today and tripType to "Business"; only the
-    // odometer readings and purpose (required for a Business trip) need filling.
-    await user.type(screen.getByLabelText(/start odometer/i), "0");
-    await user.type(screen.getByLabelText(/end odometer/i), "1000");
-    await user.type(
-      screen.getByLabelText(/purpose \/ notes/i),
-      "Client site visit",
-    );
-    await user.click(screen.getByRole("button", { name: /^save trip$/i }));
+      // Let the load + summary-publish effects settle before measuring.
+      onRenderTravel.mockClear();
+      onRenderMedical.mockClear();
 
-    // Business trip, 1,000 km, 100% business use. Vehicle value 250,000 falls
-    // in the 2026 rulepack's 200,001-300,000 deemed-cost band: fixedCostAnnual
-    // 87,497, fuelCostPerKm 1.779, maintenanceCostPerKm 0.654.
-    // deemedTotal = 87,497 + 1.779*1000 + 0.654*1000 = 89,930; travelDeduction
-    // = 89,930 * 100% = 89,930.
-    await user.type(
-      screen.getByLabelText(/determined value \(r\)/i),
-      "250000",
-    );
+      // A real input exposed once a logbook is loaded (the odometer editor) -- the old
+      // "Determined Value (R)" prototype input this test used to drive no longer exists.
+      await user.type(screen.getByLabelText(/opening odometer/i), "1");
 
-    const dashboardNav = screen.getAllByRole("button", {
-      name: /^dashboard$/i,
-    })[0];
-    await user.click(dashboardNav);
-
-    expect(
-      screen.getAllByText(fmt(89930), { normalizer: rawNormalizer }).length,
-    ).toBeGreaterThan(0);
-  });
-
-  it("keeps in-progress Travel vehicle-value input intact across a tab switch away and back (always-mounted CSS-hide)", async () => {
-    const user = userEvent.setup();
-    render(<TaxTools />);
-
-    const travelNav = screen.getAllByRole("button", {
-      name: /travel logbook/i,
-    })[0];
-    await user.click(travelNav);
-
-    const vehicleValue = screen.getByLabelText(/determined value \(r\)/i);
-    await user.type(vehicleValue, "123456");
-    expect(vehicleValue).toHaveValue(123456);
-
-    const medicalNav = screen.getAllByRole("button", {
-      name: /medical credits/i,
-    })[0];
-    await user.click(medicalNav);
-
-    const travelNavAgain = screen.getAllByRole("button", {
-      name: /travel logbook/i,
-    })[0];
-    await user.click(travelNavAgain);
-
-    const vehicleValueAgain = screen.getByLabelText(/determined value \(r\)/i);
-    expect(vehicleValueAgain).toHaveValue(123456);
+      expect(onRenderTravel).toHaveBeenCalled();
+      expect(onRenderMedical).not.toHaveBeenCalled();
+    } finally {
+      restore();
+    }
   });
 });
