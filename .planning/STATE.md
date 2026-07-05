@@ -4,10 +4,10 @@ milestone: v1.0
 milestone_name: milestone
 current_phase: 6
 current_phase_name: Logbook UI, Import Wizard & Performance Hardening
-current_plan: 5
+current_plan: 6
 status: executing
-stopped_at: Completed 06-05-PLAN.md
-last_updated: "2026-07-05T09:36:51.270Z"
+stopped_at: Completed 06-01-PLAN.md
+last_updated: "2026-07-05T09:38:20.373Z"
 last_activity: 2026-07-05
 progress:
   total_phases: 7
@@ -31,7 +31,7 @@ See: .planning/PROJECT.md (updated 2026-07-02)
 **Current Phase:** 6
 **Current Phase Name:** Logbook UI, Import Wizard & Performance Hardening
 **Total Phases:** 7
-**Current Plan:** 5
+**Current Plan:** 6
 **Total Plans in Phase:** 6
 **Status:** Ready to execute
 **Last Activity:** 2026-07-05
@@ -80,6 +80,7 @@ See: .planning/PROJECT.md (updated 2026-07-02)
 | Phase 05 P06 | 13min | 3 tasks | 3 files |
 | Phase 06 P04 | 12min | 2 tasks | 2 files |
 | Phase 06 P05 | 10min | 2 tasks | 3 files |
+| Phase 06 P01 | 12min | 3 tasks | 7 files |
 
 ## Accumulated Context
 
@@ -144,6 +145,7 @@ Recent decisions affecting current work:
 - [Phase 05]: tripStats/filteredTrips/monthlyData+maxMon wrapped in useMemo during extraction to pre-empt a per-keystroke O(n) recompute before Phase 6 virtualization work begins
 - [Phase 06]: Client-side ACTUAL-election and expense-clear guards in CostMethodPanel reuse setLogbookCostMethod/setLogbookActualExpenses's exact error-message strings verbatim, keeping the UI guard message and the server rejection reason a single source of truth
 - [Phase 06]: LogbookAuditSummaryView kept as a client component solely to host the screen-only window.print() button, matching the IndividualTaxIta34 precedent -- it still receives all data via props and performs zero fetching
+- [Phase 06]: mockScrollElementSize stubs offsetWidth/offsetHeight (not just getBoundingClientRect/clientHeight/scrollHeight) -- virtual-core's getRect() reads the offset properties, traced directly from installed library source
 
 ### Pending Todos
 
@@ -159,6 +161,6 @@ None yet.
 
 ## Session Continuity
 
-**Last Session:** 2026-07-05T09:36:51.266Z
-**Stopped At:** Completed 06-05-PLAN.md
+**Last Session:** 2026-07-05T09:38:20.369Z
+**Stopped At:** Completed 06-01-PLAN.md
 **Resume File:** None
