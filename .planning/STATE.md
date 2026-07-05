@@ -5,16 +5,16 @@ milestone_name: milestone
 current_phase: 6
 current_phase_name: Logbook UI, Import Wizard & Performance Hardening
 current_plan: 6
-status: executing
-stopped_at: Completed 06-01-PLAN.md
-last_updated: "2026-07-05T09:38:20.373Z"
+status: verifying
+stopped_at: Completed 06-02-PLAN.md
+last_updated: "2026-07-05T09:50:18.868Z"
 last_activity: 2026-07-05
 progress:
   total_phases: 7
   completed_phases: 5
   total_plans: 28
-  completed_plans: 25
-  percent: 89
+  completed_plans: 26
+  percent: 93
 ---
 
 # Project State
@@ -33,10 +33,10 @@ See: .planning/PROJECT.md (updated 2026-07-02)
 **Total Phases:** 7
 **Current Plan:** 6
 **Total Plans in Phase:** 6
-**Status:** Ready to execute
+**Status:** Phase complete — ready for verification
 **Last Activity:** 2026-07-05
 
-**Progress:** [█████████░] 89%
+**Progress:** [█████████░] 93%
 
 ## Performance Metrics
 
@@ -81,6 +81,7 @@ See: .planning/PROJECT.md (updated 2026-07-02)
 | Phase 06 P04 | 12min | 2 tasks | 2 files |
 | Phase 06 P05 | 10min | 2 tasks | 3 files |
 | Phase 06 P01 | 12min | 3 tasks | 7 files |
+| Phase 06 P02 | 7min | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -146,6 +147,10 @@ Recent decisions affecting current work:
 - [Phase 06]: Client-side ACTUAL-election and expense-clear guards in CostMethodPanel reuse setLogbookCostMethod/setLogbookActualExpenses's exact error-message strings verbatim, keeping the UI guard message and the server rejection reason a single source of truth
 - [Phase 06]: LogbookAuditSummaryView kept as a client component solely to host the screen-only window.print() button, matching the IndividualTaxIta34 precedent -- it still receives all data via props and performs zero fetching
 - [Phase 06]: mockScrollElementSize stubs offsetWidth/offsetHeight (not just getBoundingClientRect/clientHeight/scrollHeight) -- virtual-core's getRect() reads the offset properties, traced directly from installed library source
+- [Phase 06]: TripTable row height fixed at 40px, scroll container fixed at 480px, matching the 06-01 mockScrollElementSize recipe defaults -- dynamic row-height measurement out of scope
+- [Phase 06]: data-virtual-row lives on the virtualizer's positioning wrapper div, not inside TripRow itself -- TripRow stays presentational so it can mount standalone in the Profiler isolation test
+- [Phase 06]: Profiler-isolation proof requires memoizing at a per-item wrapper (ProfiledRow) above the Profiler, not just a memo'd leaf beneath a bare Profiler under a re-rendering mapper -- otherwise onRender still fires (near-zero duration) for bailed-out siblings
+- [Phase 06]: filterAndSortTrips exported standalone from trip-table.tsx so PERF-03 throughput is measured directly, decoupled from React render timing
 
 ### Pending Todos
 
@@ -161,6 +166,6 @@ None yet.
 
 ## Session Continuity
 
-**Last Session:** 2026-07-05T09:38:20.369Z
-**Stopped At:** Completed 06-01-PLAN.md
+**Last Session:** 2026-07-05T09:50:18.865Z
+**Stopped At:** Completed 06-02-PLAN.md
 **Resume File:** None

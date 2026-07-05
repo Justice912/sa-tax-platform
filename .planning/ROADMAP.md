@@ -158,5 +158,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7
 | 3. ITR12 Travel Schedule Integration | 3/3 | Complete    | 2026-07-03 |
 | 4. Import Pipeline | 6/6 | Complete    | 2026-07-04 |
 | 5. Component Decomposition | 6/6 | Complete    | 2026-07-04 |
-| 6. Logbook UI, Import Wizard & Performance Hardening | 3/6 | In Progress|  |
+| 6. Logbook UI, Import Wizard & Performance Hardening | 4/6 | In Progress|  |
 | 7. Calculator Audit | 0/TBD | Not started | - |
