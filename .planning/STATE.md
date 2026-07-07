@@ -2,19 +2,19 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-current_phase: 6
-current_phase_name: Logbook UI, Import Wizard & Performance Hardening
-current_plan: Not started
-status: completed
-stopped_at: Completed 06-03-PLAN.md
-last_updated: "2026-07-07T08:35:07.634Z"
+current_phase: 7
+current_phase_name: Calculator Audit
+current_plan: 4
+status: executing
+stopped_at: Completed 07-03-PLAN.md
+last_updated: "2026-07-07T14:00:05.858Z"
 last_activity: 2026-07-07
 progress:
   total_phases: 7
   completed_phases: 6
-  total_plans: 28
-  completed_plans: 28
-  percent: 96
+  total_plans: 33
+  completed_plans: 31
+  percent: 94
 ---
 
 # Project State
@@ -24,19 +24,19 @@ progress:
 See: .planning/PROJECT.md (updated 2026-07-02)
 
 **Core value:** A tax practitioner can capture or import a client's travel logbook and complete an individual tax assessment knowing every figure and format matches current SARS requirements — without the app slowing down.
-**Current focus:** Phase 6 - Logbook UI, Import Wizard & Performance Hardening
+**Current focus:** Phase 7 - Calculator Audit
 
 ## Current Position
 
-**Current Phase:** 6
-**Current Phase Name:** Logbook UI, Import Wizard & Performance Hardening
+**Current Phase:** 7
+**Current Phase Name:** Calculator Audit
 **Total Phases:** 7
-**Current Plan:** Not started
-**Total Plans in Phase:** 6
-**Status:** Milestone complete
+**Current Plan:** 4
+**Total Plans in Phase:** 5
+**Status:** Ready to execute
 **Last Activity:** 2026-07-07
 
-**Progress:** [██████████] 96%
+**Progress:** [█████████░] 94%
 
 ## Performance Metrics
 
@@ -83,6 +83,8 @@ See: .planning/PROJECT.md (updated 2026-07-02)
 | Phase 06 P01 | 12min | 3 tasks | 7 files |
 | Phase 06 P02 | 7min | 2 tasks | 2 files |
 | Phase 06 P03 | 14min | 2 tasks | 2 files |
+| Phase 07 P02 | 15 | 2 tasks | 2 files |
+| Phase 07-calculator-audit P03 | 12min | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -154,6 +156,8 @@ Recent decisions affecting current work:
 - [Phase 06]: filterAndSortTrips exported standalone from trip-table.tsx so PERF-03 throughput is measured directly, decoupled from React render timing
 - [Phase 06]: LogbookImportWizard's step model is 0|1|2 (select, map, preview) not a literal 0..4 range -- commit is the Import button's async action on the preview screen, not a separate rendered step, since onClose() fires immediately after a successful onCommit
 - [Phase 06]: Preview-table virtualization tests must call mockScrollElementSize() whenever asserting on rendered row content (not just summary counts) -- jsdom's zero-size viewport otherwise makes the virtualizer render zero data-virtual-row nodes
+- [Phase 07]: [Phase 07]: Adopted SARS s6B interpretation (under-65 4x MTC + excess-contributions term + 7.5% floor; 65+/disability 3x MTC + 33.3% sum-then-floor, no 7.5% floor) -- MEDIUM confidence, sign-off #1 outstanding, not blocking
+- [Phase 07-calculator-audit]: Rental required zero code change (13 expense categories already SARS-correct, no capital-leak field); Home Office salaried-eligibility policy (block vs allow-with-s23(m)) left unresolved as an open compliance decision -- only the warning copy was corrected to state s23(b)/s23(m) accurately
 
 ### Pending Todos
 
@@ -169,6 +173,6 @@ None yet.
 
 ## Session Continuity
 
-**Last Session:** 2026-07-05T09:54:38.408Z
-**Stopped At:** Completed 06-03-PLAN.md
+**Last Session:** 2026-07-07T13:59:45.584Z
+**Stopped At:** Completed 07-03-PLAN.md
 **Resume File:** None
