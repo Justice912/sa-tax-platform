@@ -168,11 +168,14 @@ export function HomeOfficeTab() {
             Salaried Employee Warning
           </div>
           <p className="mt-1 text-sm text-slate-600">
-            SARS very rarely allows home office deductions for salaried
-            employees. You must perform duties mainly (50%+) at home and
-            have no alternative office provided by your employer. The
-            office must be specifically equipped and used exclusively for
-            work.
+            Salaried (non-commission) employees CAN claim a home-office
+            deduction if a part of the home is used regularly and
+            exclusively for work and is specifically equipped for it
+            (s23(b)), AND duties are performed mainly (more than 50%) at
+            home. Note: s23(m) restricts salaried employees to
+            premises-type costs (rent, repairs, and s11(a) home-office
+            expenses) and disallows most other deductions and
+            wear-and-tear on the building.
           </p>
         </div>
       )}
