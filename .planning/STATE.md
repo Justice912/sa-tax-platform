@@ -4,17 +4,17 @@ milestone: v1.0
 milestone_name: milestone
 current_phase: 7
 current_phase_name: Calculator Audit
-current_plan: 4
-status: executing
-stopped_at: Completed 07-01-PLAN.md
-last_updated: "2026-07-07T14:00:37.110Z"
+current_plan: 5
+status: verifying
+stopped_at: Completed 07-05-PLAN.md
+last_updated: "2026-07-07T14:16:30.242Z"
 last_activity: 2026-07-07
 progress:
   total_phases: 7
-  completed_phases: 6
+  completed_phases: 7
   total_plans: 33
-  completed_plans: 31
-  percent: 94
+  completed_plans: 33
+  percent: 100
 ---
 
 # Project State
@@ -31,12 +31,12 @@ See: .planning/PROJECT.md (updated 2026-07-02)
 **Current Phase:** 7
 **Current Phase Name:** Calculator Audit
 **Total Phases:** 7
-**Current Plan:** 4
+**Current Plan:** 5
 **Total Plans in Phase:** 5
-**Status:** Ready to execute
+**Status:** Phase complete — ready for verification
 **Last Activity:** 2026-07-07
 
-**Progress:** [█████████░] 94%
+**Progress:** [██████████] 100%
 
 ## Performance Metrics
 
@@ -86,6 +86,8 @@ See: .planning/PROJECT.md (updated 2026-07-02)
 | Phase 07 P02 | 15 | 2 tasks | 2 files |
 | Phase 07-calculator-audit P03 | 12min | 2 tasks | 3 files |
 | Phase 07 P01 | 8min | 3 tasks | 3 files |
+| Phase 07 P04 | 12min | 3 tasks | 3 files |
+| Phase 07 P05 | 15min | 2 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -161,6 +163,8 @@ Recent decisions affecting current work:
 - [Phase 07-calculator-audit]: Rental required zero code change (13 expense categories already SARS-correct, no capital-leak field); Home Office salaried-eligibility policy (block vs allow-with-s23(m)) left unresolved as an open compliance decision -- only the warning copy was corrected to state s23(b)/s23(m) accurately
 - [Phase 07]: [Phase 07]: Corrected 2027 rulepack tax brackets/rebates/thresholds to gazetted Budget-2026 figures (HIGH confidence, three independent sources) -- pending practitioner sign-off #4 against final SARS 2026/27 tables before release
 - [Phase 07]: [Phase 07]: Left 2027 medicalTaxCredit, retirement.annualCap, cgt, travelDeemedCostTable, provisionalTax byte-unchanged -- Phase 1 already verified these correct
+- [Phase 07]: [Phase 07]: Reworked provisional-tax-tab.tsx to a real para 19/20 model (basic amount + 8%/18-month escalation, taxable-income safe-harbour floor, P2 nets P1); removed unused priorTax input -- MEDIUM confidence sign-off #2 outstanding, not blocking
+- [Phase 07]: [Phase 07]: Retirement/CGT display labels interpolate rulepack values (annualCap, cgt.*); calc math left untouched -- already correct and rulepack-sourced per 07-01
 
 ### Pending Todos
 
@@ -176,6 +180,6 @@ None yet.
 
 ## Session Continuity
 
-**Last Session:** 2026-07-07T14:00:37.103Z
-**Stopped At:** Completed 07-01-PLAN.md
+**Last Session:** 2026-07-07T14:16:30.239Z
+**Stopped At:** Completed 07-05-PLAN.md
 **Resume File:** None

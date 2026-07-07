@@ -46,7 +46,7 @@ Requirements for this milestone. Each maps to roadmap phases.
 - [x] **CALC-01**: Medical credits calculator matches SARS s6A monthly amounts and s6B formulas per selected year
 - [ ] **CALC-02**: Retirement calculator applies the correct s11F cap per year (R350k for 2025/2026, R430k for 2027)
 - [ ] **CALC-03**: CGT calculator applies correct per-year exclusions and inclusion rate
-- [ ] **CALC-04**: Provisional tax calculator follows paragraph 19/20 rules (basic amount, safe-harbour thresholds) per year
+- [x] **CALC-04**: Provisional tax calculator follows paragraph 19/20 rules (basic amount, safe-harbour thresholds) per year
 - [x] **CALC-05**: Rental and home office calculators match SARS deductible-expense rules (s23(b) requirements for home office)
 - [x] **CALC-06**: Dashboard tax bracket/rebate figures come from the rulepack for the selected year
 
@@ -100,7 +100,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | CALC-01 | Phase 7 - Calculator Audit | Complete |
 | CALC-02 | Phase 7 - Calculator Audit | Pending |
 | CALC-03 | Phase 7 - Calculator Audit | Pending |
-| CALC-04 | Phase 7 - Calculator Audit | Pending |
+| CALC-04 | Phase 7 - Calculator Audit | Complete |
 | CALC-05 | Phase 7 - Calculator Audit | Complete |
 | CALC-06 | Phase 7 - Calculator Audit | Complete |
 

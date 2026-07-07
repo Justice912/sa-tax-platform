@@ -18,7 +18,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 4: Import Pipeline** - CSV/XLSX import with SARS eLogbook auto-detection, off-main-thread parsing, and pre-commit validation (completed 2026-07-04)
 - [x] **Phase 5: Component Decomposition** - The 2,148-line tax-tools monolith split into independent per-calculator components (completed 2026-07-04)
 - [x] **Phase 6: Logbook UI, Import Wizard & Performance Hardening** - End-to-end logbook capture/import experience, virtualized and validated at 10,000+ row scale (completed 2026-07-07)
-- [ ] **Phase 7: Calculator Audit** - Remaining seven calculators verified against current SARS rules and rulepack-sourced values
+- [x] **Phase 7: Calculator Audit** - Remaining seven calculators verified against current SARS rules and rulepack-sourced values (completed 2026-07-07)
 
 ## Phase Details
 
@@ -163,4 +163,4 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7
 | 4. Import Pipeline | 6/6 | Complete    | 2026-07-04 |
 | 5. Component Decomposition | 6/6 | Complete    | 2026-07-04 |
 | 6. Logbook UI, Import Wizard & Performance Hardening | 6/6 | Complete    | 2026-07-07 |
-| 7. Calculator Audit | 3/5 | In Progress|  |
+| 7. Calculator Audit | 5/5 | Complete   | 2026-07-07 |
