@@ -364,7 +364,7 @@ describe("Medical/Provisional render isolation", () => {
     expect(onRenderProvisional).not.toHaveBeenCalled();
   });
 
-  it("preserves the Phase-1-corrected safe-harbour branch orientation after extraction (2026, R1,000,000 threshold)", async () => {
+  it("preserves the safe-harbour branch orientation after extraction under the corrected taxable-income floor model (2026, R1,000,000 threshold)", async () => {
     const user = userEvent.setup();
 
     render(
@@ -375,29 +375,30 @@ describe("Medical/Provisional render isolation", () => {
       </RulePackProvider>,
     );
 
+    // priorTaxable set high enough that the 90%/80% branch (not the basic amount) binds.
     await user.type(
-      screen.getByLabelText(/prior year tax assessed \(r\)/i),
-      "100000",
+      screen.getByLabelText(/prior year taxable income \(r\)/i),
+      "2000000",
     );
 
     // At/below threshold: estTaxable = 500,000 <= 1,000,000 ->
-    // safeHarbour = priorTax * safeHarbourBasicAmountOrActualPctBelowThreshold (0.90)
+    // safeHarbourTaxableIncome = min(2000000, 0.9*500000=450000) = 450000
     const estimatedTaxable = screen.getByLabelText(
       /estimated current year taxable income \(r\)/i,
     );
     await user.type(estimatedTaxable, "500000");
     expect(
-      screen.getAllByText(fmt(90000), { normalizer: rawNormalizer }).length,
+      screen.getAllByText(fmt(450000), { normalizer: rawNormalizer }).length,
     ).toBeGreaterThan(0);
 
     // Above threshold: estTaxable = 1,500,000 > 1,000,000 ->
-    // safeHarbour = priorTax * safeHarbourActualPctAboveThreshold (0.80).
+    // safeHarbourTaxableIncome = 0.8 * 1,500,000 = 1,200,000 (basic-amount option falls away).
     // A mechanical "tidy" of the ternary that swaps branch orientation would
-    // instead produce 90,000 here -- this assertion catches that regression.
+    // instead produce 1,350,000 (0.9*1,500,000) here -- this assertion catches that regression.
     await user.clear(estimatedTaxable);
     await user.type(estimatedTaxable, "1500000");
     expect(
-      screen.getAllByText(fmt(80000), { normalizer: rawNormalizer }).length,
+      screen.getAllByText(fmt(1200000), { normalizer: rawNormalizer }).length,
     ).toBeGreaterThan(0);
   });
 
