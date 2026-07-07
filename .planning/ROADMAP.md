@@ -163,4 +163,4 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7
 | 4. Import Pipeline | 6/6 | Complete    | 2026-07-04 |
 | 5. Component Decomposition | 6/6 | Complete    | 2026-07-04 |
 | 6. Logbook UI, Import Wizard & Performance Hardening | 6/6 | Complete    | 2026-07-07 |
-| 7. Calculator Audit | 2/5 | In Progress|  |
+| 7. Calculator Audit | 3/5 | In Progress|  |

@@ -48,7 +48,7 @@ Requirements for this milestone. Each maps to roadmap phases.
 - [ ] **CALC-03**: CGT calculator applies correct per-year exclusions and inclusion rate
 - [ ] **CALC-04**: Provisional tax calculator follows paragraph 19/20 rules (basic amount, safe-harbour thresholds) per year
 - [x] **CALC-05**: Rental and home office calculators match SARS deductible-expense rules (s23(b) requirements for home office)
-- [ ] **CALC-06**: Dashboard tax bracket/rebate figures come from the rulepack for the selected year
+- [x] **CALC-06**: Dashboard tax bracket/rebate figures come from the rulepack for the selected year
 
 ## v2 Requirements
 
@@ -102,7 +102,7 @@ Which phases cover which requirements. Updated during roadmap creation.
 | CALC-03 | Phase 7 - Calculator Audit | Pending |
 | CALC-04 | Phase 7 - Calculator Audit | Pending |
 | CALC-05 | Phase 7 - Calculator Audit | Complete |
-| CALC-06 | Phase 7 - Calculator Audit | Pending |
+| CALC-06 | Phase 7 - Calculator Audit | Complete |
 
 **Coverage:**
 - v1 requirements: 25 total (corrected from initial count of 22 — recount of RULE/LOG/IMP/ITR/PERF/CALC categories in this file)
