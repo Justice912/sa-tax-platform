@@ -11,6 +11,43 @@ import {
 } from "@/components/individual-tax/tax-tools/shared";
 import { useRulePack } from "@/components/individual-tax/tax-tools/rulepack-context";
 import { useSummaryWriter } from "@/components/individual-tax/tax-tools/summary-context";
+import type { IndividualTaxRulePack } from "@/modules/individual-tax/types";
+
+export interface MedicalCreditInputs {
+  dependants: number;
+  annualContributions: number; // monthly contribution x 12
+  outOfPocket: number;
+  taxableIncome: number;
+  age: string; // "under65" | "65to74" | "75plus"
+  disability: boolean;
+}
+
+export function calcMedicalCredits(
+  inp: MedicalCreditInputs,
+  rulePack: IndividualTaxRulePack,
+) {
+  const deps = inp.dependants || 1;
+  const s6aMonthly =
+    Math.min(deps, 2) * rulePack.medicalTaxCredit.firstTwoMembersPerMonth +
+    Math.max(0, deps - 2) * rulePack.medicalTaxCredit.additionalMemberPerMonth;
+  const s6a = Math.min(s6aMonthly * 12, inp.annualContributions); // s6A unchanged
+  let s6b = 0;
+  if (inp.age !== "under65" || inp.disability) {
+    // SARS s6B (65+ or disability): 33.3% x [ (contributions - 3x MTC) + qualifying out-of-pocket ], no 7.5% floor, sum-then-floor.
+    const qual = inp.annualContributions - 3 * s6a + inp.outOfPocket;
+    s6b = Math.max(0, qual * 0.333);
+  } else {
+    // SARS s6B (under 65, no disability): 25% x [ (contributions - 4x MTC) + qualifying out-of-pocket - 7.5% x taxable income ], floored at 0.
+    const qual =
+      inp.annualContributions - 4 * s6a + inp.outOfPocket - 0.075 * inp.taxableIncome;
+    s6b = Math.max(0, qual * 0.25);
+  }
+  return {
+    s6a: Math.round(s6a),
+    s6b: Math.round(s6b),
+    total: Math.round(s6a + s6b),
+  };
+}
 
 export function MedicalTab() {
   const { rulePack } = useRulePack();
@@ -32,23 +69,17 @@ export function MedicalTab() {
     const contrib = (parseFloat(med.monthlyContrib) || 0) * 12;
     const oop = parseFloat(med.outOfPocket) || 0;
     const taxInc = parseFloat(med.taxableIncome) || 0;
-    const s6aMonthly =
-      Math.min(deps, 2) * rulePack.medicalTaxCredit.firstTwoMembersPerMonth +
-      Math.max(0, deps - 2) * rulePack.medicalTaxCredit.additionalMemberPerMonth;
-    const s6a = Math.min(s6aMonthly * 12, contrib);
-    let s6b = 0;
-    if (med.age !== "under65" || med.disability) {
-      const qual = oop + Math.max(0, contrib - 3 * s6a);
-      s6b = Math.max(0, qual * 0.333);
-    } else {
-      const qual = oop - 0.075 * taxInc - 3 * s6a;
-      s6b = Math.max(0, qual * 0.25);
-    }
-    return {
-      s6a: Math.round(s6a),
-      s6b: Math.round(s6b),
-      total: Math.round(s6a + s6b),
-    };
+    return calcMedicalCredits(
+      {
+        dependants: deps,
+        annualContributions: contrib,
+        outOfPocket: oop,
+        taxableIncome: taxInc,
+        age: med.age,
+        disability: med.disability,
+      },
+      rulePack,
+    );
   };
   const medResult = calcMedical();
 
