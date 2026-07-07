@@ -33,18 +33,18 @@ describe("individual tax rulepack registry", () => {
 
     expect(rulepack2027.taxBrackets[0]).toMatchObject({
       min: 1,
-      max: 247100,
+      max: 245100,
       rate: 0.18,
     });
     expect(rulepack2027.rebates).toEqual({
-      primary: 18395,
-      secondary: 10077,
-      tertiary: 3356,
+      primary: 17820,
+      secondary: 9765,
+      tertiary: 3249,
     });
     expect(rulepack2027.thresholds).toEqual({
-      under65: 104758,
-      age65To74: 162689,
-      age75Plus: 182850,
+      under65: 99000,
+      age65To74: 153250,
+      age75Plus: 171300,
     });
     expect(rulepack2027.medicalTaxCredit).toEqual({
       firstTwoMembersPerMonth: 376,
