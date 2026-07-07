@@ -6,8 +6,8 @@ current_phase: 7
 current_phase_name: Calculator Audit
 current_plan: 4
 status: executing
-stopped_at: Completed 07-03-PLAN.md
-last_updated: "2026-07-07T14:00:05.858Z"
+stopped_at: Completed 07-01-PLAN.md
+last_updated: "2026-07-07T14:00:37.110Z"
 last_activity: 2026-07-07
 progress:
   total_phases: 7
@@ -85,6 +85,7 @@ See: .planning/PROJECT.md (updated 2026-07-02)
 | Phase 06 P03 | 14min | 2 tasks | 2 files |
 | Phase 07 P02 | 15 | 2 tasks | 2 files |
 | Phase 07-calculator-audit P03 | 12min | 2 tasks | 3 files |
+| Phase 07 P01 | 8min | 3 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -158,6 +159,8 @@ Recent decisions affecting current work:
 - [Phase 06]: Preview-table virtualization tests must call mockScrollElementSize() whenever asserting on rendered row content (not just summary counts) -- jsdom's zero-size viewport otherwise makes the virtualizer render zero data-virtual-row nodes
 - [Phase 07]: [Phase 07]: Adopted SARS s6B interpretation (under-65 4x MTC + excess-contributions term + 7.5% floor; 65+/disability 3x MTC + 33.3% sum-then-floor, no 7.5% floor) -- MEDIUM confidence, sign-off #1 outstanding, not blocking
 - [Phase 07-calculator-audit]: Rental required zero code change (13 expense categories already SARS-correct, no capital-leak field); Home Office salaried-eligibility policy (block vs allow-with-s23(m)) left unresolved as an open compliance decision -- only the warning copy was corrected to state s23(b)/s23(m) accurately
+- [Phase 07]: [Phase 07]: Corrected 2027 rulepack tax brackets/rebates/thresholds to gazetted Budget-2026 figures (HIGH confidence, three independent sources) -- pending practitioner sign-off #4 against final SARS 2026/27 tables before release
+- [Phase 07]: [Phase 07]: Left 2027 medicalTaxCredit, retirement.annualCap, cgt, travelDeemedCostTable, provisionalTax byte-unchanged -- Phase 1 already verified these correct
 
 ### Pending Todos
 
@@ -173,6 +176,6 @@ None yet.
 
 ## Session Continuity
 
-**Last Session:** 2026-07-07T13:59:45.584Z
-**Stopped At:** Completed 07-03-PLAN.md
+**Last Session:** 2026-07-07T14:00:37.103Z
+**Stopped At:** Completed 07-01-PLAN.md
 **Resume File:** None
