@@ -18,40 +18,70 @@ export function ProvisionalTaxTab() {
   // ── Provisional Tax State ──
   const [prov, setProv] = useState({
     priorTaxable: "",
-    priorTax: "",
     estimatedTaxable: "",
     payeDeducted: "",
     credits: "",
+    firstPayment: "",
     period: "P1",
+    latestAssessmentOver18Months: false,
   });
 
-  // ── Provisional tax calc ──
+  // ── Provisional tax calc (SARS para 19 basic amount + para 20 safe harbour) ──
   const calcProv = () => {
+    const pt = rulePack.provisionalTax;
+    const priorTaxable = parseFloat(prov.priorTaxable) || 0;
     const estTaxable = parseFloat(prov.estimatedTaxable) || 0;
     const paye = parseFloat(prov.payeDeducted) || 0;
     const credits = parseFloat(prov.credits) || 0;
-    const priorTax = parseFloat(prov.priorTax) || 0;
+    const firstPayment = parseFloat(prov.firstPayment) || 0;
+
+    // Para 19 basic amount: prior-year assessed taxable income, +8% (simple)
+    // if the latest assessment is older than 18 months.
+    const basicAmount = prov.latestAssessmentOver18Months
+      ? Math.round(priorTaxable * (1 + pt.basicAmountEscalationRate))
+      : priorTaxable;
+
+    // Para 20 safe-harbour floor, expressed as a TAXABLE-INCOME figure:
+    // <=R1m: lesser of the basic amount or 90% of the estimate.
+    // >R1m: 80% of the estimate (the basic-amount option falls away).
+    const safeHarbourTaxableIncome =
+      estTaxable > pt.safeHarbourTaxableIncomeThreshold
+        ? estTaxable * pt.safeHarbourActualPctAboveThreshold
+        : Math.min(
+            basicAmount,
+            estTaxable * pt.safeHarbourBasicAmountOrActualPctBelowThreshold,
+          );
+
     const fullTax = calcTax(rulePack, estTaxable) - rulePack.rebates.primary;
     const netTax = Math.max(0, fullTax - credits);
-    let payment = 0;
-    if (prov.period === "P1") payment = Math.max(0, netTax * 0.5 - paye * 0.5);
-    else payment = Math.max(0, netTax - paye);
-    const pt = rulePack.provisionalTax;
-    const safeHarbour =
-      estTaxable > pt.safeHarbourTaxableIncomeThreshold
-        ? priorTax * pt.safeHarbourActualPctAboveThreshold
-        : priorTax * pt.safeHarbourBasicAmountOrActualPctBelowThreshold;
+    const payment =
+      prov.period === "P1"
+        ? Math.max(0, netTax * 0.5 - paye * 0.5)
+        : Math.max(0, netTax - paye - firstPayment); // P2 nets off P1 already paid
+
+    // Penalty exposure (para 20): 20% of the shortfall tax when the estimate
+    // is below the safe-harbour taxable income.
+    const shortfallTax = Math.max(
+      0,
+      calcTax(rulePack, safeHarbourTaxableIncome) -
+        rulePack.rebates.primary -
+        (calcTax(rulePack, estTaxable) - rulePack.rebates.primary),
+    );
+    const penaltyExposure = Math.round(pt.underestimationPenaltyRate * shortfallTax);
     const risk =
-      netTax > 0 && payment < safeHarbour * 0.8
-        ? "red"
-        : payment < safeHarbour
-          ? "amber"
-          : "green";
+      estTaxable >= safeHarbourTaxableIncome
+        ? "green"
+        : penaltyExposure > 0
+          ? "red"
+          : "amber";
+
     return {
+      basicAmount,
+      safeHarbourTaxableIncome: Math.round(safeHarbourTaxableIncome),
       fullTax: Math.max(0, Math.round(fullTax)),
       netTax: Math.round(netTax),
       payment: Math.round(payment),
-      safeHarbour: Math.round(safeHarbour),
+      penaltyExposure,
       risk,
     };
   };
@@ -79,15 +109,20 @@ export function ProvisionalTaxTab() {
               }
             />
           </Field>
-          <Field label="Prior Year Tax Assessed (R)">
-            <input
-              type="number"
-              className={inputCls}
-              value={prov.priorTax}
+          <Field label="Latest Assessment Older Than 18 Months?">
+            <select
+              className={selectCls}
+              value={prov.latestAssessmentOver18Months ? "yes" : "no"}
               onChange={(e) =>
-                setProv({ ...prov, priorTax: e.target.value })
+                setProv({
+                  ...prov,
+                  latestAssessmentOver18Months: e.target.value === "yes",
+                })
               }
-            />
+            >
+              <option value="no">No</option>
+              <option value="yes">Yes — 8% escalation applies</option>
+            </select>
           </Field>
           <Field label="Estimated Current Year Taxable Income (R)">
             <input
@@ -119,6 +154,16 @@ export function ProvisionalTaxTab() {
               }
             />
           </Field>
+          <Field label="First Period Payment Already Paid (R)">
+            <input
+              type="number"
+              className={inputCls}
+              value={prov.firstPayment}
+              onChange={(e) =>
+                setProv({ ...prov, firstPayment: e.target.value })
+              }
+            />
+          </Field>
           <Field label="Payment Period">
             <select
               className={selectCls}
@@ -133,7 +178,7 @@ export function ProvisionalTaxTab() {
           </Field>
         </div>
       </div>
-      <div className="grid grid-cols-3 gap-3">
+      <div className="grid grid-cols-2 gap-3">
         <ResultCard
           label="Estimated Tax (full year)"
           value={fmt(provResult.fullTax)}
@@ -145,8 +190,13 @@ export function ProvisionalTaxTab() {
           colorClass="text-violet-600"
         />
         <ResultCard
-          label="Safe Harbour Minimum"
-          value={fmt(provResult.safeHarbour)}
+          label="Safe Harbour Min. Taxable Income"
+          value={fmt(provResult.safeHarbourTaxableIncome)}
+          colorClass="text-slate-600"
+        />
+        <ResultCard
+          label="Basic Amount"
+          value={fmt(provResult.basicAmount)}
           colorClass="text-slate-600"
         />
       </div>
