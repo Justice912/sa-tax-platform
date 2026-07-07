@@ -57,7 +57,11 @@ export function RetirementTab() {
           Retirement Contribution Optimizer
         </h2>
         <p className="text-sm text-slate-500">
-          27.5% cap / R350,000 annual limit
+          {`${(rulePack.retirement.deductiblePercentageLimit * 100)
+            .toFixed(1)
+            .replace(/\.0$/, "")}% cap / ${fmt(
+            rulePack.retirement.annualCap,
+          )} annual limit`}
         </p>
       </div>
       <div className="rounded-xl border border-slate-200/80 bg-white p-5 shadow-sm">
@@ -132,7 +136,7 @@ export function RetirementTab() {
           label="Deduction Limit"
           value={fmt(retResult.limit)}
           colorClass="text-sky-600"
-          sub="27.5% or R350k"
+          sub={`27.5% or ${fmt(rulePack.retirement.annualCap)}`}
         />
         <ResultCard
           label="Headroom Available"
