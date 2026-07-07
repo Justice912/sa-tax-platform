@@ -148,7 +148,9 @@ export function CgtTab() {
               }
             >
               <option value="no">No</option>
-              <option value="yes">Yes — R2m exclusion</option>
+              <option value="yes">{`Yes — ${fmt(
+                rulePack.cgt.primaryResidenceExclusion,
+              )} exclusion`}</option>
             </select>
           </Field>
           <Field label="Disposal on Death?">
@@ -159,8 +161,12 @@ export function CgtTab() {
                 setCgt({ ...cgt, death: e.target.value === "yes" })
               }
             >
-              <option value="no">No — R40k exclusion</option>
-              <option value="yes">Yes — R300k exclusion</option>
+              <option value="no">{`No — ${fmt(
+                rulePack.cgt.annualExclusion,
+              )} exclusion`}</option>
+              <option value="yes">{`Yes — ${fmt(
+                rulePack.cgt.deathExclusion,
+              )} exclusion`}</option>
             </select>
           </Field>
         </div>
@@ -184,7 +190,7 @@ export function CgtTab() {
           colorClass="text-amber-600"
         />
         <ResultCard
-          label="Taxable Portion (40%)"
+          label={`Taxable Portion (${(rulePack.cgt.inclusionRate * 100).toFixed(0)}%)`}
           value={fmt(cgtResult.taxableGain)}
           colorClass="text-violet-600"
         />
