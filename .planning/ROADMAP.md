@@ -140,10 +140,14 @@ Plans:
   4. Provisional tax calculator follows paragraph 19/20 basic-amount and safe-harbour rules per year
   5. Rental and home office calculators match SARS deductible-expense rules, including s23(b) requirements for home office
   6. Dashboard tax bracket and rebate figures are sourced from the rulepack for the selected year, not hardcoded
-**Plans**: TBD
+**Plans**: 5 plans
 
 Plans:
-- [ ] 07-01: TBD
+- [ ] 07-01-PLAN.md — Correct 2027 rulepack bracket/rebate/threshold DATA + calc-helpers per-year guard (CALC-06)
+- [ ] 07-02-PLAN.md — Medical s6B fix (under-65 4x + excess term; 65+/disability 3x/33.3% no-floor) + per-year tests (CALC-01)
+- [ ] 07-03-PLAN.md — Rental + Home Office confirm/regression tests + accurate s23(b)/s23(m) salaried copy (CALC-05)
+- [ ] 07-04-PLAN.md — Provisional para 19/20 rework: basic amount + 8%/18mo escalation, taxable-income safe harbour, P2-nets-P1 (CALC-04)
+- [ ] 07-05-PLAN.md — Retirement + CGT per-year label interpolation + regression tests (CALC-02, CALC-03)
 
 ## Progress
 
@@ -159,4 +163,4 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7
 | 4. Import Pipeline | 6/6 | Complete    | 2026-07-04 |
 | 5. Component Decomposition | 6/6 | Complete    | 2026-07-04 |
 | 6. Logbook UI, Import Wizard & Performance Hardening | 6/6 | Complete    | 2026-07-07 |
-| 7. Calculator Audit | 0/TBD | Not started | - |
+| 7. Calculator Audit | 0/5 | Not started | - |
