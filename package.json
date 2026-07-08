@@ -7,7 +7,7 @@
   "main": "desktop/main.cjs",
   "scripts": {
     "dev": "next dev --webpack",
-    "build": "next build",
+    "build": "node scripts/build.mjs",
     "start": "next start",
     "desktop:dev": "node desktop/run-desktop-dev.cjs",
     "desktop:bundle": "npm run build && node desktop/prepare-standalone.cjs",
