@@ -19,6 +19,17 @@ A tax practitioner can capture or import a client's travel logbook and complete 
 
 **Open compliance sign-off (carried into next milestone — non-blocking, pinned by loud-failing tests):** corrected 2027 gazetted brackets/rebates/thresholds, medical s6B formula, provisional para 19/20 mechanics, and home-office salaried-eligibility policy all need a practitioner's confirmation against final SARS sources. See `.planning/phases/07-calculator-audit/07-VERIFICATION.md`.
 
+## Current Milestone: v1.1 Durable Persistence
+
+**Goal:** Replace ephemeral demo-mode JSON file storage with hosted Postgres (via the existing Prisma schema) so logbook, individual-tax, and client data survive across Vercel serverless invocations.
+
+**Target features:**
+- Provision hosted Postgres + real `DATABASE_URL`; production runs Prisma-backed, not demo file storage.
+- Complete and verify Prisma-backed repositories across all modules (logbook, individual-tax, itr12, clients, estates) — schema coverage + migrations.
+- Serverless-safe Prisma client (connection pooling) so Vercel functions don't exhaust connections.
+- Keep demo/file mode working for local dev; a clean `DEMO_MODE`/`DATABASE_URL` switch.
+- Migration/seed path so a first-run production DB has the expected shape (and optional demo seed).
+
 ## Requirements
 
 ### Validated

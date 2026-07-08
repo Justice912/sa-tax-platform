@@ -1,12 +1,12 @@
 ---
 gsd_state_version: 1.0
-milestone: v1.0
-milestone_name: milestone
-current_phase: 7
-current_phase_name: Calculator Audit
+milestone: v1.1
+milestone_name: Durable Persistence
+current_phase: 8
+current_phase_name: Not started
 current_plan: Not started
-status: completed
-stopped_at: Completed 07-05-PLAN.md
+status: defining-requirements
+stopped_at: v1.0 shipped; v1.1 defining requirements
 last_updated: "2026-07-07T14:53:50.480Z"
 last_activity: 2026-07-07
 progress:
