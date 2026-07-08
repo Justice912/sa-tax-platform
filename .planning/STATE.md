@@ -3,18 +3,18 @@ gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Durable Persistence
 current_phase: 8
-current_phase_name: Not started
+current_phase_name: Foundation — Supabase Provisioning & Migration Pipeline
 current_plan: Not started
-status: defining-requirements
-stopped_at: v1.0 shipped; v1.1 defining requirements
-last_updated: "2026-07-07T14:53:50.480Z"
-last_activity: 2026-07-07
+status: ready-to-plan
+stopped_at: v1.1 roadmap created — ready to plan Phase 8
+last_updated: "2026-07-08T00:00:00.000Z"
+last_activity: 2026-07-08
 progress:
-  total_phases: 7
+  total_phases: 9
   completed_phases: 7
   total_plans: 33
   completed_plans: 33
-  percent: 100
+  percent: 78
 ---
 
 # Project State
@@ -24,19 +24,17 @@ progress:
 See: .planning/PROJECT.md (updated 2026-07-07)
 
 **Core value:** A tax practitioner can capture or import a client's travel logbook and complete an individual tax assessment knowing every figure and format matches current SARS requirements — without the app slowing down.
-**Current focus:** v1.0 shipped 2026-07-07 — planning next milestone (`/gsd:new-milestone`)
+**Current focus:** v1.1 Durable Persistence — Phase 8: Foundation — Supabase Provisioning & Migration Pipeline (ready to plan)
 
 ## Current Position
 
-**Current Phase:** 7
-**Current Phase Name:** Calculator Audit
-**Total Phases:** 7
+**Current Phase:** 8 of 9 (Foundation — Supabase Provisioning & Migration Pipeline)
 **Current Plan:** Not started
-**Total Plans in Phase:** 5
-**Status:** v1.0 milestone complete
-**Last Activity:** 2026-07-07
+**Total Plans in Phase:** TBD (roadmap created, not yet planned)
+**Status:** Ready to plan — v1.1 roadmap approved, 2 phases (8, 9), 7/7 requirements mapped
+**Last Activity:** 2026-07-08
 
-**Progress:** [██████████] 100%
+**Progress:** [████████░░] 78% (7/9 phases complete; v1.1 phases not yet planned)
 
 ## Performance Metrics
 
@@ -102,6 +100,7 @@ Recent decisions affecting current work:
 - Split tax-tools.tsx monolith rather than patch (root cause is architecture, not one hot loop)
 - Individual Tax only this milestone; estates/trusts/company modules deferred
 - Tax years 2025-2027 in scope (2024 excluded)
+- [v1.1 Roadmap]: v1.1 is environment/pipeline work, not repository rewrite — every repo already branches on isDemoMode with a complete Prisma path (research HIGH confidence); roadmap split into Phase 8 (Foundation: provision + migration pipeline + pooling, PERSIST-01/02/03/06) and Phase 9 (Cutover & Verification: Preview verification + seed + flip prod + durable-write acceptance, PERSIST-04/05/07)
 - [Phase 01]: Fixed 2027 retirement/CGT values as a live compliance bug in this plan rather than deferring (Budget 2026 change set)
 - [Phase 01]: 2024 rulepack carries 2025 travel/provisionalTax values verbatim as a flagged, non-compliance-verified structural placeholder
 - [Phase 01]: Rulepack completeness build gate proven via mutation testing: copy-paste and unconverted-cents corruptions both independently fail the gate; no assertion strengthening needed
@@ -177,9 +176,10 @@ None yet.
 - Phase 7/medical credits: s6B multipliers (3x/4x, 25%/33.3%, 7.5% threshold) are MEDIUM confidence; re-verify against SARS Guide IT07
 - Phase 7/provisional tax: 8%/18-month basic-amount escalation mechanics are MEDIUM confidence; verify against Interpretation Note 1 (Issue 3)
 - Phase 4/next build --webpack: pre-existing, unrelated route-export type error in the Estates filing-pack route fails `next build --webpack` specifically (not the project's actual Turbopack build); see `.planning/phases/04-import-pipeline/deferred-items.md`
+- Phase 8/9 (v1.1): Supabase project provisioning, Vercel environment-variable wiring, and the one-off destructive production seed run all require the user's own account/hands — expect `autonomous: false` checkpoints in these phases' plans, not full-autonomous execution
 
 ## Session Continuity
 
-**Last Session:** 2026-07-07T14:16:30.239Z
-**Stopped At:** Completed 07-05-PLAN.md
+**Last Session:** 2026-07-08T00:00:00.000Z
+**Stopped At:** v1.1 ROADMAP.md created (Phases 8-9), REQUIREMENTS.md traceability filled (7/7 mapped), STATE.md updated — ready for `/gsd:plan-phase 8`
 **Resume File:** None

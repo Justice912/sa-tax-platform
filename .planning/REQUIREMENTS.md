@@ -46,18 +46,18 @@ Which phases cover which requirements. Populated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| PERSIST-01 | TBD | Pending |
-| PERSIST-02 | TBD | Pending |
-| PERSIST-03 | TBD | Pending |
-| PERSIST-04 | TBD | Pending |
-| PERSIST-05 | TBD | Pending |
-| PERSIST-06 | TBD | Pending |
-| PERSIST-07 | TBD | Pending |
+| PERSIST-01 | Phase 8 | Pending |
+| PERSIST-02 | Phase 8 | Pending |
+| PERSIST-03 | Phase 8 | Pending |
+| PERSIST-04 | Phase 9 | Pending |
+| PERSIST-05 | Phase 9 | Pending |
+| PERSIST-06 | Phase 8 | Pending |
+| PERSIST-07 | Phase 9 | Pending |
 
 **Coverage:**
 - v1.1 requirements: 7 total
-- Mapped to phases: 0 (roadmap pending)
-- Unmapped: 7 ⚠️
+- Mapped to phases: 7 ✓
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-07-08 for milestone v1.1*
