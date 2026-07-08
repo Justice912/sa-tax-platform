@@ -19,16 +19,9 @@ A tax practitioner can capture or import a client's travel logbook and complete 
 
 **Open compliance sign-off (carried into next milestone — non-blocking, pinned by loud-failing tests):** corrected 2027 gazetted brackets/rebates/thresholds, medical s6B formula, provisional para 19/20 mechanics, and home-office salaried-eligibility policy all need a practitioner's confirmation against final SARS sources. See `.planning/phases/07-calculator-audit/07-VERIFICATION.md`.
 
-## Current Milestone: v1.1 Durable Persistence
+## Shipped: v1.1 Durable Persistence (2026-07-08)
 
-**Goal:** Replace ephemeral demo-mode JSON file storage with hosted Postgres (via the existing Prisma schema) so logbook, individual-tax, and client data survive across Vercel serverless invocations.
-
-**Target features:**
-- Provision **Supabase Postgres** + real `DATABASE_URL` (pooled connection string for serverless); production runs Prisma-backed, not demo file storage.
-- Complete and verify Prisma-backed repositories across all modules (logbook, individual-tax, itr12, clients, estates) — schema coverage + migrations.
-- Serverless-safe Prisma client (connection pooling) so Vercel functions don't exhaust connections.
-- Keep demo/file mode working for local dev; a clean `DEMO_MODE`/`DATABASE_URL` switch.
-- Migration/seed path so a first-run production DB has the expected shape (and optional demo seed).
+Production moved off ephemeral demo-mode JSON storage onto **Supabase Postgres** (via the existing Prisma schema). Delivered: dedicated Supabase project (eu-west-1, PG 17), 55-table `init` migration + RLS migration (both committed, run by `prisma migrate deploy` in a guarded build), serverless-safe pooling (txn `:6543` runtime / session `:5432` migrations), production flipped to `DEMO_MODE=false`, seed run once, and durable read/write verified end-to-end against the live app. Repository Prisma paths already existed, so this was environment/pipeline work, not a rewrite. Requirements PERSIST-01..07 met. See `.planning/MILESTONES.md` and `phases/08…`, `phases/09-cutover-verification/`.
 
 ## Requirements
 
@@ -48,13 +41,14 @@ A tax practitioner can capture or import a client's travel logbook and complete 
 - ✓ Performance fix: large logbook imports no longer freeze the UI (monolith split, virtualized trip tables, no per-keystroke full re-render) — v1.0 (validated at 10,000+ trips)
 - ✓ All 8 individual-tax calculators audited against latest SARS rules and rulepack-sourced (medical s6A/s6B, retirement s11F, CGT, provisional para 19/20, rental, home office s23(b)) — v1.0
 - ✓ Rate tables verified for 2025–2027 including per-year deemed-cost travel rates — v1.0
+- ✓ Durable persistence: production runs on hosted Supabase Postgres via Prisma (serverless-safe pooling, committed migrations, RLS), data survives cold serverless invocations/redeploys; demo/file mode retained for local dev — v1.1
 
 ### Active
 
 <!-- Next milestone — to be defined via /gsd:new-milestone. Carryover candidates below. -->
 
 - [ ] Practitioner compliance sign-off on the four MEDIUM-confidence v1.0 items (2027 gazetted figures, medical s6B, provisional para 19/20, home-office salaried policy), then reconcile any corrections
-- [ ] Durable persistence: replace ephemeral demo-mode JSON writes with hosted Postgres + real `DATABASE_URL` so logbook/assessment writes survive on Vercel serverless
+- [ ] (v2 candidates from v1.1 research) separate Preview vs Production Supabase DB; ITR12 `TransitionEvent` model + `createCase()` flow; `prisma.config.ts` migration
 
 ### Out of Scope
 

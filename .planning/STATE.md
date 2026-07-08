@@ -2,19 +2,19 @@
 gsd_state_version: 1.0
 milestone: v1.1
 milestone_name: Durable Persistence
-current_phase: 8
-current_phase_name: Foundation — Supabase Provisioning & Migration Pipeline
-current_plan: Not started
-status: ready-to-plan
-stopped_at: v1.1 roadmap created — ready to plan Phase 8
+current_phase: 9
+current_phase_name: Cutover & Verification
+current_plan: Complete
+status: completed
+stopped_at: v1.1 Durable Persistence shipped 2026-07-08 (Phases 8–9 executed hands-on)
 last_updated: "2026-07-08T00:00:00.000Z"
 last_activity: 2026-07-08
 progress:
   total_phases: 9
-  completed_phases: 7
+  completed_phases: 9
   total_plans: 33
   completed_plans: 33
-  percent: 78
+  percent: 100
 ---
 
 # Project State
@@ -24,17 +24,17 @@ progress:
 See: .planning/PROJECT.md (updated 2026-07-07)
 
 **Core value:** A tax practitioner can capture or import a client's travel logbook and complete an individual tax assessment knowing every figure and format matches current SARS requirements — without the app slowing down.
-**Current focus:** v1.1 Durable Persistence — Phase 8: Foundation — Supabase Provisioning & Migration Pipeline (ready to plan)
+**Current focus:** v1.1 Durable Persistence SHIPPED 2026-07-08 — production live on Supabase Postgres. Next: `/gsd:new-milestone` (or practitioner compliance sign-off carried from v1.0).
 
 ## Current Position
 
-**Current Phase:** 8 of 9 (Foundation — Supabase Provisioning & Migration Pipeline)
-**Current Plan:** Not started
-**Total Plans in Phase:** TBD (roadmap created, not yet planned)
-**Status:** Ready to plan — v1.1 roadmap approved, 2 phases (8, 9), 7/7 requirements mapped
+**Current Phase:** 9 of 9 (Cutover & Verification) — Complete
+**Current Plan:** Complete
+**Total Plans in Phase:** Phases 8–9 executed hands-on (no PLAN.md files; see 08/09-SUMMARY.md)
+**Status:** v1.1 milestone complete — durable persistence verified end-to-end on the live app
 **Last Activity:** 2026-07-08
 
-**Progress:** [████████░░] 78% (7/9 phases complete; v1.1 phases not yet planned)
+**Progress:** [██████████] 100% (9/9 phases complete)
 
 ## Performance Metrics
 

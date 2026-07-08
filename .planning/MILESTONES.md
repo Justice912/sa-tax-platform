@@ -1,5 +1,22 @@
 # Milestones
 
+## v1.1 Durable Persistence (Shipped: 2026-07-08)
+
+**Delivered:** Production moved off ephemeral demo-mode JSON file storage onto hosted **Supabase Postgres** (via the existing Prisma schema), so logbook, individual-tax, client and all other data now survive Vercel serverless cold starts and redeploys.
+
+**Phases:** 8–9 (2 phases, executed hands-on with the user — no per-plan PLAN.md files; records in `phases/08-…/08-SUMMARY.md` and `phases/09-cutover-verification/09-SUMMARY.md`).
+
+**Key accomplishments:**
+- Provisioned a dedicated **Supabase** project `sa-tax-platform` (eu-west-1, PG 17); applied the full 55-table schema via a committed `init` migration and enabled **RLS** on every table (second committed migration), closing the public-PostgREST exposure.
+- **Serverless-safe pooling**: transaction-mode pooler (`:6543`, `pgbouncer=true&connection_limit=1`) for runtime, session-mode (`:5432`) `directUrl` for migrations; verified reachable from Vercel's build container.
+- **Guarded build** (`scripts/build.mjs`): runs `prisma migrate deploy` only when a DB is configured, then `next build` — migrations apply on Production deploys; Preview/desktop/local builds without a DB still build.
+- **Cutover**: seeded the production DB once, flipped `DEMO_MODE=false`, redeployed. Verified end-to-end against the live app — login (durable read + auth) and client-create (durable write, confirmed in Postgres via an independent path). Rotated the public seed passwords.
+- Requirements **PERSIST-01..07** all met and verified 2026-07-08.
+
+**Notes / carryover:** repository Prisma paths already existed (v1.1 was environment/pipeline, not a code rewrite). Deferred (v2): separate Preview vs Production DB, ITR12 `TransitionEvent` model + `createCase()` flow, `prisma.config.ts` migration.
+
+---
+
 ## v1.0 Individual Tax SARS Compliance (Shipped: 2026-07-07)
 
 **Delivered:** The Individual Tax module brought fully in line with current SARS requirements — a real, persisted, SARS-format travel logbook (capture + import) feeding the ITR12, both deemed and actual cost methods, virtualized to 10,000+ trips, with all remaining calculators audited against 2025–2027 SARS rules.

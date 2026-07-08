@@ -3,7 +3,7 @@
 ## Milestones
 
 - ✅ **v1.0 Individual Tax SARS Compliance** — Phases 1–7 (shipped 2026-07-07) → [archive](milestones/v1.0-ROADMAP.md)
-- 🚧 **v1.1 Durable Persistence** — Phases 8–9 (in progress)
+- ✅ **v1.1 Durable Persistence** — Phases 8–9 (shipped 2026-07-08)
 
 ## Phases
 
@@ -22,12 +22,14 @@ Full phase detail archived in [milestones/v1.0-ROADMAP.md](milestones/v1.0-ROADM
 
 </details>
 
-### 🚧 v1.1 Durable Persistence (In Progress)
+### ✅ v1.1 Durable Persistence — SHIPPED 2026-07-08
 
 **Milestone Goal:** Replace ephemeral demo-mode JSON file storage with hosted Postgres (via the existing Prisma schema) so logbook, individual-tax, and client data survive across Vercel serverless invocations.
 
-- [ ] **Phase 8: Foundation — Supabase Provisioning & Migration Pipeline** - Provision Supabase Postgres, wire serverless-safe env vars, commit the initial migration, and run it in the deploy pipeline
-- [ ] **Phase 9: Cutover & Verification** - Verify every module against real Postgres on Preview, seed production once, flip prod off demo mode, and prove durable writes survive cold invocations
+- [x] **Phase 8: Foundation — Supabase Provisioning & Migration Pipeline** — completed 2026-07-08 (executed hands-on; see phases/08-…/08-SUMMARY.md)
+- [x] **Phase 9: Cutover & Verification** — completed 2026-07-08 (executed hands-on; see phases/09-cutover-verification/09-SUMMARY.md)
+
+Delivered: Supabase Postgres provisioned (55 tables, RLS enabled), serverless-safe pooling, committed migrations in the deploy pipeline, production flipped to Postgres, and durable read/write verified end-to-end against the live app. Requirements PERSIST-01..07 all met.
 
 ## Phase Details
 
@@ -67,8 +69,8 @@ Full phase detail archived in [milestones/v1.0-ROADMAP.md](milestones/v1.0-ROADM
 | 5. Component Decomposition | v1.0 | 6/6 | Complete | 2026-07-04 |
 | 6. Logbook UI, Import Wizard & Performance Hardening | v1.0 | 6/6 | Complete | 2026-07-07 |
 | 7. Calculator Audit | v1.0 | 5/5 | Complete | 2026-07-07 |
-| 8. Foundation — Supabase Provisioning & Migration Pipeline | v1.1 | 0/TBD | Not started | - |
-| 9. Cutover & Verification | v1.1 | 0/TBD | Not started | - |
+| 8. Foundation — Supabase Provisioning & Migration Pipeline | v1.1 | hands-on | Complete | 2026-07-08 |
+| 9. Cutover & Verification | v1.1 | hands-on | Complete | 2026-07-08 |
 
 ---
-*v1.0 shipped 2026-07-07. v1.1 Durable Persistence roadmap created 2026-07-08 — next: `/gsd:plan-phase 8`.*
+*v1.0 shipped 2026-07-07. v1.1 Durable Persistence shipped 2026-07-08 (Phases 8–9 executed hands-on). Next milestone: `/gsd:new-milestone`.*

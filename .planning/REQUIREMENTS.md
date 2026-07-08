@@ -9,13 +9,13 @@ Milestone v1.1 scope. Each maps to a roadmap phase (numbering continues from v1.
 
 ### Persistence
 
-- [ ] **PERSIST-01**: In production the app reads and writes through hosted Supabase Postgres via Prisma (real `DATABASE_URL`), not demo file storage — data written by one request is readable by a later request.
-- [ ] **PERSIST-02**: The Prisma schema is captured as a committed migration and applied to the database via `prisma migrate deploy` in the deploy pipeline.
-- [ ] **PERSIST-03**: The runtime connection is serverless-safe — Supabase transaction-mode pooler (`pgbouncer=true`, `connection_limit=1`) as `DATABASE_URL`, with a session-mode `DIRECT_URL` (schema `directUrl`) used only for migrations — so Vercel functions don't exhaust connections.
-- [ ] **PERSIST-04**: Every persistence module (logbook, individual-tax, itr12, clients, estates, cases, audit, NextAuth auth) is verified to read/write correctly against Postgres end-to-end on a Preview deploy with `DEMO_MODE=false`.
-- [ ] **PERSIST-05**: The production database is seeded once with the expected reference/demo data (destructive seed run manually, not in automated deploy; seeded credentials rotated).
-- [ ] **PERSIST-06**: Local development still works in demo/file mode with no Postgres required (`DEMO_MODE=true` / absent `DATABASE_URL`), so the demo experience is unaffected.
-- [ ] **PERSIST-07**: Durable-write acceptance — a practitioner can create a client + logbook + individual-tax assessment in production and the data survives a fresh (cold) serverless invocation and a redeploy.
+- [x] **PERSIST-01**: In production the app reads and writes through hosted Supabase Postgres via Prisma (real `DATABASE_URL`), not demo file storage — data written by one request is readable by a later request.
+- [x] **PERSIST-02**: The Prisma schema is captured as a committed migration and applied to the database via `prisma migrate deploy` in the deploy pipeline.
+- [x] **PERSIST-03**: The runtime connection is serverless-safe — Supabase transaction-mode pooler (`pgbouncer=true`, `connection_limit=1`) as `DATABASE_URL`, with a session-mode `DIRECT_URL` (schema `directUrl`) used only for migrations — so Vercel functions don't exhaust connections.
+- [x] **PERSIST-04**: Every persistence module (logbook, individual-tax, itr12, clients, estates, cases, audit, NextAuth auth) is verified to read/write correctly against Postgres end-to-end on a Preview deploy with `DEMO_MODE=false`.
+- [x] **PERSIST-05**: The production database is seeded once with the expected reference/demo data (destructive seed run manually, not in automated deploy; seeded credentials rotated).
+- [x] **PERSIST-06**: Local development still works in demo/file mode with no Postgres required (`DEMO_MODE=true` / absent `DATABASE_URL`), so the demo experience is unaffected.
+- [x] **PERSIST-07**: Durable-write acceptance — a practitioner can create a client + logbook + individual-tax assessment in production and the data survives a fresh (cold) serverless invocation and a redeploy.
 
 ## v2 Requirements
 
@@ -46,18 +46,18 @@ Which phases cover which requirements. Populated during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| PERSIST-01 | Phase 8 | Pending |
-| PERSIST-02 | Phase 8 | Pending |
-| PERSIST-03 | Phase 8 | Pending |
-| PERSIST-04 | Phase 9 | Pending |
-| PERSIST-05 | Phase 9 | Pending |
-| PERSIST-06 | Phase 8 | Pending |
-| PERSIST-07 | Phase 9 | Pending |
+| PERSIST-01 | Phase 8 | Complete |
+| PERSIST-02 | Phase 8 | Complete |
+| PERSIST-03 | Phase 8 | Complete |
+| PERSIST-04 | Phase 9 | Complete |
+| PERSIST-05 | Phase 9 | Complete |
+| PERSIST-06 | Phase 8 | Complete |
+| PERSIST-07 | Phase 9 | Complete |
 
 **Coverage:**
 - v1.1 requirements: 7 total
 - Mapped to phases: 7 ✓
-- Unmapped: 0
+- Complete: 7 ✅ (all verified against the live production app 2026-07-08)
 
 ---
-*Requirements defined: 2026-07-08 for milestone v1.1*
+*Requirements defined: 2026-07-08 for milestone v1.1. All PERSIST-01..07 completed 2026-07-08 (Phases 8–9 executed hands-on).*
