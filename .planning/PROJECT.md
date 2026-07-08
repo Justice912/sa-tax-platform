@@ -24,7 +24,7 @@ A tax practitioner can capture or import a client's travel logbook and complete 
 **Goal:** Replace ephemeral demo-mode JSON file storage with hosted Postgres (via the existing Prisma schema) so logbook, individual-tax, and client data survive across Vercel serverless invocations.
 
 **Target features:**
-- Provision hosted Postgres + real `DATABASE_URL`; production runs Prisma-backed, not demo file storage.
+- Provision **Supabase Postgres** + real `DATABASE_URL` (pooled connection string for serverless); production runs Prisma-backed, not demo file storage.
 - Complete and verify Prisma-backed repositories across all modules (logbook, individual-tax, itr12, clients, estates) — schema coverage + migrations.
 - Serverless-safe Prisma client (connection pooling) so Vercel functions don't exhaust connections.
 - Keep demo/file mode working for local dev; a clean `DEMO_MODE`/`DATABASE_URL` switch.
