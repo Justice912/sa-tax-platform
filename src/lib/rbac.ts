@@ -139,7 +139,8 @@ export const ROUTE_PERMISSIONS: Record<string, string> = {
   "/estates/[estateId]/timeline": "estate:timeline",
   "/estates/[estateId]/filing-pack": "estate:filing-pack",
   "/estates/[estateId]/valuation": "estate:manage",    // Executors cannot run valuations
-  "/estates/[estateId]/liquidation": "estate:manage",  // Executors cannot manage liquidation
+  "/estates/[estateId]/liquidation": "estate:manage",
+  "/estates/[estateId]/administration": "estate:manage", // L&D account, SARS tracker, packs  // Executors cannot manage liquidation
   "/estates/[estateId]/tax": "estate:manage",          // Executors cannot access tax workspaces
   "/individual-tax": "itax:list",
   "/itr12": "itr12:list",

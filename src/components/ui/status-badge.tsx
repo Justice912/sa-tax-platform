@@ -25,6 +25,19 @@ const statusColorMap: Record<string, string> = {
   DISTRIBUTED: "bg-emerald-100 text-emerald-800 border-emerald-300",
   FINALISED: "bg-slate-100 text-slate-700 border-slate-200",
   READY: "bg-emerald-50 text-emerald-700 border-emerald-200",
+  REQUESTED: "bg-amber-50 text-amber-700 border-amber-200",
+  UPLOADED: "bg-sky-50 text-sky-700 border-sky-200",
+  PENDING_REVIEW: "bg-sky-50 text-sky-700 border-sky-200",
+  ACCEPTED: "bg-emerald-50 text-emerald-700 border-emerald-200",
+  REJECTED: "bg-rose-50 text-rose-700 border-rose-200",
+  WAIVED: "bg-slate-100 text-slate-600 border-slate-200",
+  REVOKED: "bg-slate-100 text-slate-600 border-slate-200",
+  EXPIRED: "bg-slate-100 text-slate-600 border-slate-200",
+  NOT_STARTED: "bg-amber-50 text-amber-700 border-amber-200",
+  ASSESSED: "bg-indigo-50 text-indigo-700 border-indigo-200",
+  PAID: "bg-emerald-50 text-emerald-700 border-emerald-200",
+  COMPLETE: "bg-emerald-100 text-emerald-800 border-emerald-300",
+  NOT_APPLICABLE: "bg-slate-100 text-slate-500 border-slate-200",
 };
 
 export function StatusBadge({ value, className }: { value: string; className?: string }) {

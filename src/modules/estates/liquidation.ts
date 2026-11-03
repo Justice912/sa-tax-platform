@@ -1,3 +1,4 @@
+import { calculateMastersFee } from "@/modules/estates/ld/fees";
 import type {
   EstateDetailRecord,
   EstateLiquidationEntryCategory,
@@ -35,24 +36,12 @@ export function calculateExecutorRemuneration(
 }
 
 /**
- * Master of the High Court fees per the prescribed tariff schedule.
- * Based on gross estate value:
- * - Up to R250,000: R600
- * - R250,001 – R500,000: R1,000
- * - R500,001 – R1,000,000: R2,000
- * - R1,000,001 – R2,000,000: R4,000
- * - R2,000,001 – R5,000,000: R5,000
- * - R5,000,001 – R10,000,000: R6,000
- * - Above R10,000,000: R7,000
+ * Master of the High Court fees — delegates to the tariff in
+ * `@/modules/estates/ld/fees` (R600 from R250 000 to R400 000, +R200 per completed
+ * R100 000, max R7 000; nil for section 18(3) estates).
  */
 export function calculateMastersFees(grossEstateValue: number): number {
-  if (grossEstateValue <= 250_000) return 600;
-  if (grossEstateValue <= 500_000) return 1000;
-  if (grossEstateValue <= 1_000_000) return 2000;
-  if (grossEstateValue <= 2_000_000) return 4000;
-  if (grossEstateValue <= 5_000_000) return 5000;
-  if (grossEstateValue <= 10_000_000) return 6000;
-  return 7000;
+  return calculateMastersFee(grossEstateValue);
 }
 
 export function calculateEstateLiquidationSummary(

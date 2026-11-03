@@ -20,6 +20,9 @@ export default async function AdminSettingsPage() {
         <p className="text-sm text-slate-600">
           Configure governance, access controls, and platform operating defaults.
         </p>
+        <a href="/admin/api-keys" className="mt-2 inline-block text-sm font-medium text-teal-700 hover:underline">
+          Manage API keys for the Claude deceased-estate skill →
+        </a>
       </div>
 
       <section className="grid gap-4 lg:grid-cols-2">
