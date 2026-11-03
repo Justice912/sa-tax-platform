@@ -11,7 +11,13 @@ import { execSync } from "node:child_process";
 
 const run = (cmd) => execSync(cmd, { stdio: "inherit" });
 
-if (process.env.DATABASE_URL) {
+// Never migrate from Vercel Preview builds: preview env may point at the
+// production database. Migrations run on Production (or local/CI) builds only.
+const isVercelPreview = process.env.VERCEL_ENV && process.env.VERCEL_ENV !== "production";
+
+if (process.env.DATABASE_URL && isVercelPreview) {
+  console.log(`[build] VERCEL_ENV=${process.env.VERCEL_ENV} — skipping migrations on non-production builds`);
+} else if (process.env.DATABASE_URL) {
   console.log("[build] DATABASE_URL detected — running `prisma migrate deploy`");
   run("prisma migrate deploy");
 } else {

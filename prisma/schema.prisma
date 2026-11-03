@@ -233,30 +233,31 @@ enum GeneratedReportType {
 }
 
 model User {
-  id             String         @id @default(cuid())
-  firmId         String?
-  email          String         @unique
-  passwordHash   String
-  fullName       String
-  isActive       Boolean        @default(true)
-  lastLoginAt    DateTime?
-  createdAt      DateTime       @default(now())
-  updatedAt      DateTime       @updatedAt
-  firm           Firm?          @relation(fields: [firmId], references: [id])
-  roles          UserRole[]
-  assignedCases  Case[]         @relation("AssignedCases")
-  reviewedCases  Case[]         @relation("ReviewedCases")
-  createdCases   Case[]         @relation("CreatedCases")
-  caseActivities CaseActivity[]
-  comments       Comment[]
-  assignmentsTo  Assignment[]   @relation("AssignedTo")
-  assignmentsBy  Assignment[]   @relation("AssignedBy")
-  uploadedDocs   Document[]     @relation("UploadedDocuments")
-  auditLogs      AuditLog[]     @relation("AuditActor")
-  reminders      Reminder[]     @relation("ReminderRecipient")
-  tasks          Task[]         @relation("TaskOwner")
+  id                    String                 @id @default(cuid())
+  firmId                String?
+  email                 String                 @unique
+  passwordHash          String
+  fullName              String
+  isActive              Boolean                @default(true)
+  lastLoginAt           DateTime?
+  createdAt             DateTime               @default(now())
+  updatedAt             DateTime               @updatedAt
+  firm                  Firm?                  @relation(fields: [firmId], references: [id])
+  roles                 UserRole[]
+  assignedCases         Case[]                 @relation("AssignedCases")
+  reviewedCases         Case[]                 @relation("ReviewedCases")
+  createdCases          Case[]                 @relation("CreatedCases")
+  caseActivities        CaseActivity[]
+  comments              Comment[]
+  assignmentsTo         Assignment[]           @relation("AssignedTo")
+  assignmentsBy         Assignment[]           @relation("AssignedBy")
+  uploadedDocs          Document[]             @relation("UploadedDocuments")
+  auditLogs             AuditLog[]             @relation("AuditActor")
+  reminders             Reminder[]             @relation("ReminderRecipient")
+  tasks                 Task[]                 @relation("TaskOwner")
   itr12ChecklistReviews ITR12ReviewChecklist[] @relation("ITR12ChecklistReviewer")
-  generatedReports GeneratedReport[]
+  generatedReports      GeneratedReport[]
+  apiKeys               ApiKey[]
 
   @@index([firmId])
 }
@@ -284,90 +285,90 @@ model UserRole {
 }
 
 model Firm {
-  id          String   @id @default(cuid())
-  name        String
+  id             String     @id @default(cuid())
+  name           String
   registrationNo String?
-  vatNo       String?
-  email       String?
-  phone       String?
-  address     String?
-  timezone    String   @default("Africa/Johannesburg")
-  isActive    Boolean  @default(true)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  users       User[]
-  clients     Client[]
-  cases       Case[]
-  documents   Document[]
+  vatNo          String?
+  email          String?
+  phone          String?
+  address        String?
+  timezone       String     @default("Africa/Johannesburg")
+  isActive       Boolean    @default(true)
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+  users          User[]
+  clients        Client[]
+  cases          Case[]
+  documents      Document[]
 }
 
 model Client {
-  id                 String         @id @default(cuid())
-  firmId             String
-  code               String         @unique
-  displayName        String
-  clientType         ClientType
-  status             ClientStatus   @default(ONBOARDING)
-  registrationNumber String?
-  taxReferenceNumber String?
-  vatNumber          String?
-  payeNumber         String?
-  email              String?
-  phone              String?
-  address            String?
-  assignedStaffId    String?
-  notes              String?
-  createdAt          DateTime       @default(now())
-  updatedAt          DateTime       @updatedAt
-  firm               Firm           @relation(fields: [firmId], references: [id])
-  profile            ClientProfile?
-  estateProfile      EstateProfile?
-  estateMatter       EstateMatter?
-  cases              Case[]
-  documents          Document[]
-  tasks              Task[]
-  comments           Comment[]
-  assignments        Assignment[]
+  id                    String                 @id @default(cuid())
+  firmId                String
+  code                  String                 @unique
+  displayName           String
+  clientType            ClientType
+  status                ClientStatus           @default(ONBOARDING)
+  registrationNumber    String?
+  taxReferenceNumber    String?
+  vatNumber             String?
+  payeNumber            String?
+  email                 String?
+  phone                 String?
+  address               String?
+  assignedStaffId       String?
+  notes                 String?
+  createdAt             DateTime               @default(now())
+  updatedAt             DateTime               @updatedAt
+  firm                  Firm                   @relation(fields: [firmId], references: [id])
+  profile               ClientProfile?
+  estateProfile         EstateProfile?
+  estateMatter          EstateMatter?
+  cases                 Case[]
+  documents             Document[]
+  tasks                 Task[]
+  comments              Comment[]
+  assignments           Assignment[]
   individualTaxProfiles IndividualTaxProfile[]
-  vehicles           Vehicle[]
-  logbooks           Logbook[]
+  vehicles              Vehicle[]
+  logbooks              Logbook[]
 
   @@index([firmId, status])
   @@index([clientType])
 }
 
 model ClientProfile {
-  id                   String   @id @default(cuid())
-  clientId             String   @unique
+  id                   String    @id @default(cuid())
+  clientId             String    @unique
   identificationNumber String?
   incorporationDate    DateTime?
   dateOfBirth          DateTime?
   contactPerson        String?
   industry             String?
   metadata             Json?
-  client               Client   @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  client               Client    @relation(fields: [clientId], references: [id], onDelete: Cascade)
 }
 
 model EstateProfile {
-  id                 String   @id @default(cuid())
-  clientId           String   @unique
-  deceasedFullName   String
-  deceasedIdNumber   String?
-  dateOfDeath        DateTime?
+  id                     String    @id @default(cuid())
+  clientId               String    @unique
+  deceasedFullName       String
+  deceasedIdNumber       String?
+  dateOfDeath            DateTime?
   letterOfExecutorshipNo String?
-  estateMasterRef    String?
-  executorName       String?
-  valuationRequired  Boolean  @default(true)
-  metadata           Json?
-  createdAt          DateTime @default(now())
-  updatedAt          DateTime @updatedAt
-  client             Client   @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  estateMasterRef        String?
+  executorName           String?
+  valuationRequired      Boolean   @default(true)
+  metadata               Json?
+  createdAt              DateTime  @default(now())
+  updatedAt              DateTime  @updatedAt
+  client                 Client    @relation(fields: [clientId], references: [id], onDelete: Cascade)
 }
 
 model EstateMatter {
-  id                       String                    @id @default(cuid())
-  clientId                 String                    @unique
-  estateReference          String                    @unique
+  id                       String                          @id @default(cuid())
+  clientId                 String                          @unique
+  estateReference          String                          @unique
   deceasedName             String
   idNumberOrPassport       String?
   dateOfBirth              DateTime?
@@ -375,18 +376,18 @@ model EstateMatter {
   maritalRegime            EstateMaritalRegime
   taxNumber                String?
   estateTaxNumber          String?
-  hasWill                  Boolean                   @default(false)
+  hasWill                  Boolean                         @default(false)
   executorName             String
   executorCapacity         EstateExecutorCapacity
   executorEmail            String?
   executorPhone            String?
   assignedPractitionerName String
-  currentStage             EstateStage               @default(REPORTED)
-  status                   EstateMatterStatus        @default(ACTIVE)
+  currentStage             EstateStage                     @default(REPORTED)
+  status                   EstateMatterStatus              @default(ACTIVE)
   notes                    String?
-  createdAt                DateTime                  @default(now())
-  updatedAt                DateTime                  @updatedAt
-  client                   Client                    @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  createdAt                DateTime                        @default(now())
+  updatedAt                DateTime                        @updatedAt
+  client                   Client                          @relation(fields: [clientId], references: [id], onDelete: Cascade)
   assets                   EstateAsset[]
   liabilities              EstateLiability[]
   beneficiaries            EstateBeneficiary[]
@@ -396,89 +397,94 @@ model EstateMatter {
   liquidationDistributions EstateLiquidationDistribution[]
   executorAccess           EstateExecutorAccess[]
   engineRuns               EstateEngineRun[]
+  administration           EstateAdministration?
+  documentRequests         EstateDocumentRequest[]
+  uploadLinks              EstateUploadLink[]
+  estateDocuments          EstateDocument[]
+  sarsObligations          EstateSarsObligation[]
 
   @@index([currentStage, status])
   @@index([dateOfDeath])
 }
 
 model EstateAsset {
-  id                      String              @id @default(cuid())
-  estateId                String
-  category                EstateAssetCategory
-  description             String
-  dateOfDeathValue        Decimal             @db.Decimal(18, 2)
-  baseCost                Decimal?            @db.Decimal(18, 2)
-  acquisitionDate         DateTime?
-  valuationDateValue      Decimal?            @db.Decimal(18, 2)
-  isPrimaryResidence      Boolean             @default(false)
-  isPersonalUse           Boolean             @default(false)
-  beneficiaryId           String?
-  spouseRollover          Boolean             @default(false)
-  notes                   String?
-  createdAt               DateTime            @default(now())
-  updatedAt               DateTime            @updatedAt
-  estate                  EstateMatter        @relation(fields: [estateId], references: [id], onDelete: Cascade)
+  id                 String              @id @default(cuid())
+  estateId           String
+  category           EstateAssetCategory
+  description        String
+  dateOfDeathValue   Decimal             @db.Decimal(18, 2)
+  baseCost           Decimal?            @db.Decimal(18, 2)
+  acquisitionDate    DateTime?
+  valuationDateValue Decimal?            @db.Decimal(18, 2)
+  isPrimaryResidence Boolean             @default(false)
+  isPersonalUse      Boolean             @default(false)
+  beneficiaryId      String?
+  spouseRollover     Boolean             @default(false)
+  notes              String?
+  createdAt          DateTime            @default(now())
+  updatedAt          DateTime            @updatedAt
+  estate             EstateMatter        @relation(fields: [estateId], references: [id], onDelete: Cascade)
 
   @@index([estateId, category])
 }
 
 model EstateLiability {
-  id                      String              @id @default(cuid())
-  estateId                String
-  description             String
-  creditorName            String
-  amount                  Decimal             @db.Decimal(18, 2)
+  id                        String       @id @default(cuid())
+  estateId                  String
+  description               String
+  creditorName              String
+  amount                    Decimal      @db.Decimal(18, 2)
   securedByAssetDescription String?
-  dueDate                 DateTime?
-  notes                   String?
-  createdAt               DateTime            @default(now())
-  updatedAt               DateTime            @updatedAt
-  estate                  EstateMatter        @relation(fields: [estateId], references: [id], onDelete: Cascade)
+  dueDate                   DateTime?
+  notes                     String?
+  createdAt                 DateTime     @default(now())
+  updatedAt                 DateTime     @updatedAt
+  estate                    EstateMatter @relation(fields: [estateId], references: [id], onDelete: Cascade)
 
   @@index([estateId])
 }
 
 model EstateBeneficiary {
-  id              String                           @id @default(cuid())
-  estateId        String
-  fullName        String
+  id                 String                          @id @default(cuid())
+  estateId           String
+  fullName           String
   idNumberOrPassport String?
-  relationship    String
-  isMinor         Boolean                          @default(false)
-  sharePercentage Decimal                          @db.Decimal(5, 2)
-  allocationType  EstateBeneficiaryAllocationType
-  notes           String?
-  createdAt       DateTime                         @default(now())
-  updatedAt       DateTime                         @updatedAt
-  estate          EstateMatter                     @relation(fields: [estateId], references: [id], onDelete: Cascade)
+  relationship       String
+  isMinor            Boolean                         @default(false)
+  sharePercentage    Decimal                         @db.Decimal(5, 2)
+  allocationType     EstateBeneficiaryAllocationType
+  notes              String?
+  createdAt          DateTime                        @default(now())
+  updatedAt          DateTime                        @updatedAt
+  estate             EstateMatter                    @relation(fields: [estateId], references: [id], onDelete: Cascade)
 
   @@index([estateId])
 }
 
 model EstateChecklistItem {
-  id          String               @id @default(cuid())
-  estateId    String
-  stage       EstateStage
-  title       String
-  mandatory   Boolean              @default(true)
-  status      EstateChecklistStatus @default(PENDING)
-  notes       String?
-  createdAt   DateTime             @default(now())
-  updatedAt   DateTime             @updatedAt
-  estate      EstateMatter         @relation(fields: [estateId], references: [id], onDelete: Cascade)
+  id        String                @id @default(cuid())
+  estateId  String
+  stage     EstateStage
+  title     String
+  mandatory Boolean               @default(true)
+  status    EstateChecklistStatus @default(PENDING)
+  notes     String?
+  createdAt DateTime              @default(now())
+  updatedAt DateTime              @updatedAt
+  estate    EstateMatter          @relation(fields: [estateId], references: [id], onDelete: Cascade)
 
   @@index([estateId, stage, status])
 }
 
 model EstateStageEvent {
-  id          String        @id @default(cuid())
-  estateId    String
-  fromStage   EstateStage?
-  toStage     EstateStage
-  actorName   String
-  summary     String
-  createdAt   DateTime      @default(now())
-  estate      EstateMatter  @relation(fields: [estateId], references: [id], onDelete: Cascade)
+  id        String       @id @default(cuid())
+  estateId  String
+  fromStage EstateStage?
+  toStage   EstateStage
+  actorName String
+  summary   String
+  createdAt DateTime     @default(now())
+  estate    EstateMatter @relation(fields: [estateId], references: [id], onDelete: Cascade)
 
   @@index([estateId, createdAt])
 }
@@ -499,48 +505,48 @@ model EstateLiquidationEntry {
 }
 
 model EstateLiquidationDistribution {
-  id            String                @id @default(cuid())
+  id            String       @id @default(cuid())
   estateId      String
   beneficiaryId String
   description   String
-  amount        Decimal               @db.Decimal(18, 2)
+  amount        Decimal      @db.Decimal(18, 2)
   notes         String?
-  createdAt     DateTime              @default(now())
-  updatedAt     DateTime              @updatedAt
-  estate        EstateMatter          @relation(fields: [estateId], references: [id], onDelete: Cascade)
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  estate        EstateMatter @relation(fields: [estateId], references: [id], onDelete: Cascade)
 
   @@index([estateId, beneficiaryId])
 }
 
 model EstateExecutorAccess {
-  id             String                    @id @default(cuid())
+  id             String                     @id @default(cuid())
   estateId       String
-  accessToken    String                    @unique
+  accessToken    String                     @unique
   recipientName  String
   recipientEmail String
   expiresAt      DateTime
   status         EstateExecutorAccessStatus @default(ACTIVE)
   lastAccessedAt DateTime?
-  createdAt      DateTime                  @default(now())
-  updatedAt      DateTime                  @updatedAt
-  estate         EstateMatter              @relation(fields: [estateId], references: [id], onDelete: Cascade)
+  createdAt      DateTime                   @default(now())
+  updatedAt      DateTime                   @updatedAt
+  estate         EstateMatter               @relation(fields: [estateId], references: [id], onDelete: Cascade)
 
   @@index([estateId, status])
 }
 
 model EstateYearPack {
-  id             String                @id @default(cuid())
-  taxYear        Int
-  version        Int
-  status         EstateYearPackStatus  @default(DRAFT)
-  effectiveFrom  DateTime
-  approvedAt     DateTime?
+  id              String               @id @default(cuid())
+  taxYear         Int
+  version         Int
+  status          EstateYearPackStatus @default(DRAFT)
+  effectiveFrom   DateTime
+  approvedAt      DateTime?
   sourceReference String
-  rulesJson      Json
-  createdAt      DateTime              @default(now())
-  updatedAt      DateTime              @updatedAt
-  formTemplates  EstateFormTemplate[]
-  engineRuns     EstateEngineRun[]
+  rulesJson       Json
+  createdAt       DateTime             @default(now())
+  updatedAt       DateTime             @updatedAt
+  formTemplates   EstateFormTemplate[]
+  engineRuns      EstateEngineRun[]
 
   @@unique([taxYear, version])
   @@index([taxYear, status, version])
@@ -609,57 +615,57 @@ model TaxPeriod {
 }
 
 model ReviewStatus {
-  id               String      @id @default(cuid())
-  code             String      @unique
+  id               String     @id @default(cuid())
+  code             String     @unique
   label            String
   description      String?
-  requiresReviewer Boolean     @default(true)
-  isTerminal       Boolean     @default(false)
+  requiresReviewer Boolean    @default(true)
+  isTerminal       Boolean    @default(false)
   cases            Case[]
   deadlines        Deadline[]
   tasks            Task[]
 }
 
 model Case {
-  id              String           @id @default(cuid())
-  firmId          String
-  clientId        String
-  taxTypeId       String
-  taxPeriodId     String?
-  reviewStatusId  String
-  createdById     String
-  assignedUserId  String?
-  reviewerUserId  String?
-  caseType        CaseType
-  status          CaseStatus       @default(OPEN)
-  priority        PriorityLevel    @default(MEDIUM)
-  title           String
-  description     String?
-  sarsReference   String?
-  dueDate         DateTime?
-  openedAt        DateTime         @default(now())
-  closedAt        DateTime?
-  createdAt       DateTime         @default(now())
-  updatedAt       DateTime         @updatedAt
-  firm            Firm             @relation(fields: [firmId], references: [id])
-  client          Client           @relation(fields: [clientId], references: [id])
-  taxType         TaxType          @relation(fields: [taxTypeId], references: [id])
-  taxPeriod       TaxPeriod?       @relation(fields: [taxPeriodId], references: [id])
-  reviewStatus    ReviewStatus     @relation(fields: [reviewStatusId], references: [id])
-  createdBy       User             @relation("CreatedCases", fields: [createdById], references: [id])
-  assignedUser    User?            @relation("AssignedCases", fields: [assignedUserId], references: [id])
-  reviewerUser    User?            @relation("ReviewedCases", fields: [reviewerUserId], references: [id])
-  activities      CaseActivity[]
-  comments        Comment[]
-  deadlines       Deadline[]
-  tasks           Task[]
-  assignments     Assignment[]
-  caseDocuments   CaseDocument[]
-  knowledgeLinks  CaseKnowledgeArticle[]
-  reminders       Reminder[]
-  submissions     Submission[]
-  itr12Profile    ITR12Profile?
-  itr12Workpapers ITR12Workpaper[]
+  id                   String                 @id @default(cuid())
+  firmId               String
+  clientId             String
+  taxTypeId            String
+  taxPeriodId          String?
+  reviewStatusId       String
+  createdById          String
+  assignedUserId       String?
+  reviewerUserId       String?
+  caseType             CaseType
+  status               CaseStatus             @default(OPEN)
+  priority             PriorityLevel          @default(MEDIUM)
+  title                String
+  description          String?
+  sarsReference        String?
+  dueDate              DateTime?
+  openedAt             DateTime               @default(now())
+  closedAt             DateTime?
+  createdAt            DateTime               @default(now())
+  updatedAt            DateTime               @updatedAt
+  firm                 Firm                   @relation(fields: [firmId], references: [id])
+  client               Client                 @relation(fields: [clientId], references: [id])
+  taxType              TaxType                @relation(fields: [taxTypeId], references: [id])
+  taxPeriod            TaxPeriod?             @relation(fields: [taxPeriodId], references: [id])
+  reviewStatus         ReviewStatus           @relation(fields: [reviewStatusId], references: [id])
+  createdBy            User                   @relation("CreatedCases", fields: [createdById], references: [id])
+  assignedUser         User?                  @relation("AssignedCases", fields: [assignedUserId], references: [id])
+  reviewerUser         User?                  @relation("ReviewedCases", fields: [reviewerUserId], references: [id])
+  activities           CaseActivity[]
+  comments             Comment[]
+  deadlines            Deadline[]
+  tasks                Task[]
+  assignments          Assignment[]
+  caseDocuments        CaseDocument[]
+  knowledgeLinks       CaseKnowledgeArticle[]
+  reminders            Reminder[]
+  submissions          Submission[]
+  itr12Profile         ITR12Profile?
+  itr12Workpapers      ITR12Workpaper[]
   itr12CalculationRuns ITR12CalculationRun[]
 
   @@index([firmId, status])
@@ -668,15 +674,15 @@ model Case {
 }
 
 model CaseActivity {
-  id          String   @id @default(cuid())
-  caseId      String
-  actorId     String
-  action      String
-  summary     String
-  metadata    Json?
-  createdAt   DateTime @default(now())
-  case        Case     @relation(fields: [caseId], references: [id], onDelete: Cascade)
-  actor       User     @relation(fields: [actorId], references: [id])
+  id        String   @id @default(cuid())
+  caseId    String
+  actorId   String
+  action    String
+  summary   String
+  metadata  Json?
+  createdAt DateTime @default(now())
+  case      Case     @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  actor     User     @relation(fields: [actorId], references: [id])
 
   @@index([caseId, createdAt])
 }
@@ -690,59 +696,59 @@ model DocumentCategory {
 }
 
 model Document {
-  id             String             @id @default(cuid())
-  firmId         String
-  clientId       String?
-  uploadedById   String?
-  categoryId     String
-  fileName       String
-  storageKey     String
-  mimeType       String
-  fileSizeBytes  Int
-  checksum       String?
-  visibility     DocumentVisibility @default(INTERNAL)
-  tags           String[]
-  metadata       Json?
-  uploadedAt     DateTime           @default(now())
-  updatedAt      DateTime           @updatedAt
-  firm           Firm               @relation(fields: [firmId], references: [id])
-  client         Client?            @relation(fields: [clientId], references: [id])
-  uploadedBy     User?              @relation("UploadedDocuments", fields: [uploadedById], references: [id])
-  category       DocumentCategory   @relation(fields: [categoryId], references: [id])
-  caseLinks      CaseDocument[]
+  id            String             @id @default(cuid())
+  firmId        String
+  clientId      String?
+  uploadedById  String?
+  categoryId    String
+  fileName      String
+  storageKey    String
+  mimeType      String
+  fileSizeBytes Int
+  checksum      String?
+  visibility    DocumentVisibility @default(INTERNAL)
+  tags          String[]
+  metadata      Json?
+  uploadedAt    DateTime           @default(now())
+  updatedAt     DateTime           @updatedAt
+  firm          Firm               @relation(fields: [firmId], references: [id])
+  client        Client?            @relation(fields: [clientId], references: [id])
+  uploadedBy    User?              @relation("UploadedDocuments", fields: [uploadedById], references: [id])
+  category      DocumentCategory   @relation(fields: [categoryId], references: [id])
+  caseLinks     CaseDocument[]
 
   @@index([firmId, uploadedAt])
   @@index([clientId])
 }
 
 model CaseDocument {
-  caseId      String
-  documentId  String
-  linkedAt    DateTime @default(now())
-  case        Case     @relation(fields: [caseId], references: [id], onDelete: Cascade)
-  document    Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
+  caseId     String
+  documentId String
+  linkedAt   DateTime @default(now())
+  case       Case     @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  document   Document @relation(fields: [documentId], references: [id], onDelete: Cascade)
 
   @@id([caseId, documentId])
 }
 
 model KnowledgeBaseArticle {
-  id               String                  @id @default(cuid())
-  title            String
-  category         String
-  jurisdiction     String                  @default("South Africa")
-  effectiveDate    DateTime
-  repealDate       DateTime?
-  sourceReference  String
-  summary          String
-  body             String
-  tags             String[]
-  relatedModules   String[]
-  isIllustrative   Boolean                 @default(true)
-  createdBy        String?
-  createdAt        DateTime                @default(now())
-  updatedAt        DateTime                @updatedAt
-  tagLinks         ArticleTag[]
-  caseLinks        CaseKnowledgeArticle[]
+  id              String                 @id @default(cuid())
+  title           String
+  category        String
+  jurisdiction    String                 @default("South Africa")
+  effectiveDate   DateTime
+  repealDate      DateTime?
+  sourceReference String
+  summary         String
+  body            String
+  tags            String[]
+  relatedModules  String[]
+  isIllustrative  Boolean                @default(true)
+  createdBy       String?
+  createdAt       DateTime               @default(now())
+  updatedAt       DateTime               @updatedAt
+  tagLinks        ArticleTag[]
+  caseLinks       CaseKnowledgeArticle[]
 
   @@index([category, effectiveDate])
 }
@@ -766,26 +772,26 @@ model ArticleTag {
 model CaseKnowledgeArticle {
   caseId    String
   articleId String
-  linkedAt  DateTime @default(now())
-  case      Case     @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  linkedAt  DateTime             @default(now())
+  case      Case                 @relation(fields: [caseId], references: [id], onDelete: Cascade)
   article   KnowledgeBaseArticle @relation(fields: [articleId], references: [id], onDelete: Cascade)
 
   @@id([caseId, articleId])
 }
 
 model Deadline {
-  id              String       @id @default(cuid())
-  caseId          String
-  reviewStatusId  String
-  title           String
-  dueAt           DateTime
-  completedAt     DateTime?
-  notes           String?
-  createdAt       DateTime     @default(now())
-  updatedAt       DateTime     @updatedAt
-  case            Case         @relation(fields: [caseId], references: [id], onDelete: Cascade)
-  reviewStatus    ReviewStatus @relation(fields: [reviewStatusId], references: [id])
-  reminders       Reminder[]
+  id             String       @id @default(cuid())
+  caseId         String
+  reviewStatusId String
+  title          String
+  dueAt          DateTime
+  completedAt    DateTime?
+  notes          String?
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  case           Case         @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  reviewStatus   ReviewStatus @relation(fields: [reviewStatusId], references: [id])
+  reminders      Reminder[]
 
   @@index([dueAt])
 }
@@ -807,18 +813,18 @@ model Reminder {
 }
 
 model AuditLog {
-  id          String   @id @default(cuid())
-  actorId     String?
-  action      String
-  entityType  String
-  entityId    String
-  summary     String
-  beforeData  Json?
-  afterData   Json?
-  ipAddress   String?
-  userAgent   String?
-  createdAt   DateTime @default(now())
-  actor       User?    @relation("AuditActor", fields: [actorId], references: [id])
+  id         String   @id @default(cuid())
+  actorId    String?
+  action     String
+  entityType String
+  entityId   String
+  summary    String
+  beforeData Json?
+  afterData  Json?
+  ipAddress  String?
+  userAgent  String?
+  createdAt  DateTime @default(now())
+  actor      User?    @relation("AuditActor", fields: [actorId], references: [id])
 
   @@index([entityType, entityId])
   @@index([createdAt])
@@ -844,18 +850,18 @@ model Assignment {
 }
 
 model Comment {
-  id         String   @id @default(cuid())
-  caseId     String?
-  clientId   String?
-  taskId     String?
-  authorId   String
-  body       String
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
-  case       Case?    @relation(fields: [caseId], references: [id], onDelete: Cascade)
-  client     Client?  @relation(fields: [clientId], references: [id], onDelete: Cascade)
-  task       Task?    @relation(fields: [taskId], references: [id], onDelete: Cascade)
-  author     User     @relation(fields: [authorId], references: [id])
+  id        String   @id @default(cuid())
+  caseId    String?
+  clientId  String?
+  taskId    String?
+  authorId  String
+  body      String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  case      Case?    @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  client    Client?  @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  task      Task?    @relation(fields: [taskId], references: [id], onDelete: Cascade)
+  author    User     @relation(fields: [authorId], references: [id])
 
   @@index([createdAt])
 }
@@ -884,7 +890,7 @@ model Task {
 }
 
 model Submission {
-  id              String    @id @default(cuid())
+  id              String     @id @default(cuid())
   caseId          String?
   taxTypeId       String
   taxPeriodId     String?
@@ -894,74 +900,74 @@ model Submission {
   submittedAt     DateTime?
   referenceNumber String?
   payload         Json?
-  createdAt       DateTime  @default(now())
-  updatedAt       DateTime  @updatedAt
-  case            Case?     @relation(fields: [caseId], references: [id], onDelete: SetNull)
-  taxType         TaxType   @relation(fields: [taxTypeId], references: [id])
+  createdAt       DateTime   @default(now())
+  updatedAt       DateTime   @updatedAt
+  case            Case?      @relation(fields: [caseId], references: [id], onDelete: SetNull)
+  taxType         TaxType    @relation(fields: [taxTypeId], references: [id])
   taxPeriod       TaxPeriod? @relation(fields: [taxPeriodId], references: [id])
 
   @@index([status, submissionType])
 }
 
 model CalculationTemplate {
-  id               String   @id @default(cuid())
-  taxTypeId        String
-  name             String
-  versionLabel     String
-  effectiveFrom    DateTime
-  effectiveTo      DateTime?
-  assumptions      Json?
+  id                String    @id @default(cuid())
+  taxTypeId         String
+  name              String
+  versionLabel      String
+  effectiveFrom     DateTime
+  effectiveTo       DateTime?
+  assumptions       Json?
   formulaDefinition Json?
-  isActive         Boolean  @default(true)
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
-  taxType          TaxType  @relation(fields: [taxTypeId], references: [id])
+  isActive          Boolean   @default(true)
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  taxType           TaxType   @relation(fields: [taxTypeId], references: [id])
 
   @@index([taxTypeId, effectiveFrom])
 }
 
 model ITR12Profile {
-  id               String            @id @default(cuid())
-  caseId           String            @unique
+  id               String             @id @default(cuid())
+  caseId           String             @unique
   assessmentYear   Int
   periodStart      DateTime
   periodEnd        DateTime
-  taxpayerCategory String            @default("INDIVIDUAL")
+  taxpayerCategory String             @default("INDIVIDUAL")
   workflowState    ITR12WorkflowState @default(INTAKE)
-  reviewRequired   Boolean           @default(true)
+  reviewRequired   Boolean            @default(true)
   assumptions      Json?
-  createdAt        DateTime          @default(now())
-  updatedAt        DateTime          @updatedAt
-  case             Case              @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
+  case             Case               @relation(fields: [caseId], references: [id], onDelete: Cascade)
 }
 
 model ITR12Workpaper {
-  id              String             @id @default(cuid())
+  id              String               @id @default(cuid())
   caseId          String
   code            String
   title           String
   status          ITR12WorkpaperStatus @default(TODO)
   sourceReference String
   notes           String?
-  createdAt       DateTime           @default(now())
-  updatedAt       DateTime           @updatedAt
-  case            Case               @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  createdAt       DateTime             @default(now())
+  updatedAt       DateTime             @updatedAt
+  case            Case                 @relation(fields: [caseId], references: [id], onDelete: Cascade)
 
   @@index([caseId, status])
 }
 
 model ITR12CalculationRun {
-  id              String                  @id @default(cuid())
+  id              String                     @id @default(cuid())
   caseId          String
   assessmentYear  Int
-  status          ITR12CalculationRunStatus @default(DRAFT)
-  reviewRequired  Boolean                 @default(true)
+  status          ITR12CalculationRunStatus  @default(DRAFT)
+  reviewRequired  Boolean                    @default(true)
   summary         Json?
   legalDisclaimer String?
-  ranAt           DateTime                @default(now())
-  createdAt       DateTime                @default(now())
-  updatedAt       DateTime                @updatedAt
-  case            Case                    @relation(fields: [caseId], references: [id], onDelete: Cascade)
+  ranAt           DateTime                   @default(now())
+  createdAt       DateTime                   @default(now())
+  updatedAt       DateTime                   @updatedAt
+  case            Case                       @relation(fields: [caseId], references: [id], onDelete: Cascade)
   lineItems       ITR12CalculationLineItem[]
   assumptions     ITR12Assumption[]
   reviewChecklist ITR12ReviewChecklist[]
@@ -970,71 +976,71 @@ model ITR12CalculationRun {
 }
 
 model ITR12CalculationLineItem {
-  id              String             @id @default(cuid())
+  id              String              @id @default(cuid())
   runId           String
   lineCode        String
   label           String
-  amount          Decimal            @db.Decimal(18, 2)
+  amount          Decimal             @db.Decimal(18, 2)
   working         String
   assumptions     Json?
   sourceReference String
-  reviewRequired  Boolean            @default(true)
+  reviewRequired  Boolean             @default(true)
   run             ITR12CalculationRun @relation(fields: [runId], references: [id], onDelete: Cascade)
 
   @@index([runId, lineCode])
 }
 
 model ITR12Assumption {
-  id              String             @id @default(cuid())
+  id              String              @id @default(cuid())
   runId           String
   assumption      String
   sourceReference String?
-  createdAt       DateTime           @default(now())
+  createdAt       DateTime            @default(now())
   run             ITR12CalculationRun @relation(fields: [runId], references: [id], onDelete: Cascade)
 
   @@index([runId])
 }
 
 model ITR12ReviewChecklist {
-  id          String             @id @default(cuid())
-  runId       String
-  reviewerId  String?
-  status      String
-  notes       String?
-  reviewedAt  DateTime?
-  createdAt   DateTime           @default(now())
-  run         ITR12CalculationRun @relation(fields: [runId], references: [id], onDelete: Cascade)
-  reviewer    User?              @relation("ITR12ChecklistReviewer", fields: [reviewerId], references: [id])
+  id         String              @id @default(cuid())
+  runId      String
+  reviewerId String?
+  status     String
+  notes      String?
+  reviewedAt DateTime?
+  createdAt  DateTime            @default(now())
+  run        ITR12CalculationRun @relation(fields: [runId], references: [id], onDelete: Cascade)
+  reviewer   User?               @relation("ITR12ChecklistReviewer", fields: [reviewerId], references: [id])
 
   @@index([runId, status])
 }
 
 model IndividualTaxRuleVersion {
-  id            String   @id @default(cuid())
+  id            String                    @id @default(cuid())
   ruleYear      Int
   versionLabel  String
   effectiveFrom DateTime
   effectiveTo   DateTime?
   rulesJson     Json?
-  isActive      Boolean  @default(true)
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
+  isActive      Boolean                   @default(true)
+  createdAt     DateTime                  @default(now())
+  updatedAt     DateTime                  @updatedAt
   assessments   IndividualTaxAssessment[]
 
   @@index([ruleYear, effectiveFrom])
 }
 
 model IndividualTaxProfile {
-  id              String   @id @default(cuid())
-  clientId         String?
-  taxpayerName     String
-  referenceNumber  String
-  identityNumber   String?
-  address          String?
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
-  client           Client? @relation(fields: [clientId], references: [id], onDelete: SetNull)
-  assessments      IndividualTaxAssessment[]
+  id              String                    @id @default(cuid())
+  clientId        String?
+  taxpayerName    String
+  referenceNumber String
+  identityNumber  String?
+  address         String?
+  createdAt       DateTime                  @default(now())
+  updatedAt       DateTime                  @updatedAt
+  client          Client?                   @relation(fields: [clientId], references: [id], onDelete: SetNull)
+  assessments     IndividualTaxAssessment[]
 }
 
 model IndividualTaxAssessment {
@@ -1087,26 +1093,26 @@ model IndividualTaxLineItem {
 }
 
 model IndividualTaxNote {
-  id             String                  @id @default(cuid())
-  assessmentId   String
-  noteOrder      Int
-  noteText       String
-  createdAt      DateTime                @default(now())
-  assessment     IndividualTaxAssessment @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
+  id           String                  @id @default(cuid())
+  assessmentId String
+  noteOrder    Int
+  noteText     String
+  createdAt    DateTime                @default(now())
+  assessment   IndividualTaxAssessment @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
 
   @@index([assessmentId, noteOrder])
 }
 
 model GeneratedReport {
-  id            String              @id @default(cuid())
+  id            String                  @id @default(cuid())
   assessmentId  String
   reportType    GeneratedReportType
   storageKey    String
   checksum      String?
   generatedById String?
-  generatedAt   DateTime            @default(now())
+  generatedAt   DateTime                @default(now())
   assessment    IndividualTaxAssessment @relation(fields: [assessmentId], references: [id], onDelete: Cascade)
-  generatedBy   User?               @relation(fields: [generatedById], references: [id])
+  generatedBy   User?                   @relation(fields: [generatedById], references: [id])
 
   @@index([assessmentId, generatedAt])
 }
@@ -1172,3 +1178,175 @@ model LogbookTrip {
   @@index([logbookId, date])
 }
 
+// ---------------------------------------------------------------------------
+// Deceased estate liquidation workflow (document requests, uploads, L&D, SARS)
+// ---------------------------------------------------------------------------
+
+enum EstateAdministrationType {
+  SOLVENT
+  INSOLVENT_S34
+  SMALL_ESTATE_S18_3
+}
+
+enum EstateDocumentRequestStatus {
+  REQUESTED
+  UPLOADED
+  ACCEPTED
+  REJECTED
+  WAIVED
+}
+
+enum EstateDocumentAudience {
+  MASTER
+  SARS
+  LD_VOUCHER
+  INTERNAL
+}
+
+enum EstateDocumentStatus {
+  PENDING_REVIEW
+  ACCEPTED
+  REJECTED
+}
+
+enum EstateUploadSource {
+  STAFF
+  UPLOAD_LINK
+  API
+}
+
+enum EstateSarsObligationStatus {
+  NOT_STARTED
+  IN_PROGRESS
+  SUBMITTED
+  ASSESSED
+  PAID
+  COMPLETE
+  NOT_APPLICABLE
+}
+
+/// Administration metadata used to draft the Reg 5 L&D account and SARS pack.
+model EstateAdministration {
+  id                        String                   @id @default(cuid())
+  estateId                  String                   @unique
+  administrationType        EstateAdministrationType @default(SOLVENT)
+  masterReference           String?
+  masterOffice              String?
+  lettersOfExecutorshipDate DateTime?
+  sarsCaseNumber            String?
+  incomeTaxReference        String?
+  estateTaxReference        String?
+  /// LdWorkpaper JSON: heading extras, asset/claim overlays, I&E, redistribution, estate duty inputs.
+  workpaperJson             Json
+  createdAt                 DateTime                 @default(now())
+  updatedAt                 DateTime                 @updatedAt
+  estate                    EstateMatter             @relation(fields: [estateId], references: [id], onDelete: Cascade)
+}
+
+model EstateDocumentRequest {
+  id            String                      @id @default(cuid())
+  estateId      String
+  code          String
+  title         String
+  description   String?
+  audience      EstateDocumentAudience      @default(INTERNAL)
+  requestedFrom String?
+  status        EstateDocumentRequestStatus @default(REQUESTED)
+  dueDate       DateTime?
+  notes         String?
+  createdAt     DateTime                    @default(now())
+  updatedAt     DateTime                    @updatedAt
+  estate        EstateMatter                @relation(fields: [estateId], references: [id], onDelete: Cascade)
+  documents     EstateDocument[]
+
+  @@unique([estateId, code])
+  @@index([estateId, status])
+}
+
+model EstateUploadLink {
+  id             String                     @id @default(cuid())
+  estateId       String
+  tokenHash      String                     @unique
+  recipientName  String
+  recipientEmail String?
+  requestIds     String[]
+  expiresAt      DateTime
+  status         EstateExecutorAccessStatus @default(ACTIVE)
+  lastUsedAt     DateTime?
+  createdByName  String
+  createdAt      DateTime                   @default(now())
+  estate         EstateMatter               @relation(fields: [estateId], references: [id], onDelete: Cascade)
+
+  @@index([estateId, status])
+}
+
+model EstateDocument {
+  id            String                 @id @default(cuid())
+  estateId      String
+  requestId     String?
+  fileName      String
+  storageKey    String                 @unique
+  mimeType      String
+  fileSizeBytes Int
+  checksum      String?
+  source        EstateUploadSource
+  uploaderName  String
+  status        EstateDocumentStatus   @default(PENDING_REVIEW)
+  reviewNote    String?
+  reviewedBy    String?
+  sarsFileName  String?
+  uploadedAt    DateTime               @default(now())
+  updatedAt     DateTime               @updatedAt
+  estate        EstateMatter           @relation(fields: [estateId], references: [id], onDelete: Cascade)
+  request       EstateDocumentRequest? @relation(fields: [requestId], references: [id], onDelete: SetNull)
+
+  @@index([estateId, uploadedAt])
+  @@index([requestId])
+}
+
+model EstateSarsObligation {
+  id          String                     @id @default(cuid())
+  estateId    String
+  code        String
+  title       String
+  taxType     String
+  period      String?
+  status      EstateSarsObligationStatus @default(NOT_STARTED)
+  reference   String?
+  amount      Decimal?                   @db.Decimal(18, 2)
+  dueDate     DateTime?
+  completedAt DateTime?
+  notes       String?
+  createdAt   DateTime                   @default(now())
+  updatedAt   DateTime                   @updatedAt
+  estate      EstateMatter               @relation(fields: [estateId], references: [id], onDelete: Cascade)
+
+  @@unique([estateId, code])
+  @@index([estateId, status])
+}
+
+/// Personal API keys for the REST API (/api/v1). Only a SHA-256 hash is stored.
+model ApiKey {
+  id         String    @id @default(cuid())
+  userId     String
+  name       String
+  prefix     String
+  keyHash    String    @unique
+  scopes     String[]
+  lastUsedAt DateTime?
+  expiresAt  DateTime?
+  revokedAt  DateTime?
+  createdAt  DateTime  @default(now())
+  user       User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+/// Database-backed file store used when Supabase Storage is not configured
+/// (no SUPABASE_SERVICE_ROLE_KEY). Files up to ~4 MB.
+model EstateDocumentBlob {
+  storageKey String   @id
+  mimeType   String
+  bytes      Bytes
+  createdAt  DateTime @default(now())
+}

@@ -101,6 +101,12 @@ export function EstateDashboard({
             </Link>
           ) : null}
           <Link
+            href={`/estates/${estate.id}/administration`}
+            className="rounded-md border border-teal-300 px-4 py-2 text-sm font-medium text-teal-800 transition hover:bg-teal-50"
+          >
+            L&amp;D Account &amp; SARS
+          </Link>
+          <Link
             href={`/estates/${estate.id}/liquidation`}
             className="rounded-md bg-[#0E2433] px-4 py-2 text-sm font-medium text-white transition hover:bg-[#12344a]"
           >
