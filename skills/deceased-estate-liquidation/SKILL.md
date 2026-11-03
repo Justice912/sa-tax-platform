@@ -20,7 +20,7 @@ email creditors, or pay anything on the user's behalf. Prepare it and hand over.
    under **Admin > API keys** (`txo_<prefix>_<secret>`, shown once). Never echo the key back.
 2. Get the client (Python stdlib only):
    - from a clone: `skills/deceased-estate-liquidation/scripts/taxops_estate.py`, or
-   - `https://raw.githubusercontent.com/Justice912/sa-tax-platform/main/skills/deceased-estate-liquidation/scripts/taxops_estate.py`
+   - `https://raw.githubusercontent.com/Justice912/sa-tax-platform/master/skills/deceased-estate-liquidation/scripts/taxops_estate.py`
    If neither is reachable, call the REST routes directly (list: `GET /api/v1/openapi`) with
    `Authorization: Bearer $TAXOPS_API_KEY`.
 3. Smoke test: `python3 taxops_estate.py me`. On 401, the key is wrong or revoked. If the host
