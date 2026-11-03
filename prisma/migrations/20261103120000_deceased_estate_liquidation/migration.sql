@@ -185,6 +185,16 @@ ALTER TABLE "EstateSarsObligation" ADD CONSTRAINT "EstateSarsObligation_estateId
 ALTER TABLE "ApiKey" ADD CONSTRAINT "ApiKey_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User"("id") ON DELETE CASCADE ON UPDATE CASCADE;
 
 
+-- CreateTable
+CREATE TABLE "EstateDocumentBlob" (
+    "storageKey" TEXT NOT NULL,
+    "mimeType" TEXT NOT NULL,
+    "bytes" BYTEA NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT "EstateDocumentBlob_pkey" PRIMARY KEY ("storageKey")
+);
+
 -- Keep the Supabase PostgREST surface closed (see 20260708132500_enable_rls).
 ALTER TABLE public."EstateAdministration" ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public."EstateDocumentRequest" ENABLE ROW LEVEL SECURITY;
@@ -192,3 +202,4 @@ ALTER TABLE public."EstateUploadLink" ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public."EstateDocument" ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public."EstateSarsObligation" ENABLE ROW LEVEL SECURITY;
 ALTER TABLE public."ApiKey" ENABLE ROW LEVEL SECURITY;
+ALTER TABLE public."EstateDocumentBlob" ENABLE ROW LEVEL SECURITY;

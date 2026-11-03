@@ -26,7 +26,7 @@ This guide covers the end-to-end deceased-estate workflow added in `feature/dece
    - optional `ESTATE_DOCUMENTS_BUCKET` (defaults to `estate-documents`)
 5. Redeploy. Then go to Admin > API keys, create a key, and give it to the skill as `TAXOPS_API_KEY`.
 
-Without the Supabase env vars, uploads are written to `STORAGE_ROOT/estate-documents`. That is fine for the desktop build. It does **not** persist on Vercel.
+Without `SUPABASE_SERVICE_ROLE_KEY`, production stores uploaded files in the database (`EstateDocumentBlob`, up to about 4 MB per file). Add the key in Vercel to switch to Supabase Storage, which supports files up to 25 MB. Demo and desktop builds write files to `STORAGE_ROOT/estate-documents`.
 
 Demo mode: set `TAXOPS_DEMO_API_KEY` to use the API without the database.
 

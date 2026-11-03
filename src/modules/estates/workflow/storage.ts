@@ -2,7 +2,8 @@ import crypto from "node:crypto";
 import fs from "node:fs";
 import path from "node:path";
 import { createClient, type SupabaseClient } from "@supabase/supabase-js";
-import { env } from "@/lib/env";
+import { env, isDemoMode } from "@/lib/env";
+import { prisma } from "@/lib/db";
 
 /**
  * Estate document storage.
@@ -11,6 +12,9 @@ import { env } from "@/lib/env";
  * Supabase via signed upload URLs (createSignedUploadUrl / uploadToSignedUrl),
  * so large scans bypass the Vercel function body limit. Downloads use
  * short-lived signed URLs.
+ *
+ * Database mode (DEMO_MODE=false without the Supabase service key): bytes are
+ * stored in the EstateDocumentBlob table and uploaded through the app (≤4 MB).
  *
  * Fallback (demo / local desktop): files are written under STORAGE_ROOT and
  * streamed through the app's own upload route.
@@ -75,7 +79,13 @@ function localPath(storageKey: string) {
 }
 
 /** Server-side write (local mode, or staff uploads proxied through the app). */
+const useDatabase = () => !isSupabaseStorageConfigured() && !isDemoMode && !process.env.ESTATE_DOCUMENTS_LOCAL_DIR;
+
 export async function putObject(storageKey: string, bytes: Buffer, mimeType: string) {
+  if (useDatabase()) {
+    await prisma.estateDocumentBlob.create({ data: { storageKey, mimeType, bytes: new Uint8Array(bytes) } });
+    return;
+  }
   if (isSupabaseStorageConfigured()) {
     const { error } = await supabase().storage.from(ESTATE_DOCUMENT_BUCKET).upload(storageKey, bytes, { contentType: mimeType, upsert: false });
     if (error) throw new Error(`Upload failed: ${error.message}`);
@@ -87,6 +97,7 @@ export async function putObject(storageKey: string, bytes: Buffer, mimeType: str
 }
 
 export async function objectExists(storageKey: string): Promise<boolean> {
+  if (useDatabase()) return (await prisma.estateDocumentBlob.count({ where: { storageKey } })) > 0;
   if (isSupabaseStorageConfigured()) {
     const dir = storageKey.split("/").slice(0, -1).join("/");
     const name = storageKey.split("/").pop()!;
@@ -97,6 +108,11 @@ export async function objectExists(storageKey: string): Promise<boolean> {
 }
 
 export async function getObject(storageKey: string): Promise<Buffer> {
+  if (useDatabase()) {
+    const row = await prisma.estateDocumentBlob.findUnique({ where: { storageKey } });
+    if (!row) throw new Error("Download failed: not found");
+    return Buffer.from(row.bytes);
+  }
   if (isSupabaseStorageConfigured()) {
     const { data, error } = await supabase().storage.from(ESTATE_DOCUMENT_BUCKET).download(storageKey);
     if (error || !data) throw new Error(`Download failed: ${error?.message ?? "not found"}`);
